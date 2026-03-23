@@ -29,16 +29,24 @@
     .box {
       background: white;
       margin: 15px auto;
-      padding: 15px;
-      width: 200px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      padding: 20px;
+      width: 220px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       cursor: pointer;
-      font-size: 18px;
+      font-size: 20px;
+      line-height: 1.6;
+      transition: 0.2s;
     }
 
     .box:hover {
       background: #eaeaea;
+      transform: scale(1.05);
+    }
+
+    .emoji {
+      font-size: 40px;
+      display: block;
     }
   </style>
 </head>
@@ -49,8 +57,15 @@
   <h1>Welcome to Sanjar-E-Connect</h1>
   <p>Select an option</p>
 
-  <div class="box" onclick="openTrip()">Trip Log</div>
-  <div class="box" onclick="openFuel()">Fuel Log</div>
+  <div class="box" onclick="openTrip()">
+    <span class="emoji">🚖</span>
+    Trip Log
+  </div>
+
+  <div class="box" onclick="openFuel()">
+    <span class="emoji">⛽</span>
+    Fuel Log
+  </div>
 </div>
 
 <script>
