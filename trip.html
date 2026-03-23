@@ -8,39 +8,20 @@
   <style>
     body {
       font-family: Arial;
+      background: #f2f2f2;
       margin: 0;
       padding: 10px;
-
-      /* 🔥 YOUR IMAGE */
-      background: url('https://static.vecteezy.com/system/resources/thumbnails/071/519/140/small_2x/person-holding-a-blue-car-model-with-digital-security-and-insurance-icons-concept-of-car-protection-safety-and-security-digital-car-insurance-and-safety-futuristic-technology-photo.jpg') no-repeat center center/cover;
-
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    /* 🔥 DARK OVERLAY */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.55);
-      z-index: 0;
     }
 
     .card {
-      position: relative;
-      z-index: 1;
-      background: rgba(255,255,255,0.95);
+      background: #fff;
       padding: 20px;
-      border-radius: 14px;
+      border-radius: 12px;
       width: 100%;
       max-width: 450px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     h2 {
@@ -57,6 +38,7 @@
       font-size: 16px;
     }
 
+    /* 🔥 Placeholder style */
     select:invalid {
       color: #888;
     }
@@ -215,7 +197,122 @@
 </div>
 
 <script>
-// 🔥 YOUR ORIGINAL JS (UNCHANGED)
+
+let tripStarted = false;
+let tripEnded = false;
+
+window.onload = function() {
+  let data = JSON.parse(sessionStorage.getItem("tripData"));
+  if (!data) return;
+
+  tripStarted = data.tripStarted;
+  tripEnded = data.tripEnded;
+
+  for (let key in data.values) {
+    let el = document.getElementById(key);
+    if (el) el.value = data.values[key];
+  }
+
+  if (tripStarted) lockStart();
+  if (tripEnded) lockEnd();
+};
+
+function saveData() {
+  let values = {};
+  document.querySelectorAll("input, select").forEach(el => {
+    values[el.id] = el.value;
+  });
+
+  sessionStorage.setItem("tripData", JSON.stringify({
+    tripStarted,
+    tripEnded,
+    values
+  }));
+}
+
+function lockStart() {
+  ["driver","fleet","operator","tripType"].forEach(id=>{
+    document.getElementById(id).disabled = true;
+  });
+  document.getElementById("omr").readOnly = true;
+}
+
+function lockEnd() {
+  document.getElementById("cmr").readOnly = true;
+  document.getElementById("payment").readOnly = true;
+  document.getElementById("paymentMode").disabled = true;
+  document.getElementById("submitBox").style.display = "block";
+}
+
+function startTrip() {
+
+  let driver = document.getElementById("driver").value;
+  let fleet = document.getElementById("fleet").value;
+  let operator = document.getElementById("operator").value;
+  let tripType = document.getElementById("tripType").value;
+  let omr = document.getElementById("omr").value;
+
+  if (!driver || !fleet || !operator || !tripType || !omr) {
+    document.getElementById("error").innerText = "Enter Valid Entries to Start Trip";
+    return;
+  }
+
+  document.getElementById("startTime").value = new Date().toLocaleString();
+
+  navigator.geolocation.getCurrentPosition(async pos => {
+    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+    let data = await res.json();
+
+    document.getElementById("startGPS").value =
+      [data.address.road, data.address.city].join(", ");
+
+    tripStarted = true;
+    lockStart();
+    saveData();
+  });
+}
+
+function endTrip() {
+
+  let cmr = document.getElementById("cmr").value;
+  let payment = document.getElementById("payment").value;
+  let mode = document.getElementById("paymentMode").value;
+  let omr = document.getElementById("omr").value;
+
+  if (Number(cmr) < Number(omr)) {
+    alert("Trip Odometer Reading Error Contact Cruise Captain");
+    return;
+  }
+
+  if (!cmr || !payment || !mode) {
+    alert("Enter all End Trip details");
+    return;
+  }
+
+  document.getElementById("endTime").value = new Date().toLocaleString();
+
+  navigator.geolocation.getCurrentPosition(async pos => {
+    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+    let data = await res.json();
+
+    document.getElementById("endGPS").value =
+      [data.address.road, data.address.city].join(", ");
+
+    tripEnded = true;
+    lockEnd();
+    saveData();
+  });
+}
+
+function submitTrip() {
+  document.getElementById("dataFlow").style.display = "block";
+
+  setTimeout(() => {
+    sessionStorage.clear();
+    location.reload();
+  }, 5000);
+}
+
 </script>
 
 </body>
