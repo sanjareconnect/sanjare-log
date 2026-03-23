@@ -3,7 +3,6 @@
 <head>
   <title>Sanjar-E-Connect</title>
 
-  <!-- Mobile Responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -15,12 +14,10 @@
       justify-content: center;
       align-items: center;
 
-      /* 🔥 BACKGROUND IMAGE */
       background: url('https://static.vecteezy.com/system/resources/thumbnails/071/519/140/small_2x/person-holding-a-blue-car-model-with-digital-security-and-insurance-icons-concept-of-car-protection-safety-and-security-digital-car-insurance-and-safety-futuristic-technology-photo.jpg')
                   no-repeat center center/cover;
     }
 
-    /* 🔥 DARK OVERLAY */
     body::before {
       content: "";
       position: absolute;
@@ -28,7 +25,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.5); /* slightly reduced for visibility */
+      background: rgba(0, 0, 0, 0.5);
       z-index: 0;
     }
 
@@ -53,7 +50,6 @@
       font-size: 16px;
     }
 
-    /* 🔥 IMPROVED BUTTONS */
     .btn {
       display: flex;
       align-items: center;
@@ -67,7 +63,6 @@
       border-radius: 10px;
       border: none;
 
-      /* 🔥 GLASS / DIM EFFECT */
       background: rgba(255, 255, 255, 0.65);
       backdrop-filter: blur(6px);
 
@@ -95,6 +90,12 @@
   <h1>Welcome to Sanjar-E-Connect</h1>
   <p>Select an option</p>
 
+  <!-- ✅ NEW ATTENDANCE -->
+  <button class="btn" onclick="goAttendance()">
+    <span class="emoji">👨‍✈️📲</span>
+    <span>UN-Attendance</span>
+  </button>
+
   <button class="btn" onclick="goTrip()">
     <span class="emoji">🚖</span>
     <span>Trip Log</span>
@@ -108,6 +109,10 @@
 </div>
 
 <script>
+
+function goAttendance() {
+  alert("Attendance page not created yet");
+}
 
 function goTrip() {
   window.location.href = "trip.html";
