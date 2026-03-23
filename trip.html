@@ -136,8 +136,10 @@
 </select>
 
 <input type="number" id="omr" placeholder="Enter OMR">
-<input type="text" id="startTime">
-<input type="text" id="startGPS">
+
+<!-- ✅ FIXED PLACEHOLDERS -->
+<input type="text" id="startTime" placeholder="Trip Start Time (Auto)" readonly>
+<input type="text" id="startGPS" placeholder="Trip Start Location (Auto GPS)" readonly>
 
 <div id="error" class="error"></div>
 
@@ -147,8 +149,8 @@
 
 <h2>🏁 End Trip</h2>
 
-<input type="number" id="cmr">
-<input type="number" id="payment">
+<input type="number" id="cmr" placeholder="Enter CMR">
+<input type="number" id="payment" placeholder="₹ Enter Payment">
 
 <select id="paymentMode">
   <option value="">Select Payment Mode</option>
@@ -159,8 +161,9 @@
   <option>Cash</option>
 </select>
 
-<input type="text" id="endTime">
-<input type="text" id="endGPS">
+<!-- ✅ FIXED PLACEHOLDERS -->
+<input type="text" id="endTime" placeholder="Trip End Time (Auto)" readonly>
+<input type="text" id="endGPS" placeholder="Trip End Location (Auto GPS)" readonly>
 
 <button class="btn-red" onclick="endTrip()">End Trip</button>
 
@@ -186,7 +189,7 @@
 let tripStarted = false;
 let tripEnded = false;
 
-// LOAD
+// LOAD DATA AFTER REFRESH
 window.onload = function() {
   let data = JSON.parse(sessionStorage.getItem("tripData"));
   if (!data) return;
@@ -234,7 +237,7 @@ function lockEnd() {
   document.getElementById("submitBox").style.display = "block";
 }
 
-// START
+// START TRIP
 function startTrip() {
 
   if (tripStarted) return;
@@ -266,7 +269,7 @@ function startTrip() {
   });
 }
 
-// END
+// END TRIP
 function endTrip() {
 
   if (!tripStarted || tripEnded) return;
