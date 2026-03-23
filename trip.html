@@ -105,7 +105,7 @@
   <!-- Location -->
   <input type="text" placeholder="Location (Auto GPS)" id="location" readonly>
 
-  <button onclick="startTrip()">Start Trip</button>
+  <button id="startBtn" onclick="startTrip()">Start Trip</button>
 
   <button class="back" onclick="goBack()">⬅ Back</button>
 
@@ -129,6 +129,17 @@ function startTrip() {
   // ✅ Set Time
   let now = new Date();
   document.getElementById("starttime").value = now.toLocaleString();
+
+  // ✅ Freeze Fields
+  document.getElementById("uname").disabled = true;
+  document.getElementById("fleet").disabled = true;
+  document.getElementById("operator").disabled = true;
+  document.getElementById("triptype").disabled = true;
+  document.getElementById("omr").readOnly = true;
+
+  // Disable Start Button
+  document.getElementById("startBtn").disabled = true;
+  document.getElementById("startBtn").innerText = "Trip Started";
 
   // ✅ Get GPS
   if (navigator.geolocation) {
