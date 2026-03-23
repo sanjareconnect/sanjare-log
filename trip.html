@@ -3,7 +3,7 @@
 <head>
   <title>Trip System</title>
 
-  <!-- 🔥 VERY IMPORTANT FOR MOBILE -->
+  <!-- MOBILE FIX -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -30,20 +30,13 @@
       font-size: 22px;
     }
 
-    label {
-      font-size: 15px;
-      font-weight: bold;
-      margin-top: 10px;
-      display: block;
-    }
-
     select, input {
       width: 100%;
       padding: 14px;
-      margin-top: 5px;
+      margin-top: 8px;
       border-radius: 8px;
       border: 1px solid #ccc;
-      font-size: 16px; /* 🔥 important for mobile */
+      font-size: 16px;
     }
 
     input[readonly], select:disabled {
@@ -58,9 +51,9 @@
       margin-top: 12px;
       color: white;
       border: none;
-      cursor: pointer;
       font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
     }
 
     .btn-green { background: #1f8f3a; }
@@ -75,7 +68,6 @@
       background: #f0f4ff;
       text-align: center;
       font-weight: bold;
-      font-size: 15px;
     }
 
     .data-flow {
@@ -94,7 +86,6 @@
     .arrow {
       opacity: 0;
       animation: arrowMove 1.5s infinite;
-      font-size: 24px;
     }
 
     .arrow:nth-child(2) { animation-delay: 0.3s; }
@@ -102,14 +93,13 @@
 
     @keyframes arrowMove {
       0% { opacity: 0; transform: translateX(-10px); }
-      50% { opacity: 1; transform: translateX(0); }
+      50% { opacity: 1; }
       100% { opacity: 0; transform: translateX(10px); }
     }
 
     .error {
       color: red;
       text-align: center;
-      font-size: 14px;
     }
   </style>
 </head>
@@ -120,22 +110,19 @@
 
 <h2>🚖 Start Trip</h2>
 
-<label>UN Name</label>
 <select id="driver">
-  <option value="">Select</option>
+  <option value="">UN-Name</option>
   <option>Mithin Mohan / SJTW-7770</option>
   <option>Nagaraj Mani / SJTW-8047</option>
 </select>
 
-<label>Fleet</label>
 <select id="fleet">
-  <option value="">Select</option>
+  <option value="">Fleet No Plate</option>
   <option>SJTW-Varaha / KL30L8893</option>
 </select>
 
-<label>Operator</label>
 <select id="operator">
-  <option value="">Select</option>
+  <option value="">Operator</option>
   <option>Uber</option>
   <option>OLA</option>
   <option>Yatri</option>
@@ -146,23 +133,17 @@
   <option>Personal</option>
 </select>
 
-<label>Trip Type</label>
 <select id="tripType">
-  <option value="">Select</option>
+  <option value="">Trip Type</option>
   <option>Inter-City</option>
   <option>Intra-City</option>
   <option>Official</option>
   <option>Maintenance</option>
 </select>
 
-<label>OMR (Start Reading)</label>
-<input type="number" id="omr">
-
-<label>Trip Start Time (Auto)</label>
-<input type="text" id="startTime" readonly>
-
-<label>Trip Start Location (Auto GPS)</label>
-<input type="text" id="startGPS" readonly>
+<input type="number" id="omr" placeholder="OMR (Start Reading)">
+<input type="text" id="startTime" placeholder="Trip Start Time (Auto)" readonly>
+<input type="text" id="startGPS" placeholder="Trip Start Location (Auto GPS)" readonly>
 
 <div id="error" class="error"></div>
 
@@ -172,15 +153,11 @@
 
 <h2>🏁 End Trip</h2>
 
-<label>CMR (End Reading)</label>
-<input type="number" id="cmr">
+<input type="number" id="cmr" placeholder="CMR (End Reading)">
+<input type="number" id="payment" placeholder="Payment (₹)">
 
-<label>Payment (₹)</label>
-<input type="number" id="payment">
-
-<label>Payment Mode</label>
 <select id="paymentMode">
-  <option value="">Select</option>
+  <option value="">Payment Mode</option>
   <option>UPI-C</option>
   <option>UPI-P</option>
   <option>Direct</option>
@@ -188,11 +165,8 @@
   <option>Cash</option>
 </select>
 
-<label>Trip End Time (Auto)</label>
-<input type="text" id="endTime" readonly>
-
-<label>Trip End Location (Auto GPS)</label>
-<input type="text" id="endGPS" readonly>
+<input type="text" id="endTime" placeholder="Trip End Time (Auto)" readonly>
+<input type="text" id="endGPS" placeholder="Trip End Location (Auto GPS)" readonly>
 
 <button class="btn-red" onclick="endTrip()">End Trip</button>
 
@@ -214,7 +188,134 @@
 </div>
 
 <script>
-// KEEP YOUR SAME JS (no change needed)
+
+let tripStarted = false;
+let tripEnded = false;
+
+// LOAD AFTER REFRESH
+window.onload = function() {
+  let data = JSON.parse(sessionStorage.getItem("tripData"));
+  if (!data) return;
+
+  tripStarted = data.tripStarted;
+  tripEnded = data.tripEnded;
+
+  for (let key in data.values) {
+    let el = document.getElementById(key);
+    if (el) el.value = data.values[key];
+  }
+
+  if (tripStarted) lockStart();
+  if (tripEnded) lockEnd();
+};
+
+// SAVE
+function saveData() {
+  let values = {};
+  document.querySelectorAll("input, select").forEach(el => {
+    values[el.id] = el.value;
+  });
+
+  sessionStorage.setItem("tripData", JSON.stringify({
+    tripStarted,
+    tripEnded,
+    values
+  }));
+}
+
+// LOCKS
+function lockStart() {
+  ["driver","fleet","operator","tripType"].forEach(id=>{
+    document.getElementById(id).disabled = true;
+  });
+  document.getElementById("omr").readOnly = true;
+}
+
+function lockEnd() {
+  document.getElementById("cmr").readOnly = true;
+  document.getElementById("payment").readOnly = true;
+  document.getElementById("paymentMode").disabled = true;
+  document.getElementById("submitBox").style.display = "block";
+}
+
+// START TRIP
+function startTrip() {
+
+  if (tripStarted) return;
+
+  let driver = document.getElementById("driver").value;
+  let fleet = document.getElementById("fleet").value;
+  let operator = document.getElementById("operator").value;
+  let tripType = document.getElementById("tripType").value;
+  let omr = document.getElementById("omr").value;
+
+  if (!driver || !fleet || !operator || !tripType || !omr) {
+    document.getElementById("error").innerText = "Enter Valid Entries to Start Trip";
+    return;
+  }
+
+  document.getElementById("startTime").value = new Date().toLocaleString();
+
+  navigator.geolocation.getCurrentPosition(async pos => {
+
+    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+    let data = await res.json();
+
+    document.getElementById("startGPS").value =
+      [data.address.road, data.address.city].join(", ");
+
+    tripStarted = true;
+    lockStart();
+    saveData();
+  });
+}
+
+// END TRIP
+function endTrip() {
+
+  if (!tripStarted || tripEnded) return;
+
+  let cmr = document.getElementById("cmr").value;
+  let payment = document.getElementById("payment").value;
+  let mode = document.getElementById("paymentMode").value;
+  let omr = document.getElementById("omr").value;
+
+  if (Number(cmr) < Number(omr)) {
+    alert("Trip Odometer Reading Error Contact Cruise Captain");
+    return;
+  }
+
+  if (!cmr || !payment || !mode) {
+    alert("Enter all End Trip details");
+    return;
+  }
+
+  document.getElementById("endTime").value = new Date().toLocaleString();
+
+  navigator.geolocation.getCurrentPosition(async pos => {
+
+    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+    let data = await res.json();
+
+    document.getElementById("endGPS").value =
+      [data.address.road, data.address.city].join(", ");
+
+    tripEnded = true;
+    lockEnd();
+    saveData();
+  });
+}
+
+// SUBMIT
+function submitTrip() {
+  document.getElementById("dataFlow").style.display = "block";
+
+  setTimeout(() => {
+    sessionStorage.clear();
+    location.reload();
+  }, 5000);
+}
+
 </script>
 
 </body>
