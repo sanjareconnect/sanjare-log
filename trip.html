@@ -63,28 +63,34 @@
       font-weight: bold;
     }
 
+    /* 🚀 DATA FLOW */
     .data-flow {
       display: none;
       margin-top: 15px;
       text-align: center;
-      font-size: 28px;
+      font-size: 26px;
+      font-weight: bold;
     }
 
-    .icon {
-      margin: 0 5px;
+    .flow-line {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .arrow {
       opacity: 0;
-      animation: flow 2s infinite;
+      animation: arrowMove 1.5s infinite;
     }
 
-    .icon:nth-child(1) { animation-delay: 0s; }
-    .icon:nth-child(2) { animation-delay: 0.5s; }
-    .icon:nth-child(3) { animation-delay: 1s; }
-    .icon:nth-child(4) { animation-delay: 1.5s; }
+    .arrow:nth-child(2) { animation-delay: 0.3s; }
+    .arrow:nth-child(3) { animation-delay: 0.6s; }
 
-    @keyframes flow {
-      0% { opacity: 0; transform: translateX(-20px); }
+    @keyframes arrowMove {
+      0% { opacity: 0; transform: translateX(-10px); }
       50% { opacity: 1; transform: translateX(0px); }
-      100% { opacity: 0; transform: translateX(20px); }
+      100% { opacity: 0; transform: translateX(10px); }
     }
 
     .animation-box {
@@ -202,8 +208,15 @@
   <button class="btn-blue" onclick="submitTrip()">Submit Trip</button>
 </div>
 
+<!-- 🚀 MOVING DATA FLOW -->
 <div id="dataFlow" class="data-flow">
-  🚖 ➜ 📡 ➜ ☁️ ➜ 🏢
+  🚖 
+  <div class="flow-line">
+    <span class="arrow">➡️</span>
+    <span class="arrow">➡️</span>
+    <span class="arrow">➡️</span>
+  </div>
+  📡 ☁️ 🏢
 </div>
 
 </div>
@@ -235,10 +248,7 @@ function lockStart() {
     document.getElementById(id).disabled = true;
   });
 
-  let omr = document.getElementById("omr");
-  omr.readOnly = true;
-  omr.style.pointerEvents = "none";
-
+  document.getElementById("omr").readOnly = true;
   document.getElementById("startTime").readOnly = true;
   document.getElementById("startGPS").readOnly = true;
 
@@ -260,7 +270,6 @@ function lockEnd() {
 }
 
 function startTrip() {
-
   if (tripStarted) return;
 
   let driver = document.getElementById("driver").value;
@@ -277,25 +286,19 @@ function startTrip() {
   document.getElementById("startTime").value = new Date().toLocaleString();
 
   navigator.geolocation.getCurrentPosition(async function(pos) {
-
     let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
     let data = await res.json();
 
-    let road = data.address.road || "";
-    let area = data.address.suburb || data.address.neighbourhood || "";
-    let city = data.address.city || "";
-
-    document.getElementById("startGPS").value = [road, area, city].join(", ");
+    document.getElementById("startGPS").value =
+      [data.address.road, data.address.suburb, data.address.city].join(", ");
 
     tripStarted = true;
     lockStart();
     saveData();
-
   });
 }
 
 function endTrip() {
-
   if (!tripStarted || tripEnded) return;
 
   let cmr = document.getElementById("cmr").value;
@@ -316,28 +319,21 @@ function endTrip() {
   document.getElementById("endTime").value = new Date().toLocaleString();
 
   navigator.geolocation.getCurrentPosition(async function(pos) {
-
     let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
     let data = await res.json();
 
-    let road = data.address.road || "";
-    let area = data.address.suburb || data.address.neighbourhood || "";
-    let city = data.address.city || "";
-
-    document.getElementById("endGPS").value = [road, area, city].join(", ");
+    document.getElementById("endGPS").value =
+      [data.address.road, data.address.suburb, data.address.city].join(", ");
 
     tripEnded = true;
     lockEnd();
     saveData();
-
   });
 }
 
 function submitTrip() {
-
   document.getElementById("dataFlow").style.display = "block";
 
-  // ⏱ 5 SECOND DELAY (as you requested)
   setTimeout(() => {
     sessionStorage.clear();
     location.reload();
