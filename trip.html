@@ -63,7 +63,6 @@
       font-weight: bold;
     }
 
-    /* 🚀 DATA FLOW */
     .data-flow {
       display: none;
       margin-top: 15px;
@@ -75,7 +74,6 @@
     .flow-line {
       display: flex;
       justify-content: center;
-      align-items: center;
       gap: 5px;
     }
 
@@ -89,44 +87,13 @@
 
     @keyframes arrowMove {
       0% { opacity: 0; transform: translateX(-10px); }
-      50% { opacity: 1; transform: translateX(0px); }
+      50% { opacity: 1; transform: translateX(0); }
       100% { opacity: 0; transform: translateX(10px); }
-    }
-
-    .animation-box {
-      display: none;
-      height: 50px;
-      position: relative;
-    }
-
-    .road {
-      position: absolute;
-      width: 100%;
-      bottom: 10px;
-      border-top: 2px dashed #999;
-    }
-
-    .taxi {
-      position: absolute;
-      font-size: 30px;
-      animation: moveTaxi 5s linear infinite;
-    }
-
-    @keyframes moveTaxi {
-      0% { left: -50px; }
-      100% { left: 100%; }
-    }
-
-    .safety-text {
-      text-align: center;
-      font-size: 13px;
-      font-weight: bold;
     }
 
     .error {
       color: red;
       text-align: center;
-      font-size: 14px;
     }
   </style>
 </head>
@@ -169,25 +136,19 @@
 </select>
 
 <input type="number" id="omr" placeholder="Enter OMR">
-<input type="text" id="startTime" placeholder="Trip Start Time">
-<input type="text" id="startGPS" placeholder="Trip Start Location">
+<input type="text" id="startTime">
+<input type="text" id="startGPS">
 
 <div id="error" class="error"></div>
 
 <button class="btn-green" onclick="startTrip()">Start Trip</button>
 
-<div id="animationBox" class="animation-box">
-  <div class="road"></div>
-  <div class="taxi">🚕</div>
-</div>
-<div id="safetyText" class="safety-text"></div>
-
 <hr>
 
 <h2>🏁 End Trip</h2>
 
-<input type="number" id="cmr" placeholder="Enter CMR">
-<input type="number" id="payment" placeholder="₹ Enter Payment">
+<input type="number" id="cmr">
+<input type="number" id="payment">
 
 <select id="paymentMode">
   <option value="">Select Payment Mode</option>
@@ -198,8 +159,8 @@
   <option>Cash</option>
 </select>
 
-<input type="text" id="endTime" placeholder="Trip End Time">
-<input type="text" id="endGPS" placeholder="Trip End Location">
+<input type="text" id="endTime">
+<input type="text" id="endGPS">
 
 <button class="btn-red" onclick="endTrip()">End Trip</button>
 
@@ -208,9 +169,8 @@
   <button class="btn-blue" onclick="submitTrip()">Submit Trip</button>
 </div>
 
-<!-- 🚀 MOVING DATA FLOW -->
 <div id="dataFlow" class="data-flow">
-  🚖 
+  🚖
   <div class="flow-line">
     <span class="arrow">➡️</span>
     <span class="arrow">➡️</span>
@@ -226,10 +186,24 @@
 let tripStarted = false;
 let tripEnded = false;
 
+// 🔥 LOAD DATA AFTER REFRESH
 window.onload = function() {
-  sessionStorage.removeItem("tripData");
+  let data = JSON.parse(sessionStorage.getItem("tripData"));
+  if (!data) return;
+
+  tripStarted = data.tripStarted;
+  tripEnded = data.tripEnded;
+
+  for (let key in data.values) {
+    let el = document.getElementById(key);
+    if (el) el.value = data.values[key];
+  }
+
+  if (tripStarted) lockStart();
+  if (tripEnded) lockEnd();
 };
 
+// SAVE
 function saveData() {
   let values = {};
   document.querySelectorAll("input, select").forEach(el => {
@@ -243,54 +217,47 @@ function saveData() {
   }));
 }
 
+// LOCKS
 function lockStart() {
   ["driver","fleet","operator","tripType"].forEach(id=>{
     document.getElementById(id).disabled = true;
   });
 
   document.getElementById("omr").readOnly = true;
-  document.getElementById("startTime").readOnly = true;
-  document.getElementById("startGPS").readOnly = true;
-
-  document.getElementById("animationBox").style.display = "block";
-  document.getElementById("safetyText").innerText = "⚠️ Fasten Your Seat Belt for Safety";
 }
 
 function lockEnd() {
   document.getElementById("cmr").readOnly = true;
   document.getElementById("payment").readOnly = true;
   document.getElementById("paymentMode").disabled = true;
-  document.getElementById("endTime").readOnly = true;
-  document.getElementById("endGPS").readOnly = true;
-
-  document.getElementById("animationBox").style.display = "none";
-  document.getElementById("safetyText").innerText = "Trip Completed ✅";
 
   document.getElementById("submitBox").style.display = "block";
 }
 
+// START
 function startTrip() {
+
   if (tripStarted) return;
 
-  let driver = document.getElementById("driver").value;
-  let fleet = document.getElementById("fleet").value;
-  let operator = document.getElementById("operator").value;
-  let tripType = document.getElementById("tripType").value;
-  let omr = document.getElementById("omr").value;
+  let driver = driver.value;
+  let fleet = fleet.value;
+  let operator = operator.value;
+  let tripType = tripType.value;
+  let omr = omr.value;
 
   if (!driver || !fleet || !operator || !tripType || !omr) {
     document.getElementById("error").innerText = "Enter Valid Entries to Start Trip";
     return;
   }
 
-  document.getElementById("startTime").value = new Date().toLocaleString();
+  startTime.value = new Date().toLocaleString();
 
-  navigator.geolocation.getCurrentPosition(async function(pos) {
+  navigator.geolocation.getCurrentPosition(async pos => {
+
     let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
     let data = await res.json();
 
-    document.getElementById("startGPS").value =
-      [data.address.road, data.address.suburb, data.address.city].join(", ");
+    startGPS.value = [data.address.road, data.address.city].join(", ");
 
     tripStarted = true;
     lockStart();
@@ -298,32 +265,29 @@ function startTrip() {
   });
 }
 
+// END
 function endTrip() {
+
   if (!tripStarted || tripEnded) return;
 
-  let cmr = document.getElementById("cmr").value;
-  let payment = document.getElementById("payment").value;
-  let mode = document.getElementById("paymentMode").value;
-  let omr = document.getElementById("omr").value;
-
-  if (Number(cmr) < Number(omr)) {
+  if (Number(cmr.value) < Number(omr.value)) {
     alert("Trip Odometer Reading Error Contact Cruise Captain");
     return;
   }
 
-  if (!cmr || !payment || !mode) {
+  if (!cmr.value || !payment.value || !paymentMode.value) {
     alert("Enter all End Trip details");
     return;
   }
 
-  document.getElementById("endTime").value = new Date().toLocaleString();
+  endTime.value = new Date().toLocaleString();
 
-  navigator.geolocation.getCurrentPosition(async function(pos) {
+  navigator.geolocation.getCurrentPosition(async pos => {
+
     let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
     let data = await res.json();
 
-    document.getElementById("endGPS").value =
-      [data.address.road, data.address.suburb, data.address.city].join(", ");
+    endGPS.value = [data.address.road, data.address.city].join(", ");
 
     tripEnded = true;
     lockEnd();
@@ -331,6 +295,7 @@ function endTrip() {
   });
 }
 
+// SUBMIT
 function submitTrip() {
   document.getElementById("dataFlow").style.display = "block";
 
