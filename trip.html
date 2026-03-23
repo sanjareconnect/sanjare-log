@@ -63,6 +63,30 @@
       font-weight: bold;
     }
 
+    .data-flow {
+      display: none;
+      margin-top: 15px;
+      text-align: center;
+      font-size: 28px;
+    }
+
+    .icon {
+      margin: 0 5px;
+      opacity: 0;
+      animation: flow 2s infinite;
+    }
+
+    .icon:nth-child(1) { animation-delay: 0s; }
+    .icon:nth-child(2) { animation-delay: 0.5s; }
+    .icon:nth-child(3) { animation-delay: 1s; }
+    .icon:nth-child(4) { animation-delay: 1.5s; }
+
+    @keyframes flow {
+      0% { opacity: 0; transform: translateX(-20px); }
+      50% { opacity: 1; transform: translateX(0px); }
+      100% { opacity: 0; transform: translateX(20px); }
+    }
+
     .animation-box {
       display: none;
       height: 50px;
@@ -173,10 +197,13 @@
 
 <button class="btn-red" onclick="endTrip()">End Trip</button>
 
-<!-- 🔥 SUBMIT BOX -->
 <div id="submitBox" class="submit-box">
   Trip Ready for Submission ✅
   <button class="btn-blue" onclick="submitTrip()">Submit Trip</button>
+</div>
+
+<div id="dataFlow" class="data-flow">
+  🚖 ➜ 📡 ➜ ☁️ ➜ 🏢
 </div>
 
 </div>
@@ -186,7 +213,6 @@
 let tripStarted = false;
 let tripEnded = false;
 
-// ALWAYS FRESH
 window.onload = function() {
   sessionStorage.removeItem("tripData");
 };
@@ -230,7 +256,6 @@ function lockEnd() {
   document.getElementById("animationBox").style.display = "none";
   document.getElementById("safetyText").innerText = "Trip Completed ✅";
 
-  // SHOW SUBMIT BOX
   document.getElementById("submitBox").style.display = "block";
 }
 
@@ -308,10 +333,15 @@ function endTrip() {
   });
 }
 
-// 🔥 FINAL SUBMIT
 function submitTrip() {
-  sessionStorage.clear();
-  location.reload();
+
+  document.getElementById("dataFlow").style.display = "block";
+
+  // ⏱ 5 SECOND DELAY (as you requested)
+  setTimeout(() => {
+    sessionStorage.clear();
+    location.reload();
+  }, 5000);
 }
 
 </script>
