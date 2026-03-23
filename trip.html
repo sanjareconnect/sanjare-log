@@ -100,7 +100,7 @@
   </select>
 
   <!-- OMR -->
-  <input type="text" id="omr" value="21457">
+  <input type="number" id="omr" placeholder="Enter OMR">
 
   <!-- TIME -->
   <input type="text" id="time" placeholder="Trip Start Time">
@@ -108,41 +108,44 @@
   <!-- GPS -->
   <input type="text" id="gps" placeholder="Trip Start Location">
 
-  <!-- ERROR -->
   <div id="error" class="error"></div>
 
   <button class="btn-green" onclick="startTrip()">Trip Started</button>
 </div>
 
 <script>
+
+let tripStarted = false; // 🚀 IMPORTANT LOCK FLAG
+
 async function startTrip() {
+
+  // 🚫 Prevent second click
+  if (tripStarted) {
+    document.getElementById("error").innerText = "Trip already started";
+    return;
+  }
 
   let driver = document.getElementById("driver").value;
   let fleet = document.getElementById("fleet").value;
   let operator = document.getElementById("operator").value;
   let tripType = document.getElementById("tripType").value;
+  let omr = document.getElementById("omr").value;
 
   let errorBox = document.getElementById("error");
   errorBox.innerText = "";
 
   // ✅ VALIDATION
-  if (!driver || !fleet || !operator || !tripType) {
+  if (!driver || !fleet || !operator || !tripType || !omr) {
     errorBox.innerText = "Enter Valid Entries to Start Trip";
     return;
   }
 
-  // ===== FREEZE DROPDOWNS =====
+  // ===== LOCK EVERYTHING =====
   document.getElementById("driver").disabled = true;
   document.getElementById("fleet").disabled = true;
   document.getElementById("operator").disabled = true;
   document.getElementById("tripType").disabled = true;
-
-  // ===== OMR =====
-  let omr = document.getElementById("omr");
-  if (!omr.value) {
-    omr.value = Math.floor(10000 + Math.random() * 90000);
-  }
-  omr.readOnly = true;
+  document.getElementById("omr").readOnly = true;
 
   // ===== TIME =====
   let time = document.getElementById("time");
@@ -187,7 +190,10 @@ async function startTrip() {
     gps.readOnly = true;
   }
 
+  // ✅ Mark as started (VERY IMPORTANT)
+  tripStarted = true;
 }
+
 </script>
 
 </body>
