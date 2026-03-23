@@ -74,6 +74,9 @@
 
   <input type="number" placeholder="OMR" id="omr">
 
+  <!-- NEW FIELD -->
+  <input type="text" placeholder="Trip Start Time" id="starttime" readonly>
+
   <input type="text" placeholder="Location (Auto GPS)" id="location" readonly>
 
   <button onclick="startTrip()">Start Trip</button>
@@ -85,22 +88,27 @@
 <script>
 function startTrip() {
 
+  // 🔹 Set Current Time
+  let now = new Date();
+  let timeString = now.toLocaleString();
+  document.getElementById("starttime").value = timeString;
+
+  // 🔹 Get GPS Location
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
 
       let lat = position.coords.latitude;
       let lon = position.coords.longitude;
 
-      // Convert GPS → Place Name
+      // Convert GPS → Address
       fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
       .then(response => response.json())
       .then(data => {
 
         let place = data.display_name;
-
         document.getElementById("location").value = place;
 
-        alert("Trip Started ✅ Location Captured");
+        alert("Trip Started ✅ Time & Location Captured");
 
       });
 
