@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Trip Start</title>
+  <title>Trip System</title>
 
   <style>
     body {
@@ -17,8 +17,10 @@
       background: #fff;
       padding: 20px;
       border-radius: 12px;
-      width: 340px;
+      width: 360px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow-y: auto;
+      max-height: 95vh;
     }
 
     h2 {
@@ -39,17 +41,19 @@
       font-weight: bold;
     }
 
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
     .btn-green {
-      width: 100%;
-      padding: 10px;
       background: #1f8f3a;
       color: white;
+    }
+
+    .btn-red {
+      background: #c0392b;
+      color: white;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
       border: none;
       border-radius: 6px;
       margin-top: 10px;
@@ -60,14 +64,11 @@
       color: red;
       text-align: center;
       font-size: 14px;
-      margin-top: 5px;
     }
 
-    /* 🚖 Animation Section */
     .animation-box {
-      margin-top: 15px;
+      margin-top: 10px;
       height: 50px;
-      overflow: hidden;
       position: relative;
       display: none;
     }
@@ -81,7 +82,6 @@
 
     .taxi {
       position: absolute;
-      left: -50px;
       font-size: 30px;
       animation: moveTaxi 5s linear infinite;
     }
@@ -94,8 +94,6 @@
     .safety-text {
       text-align: center;
       font-size: 13px;
-      color: #444;
-      margin-top: 5px;
       font-weight: bold;
     }
 
@@ -105,7 +103,8 @@
 <body>
 
 <div class="card">
-  <h2>🚖 Trip Start</h2>
+
+  <h2>🚖 Start Trip</h2>
 
   <select id="driver">
     <option value="">Select UN-Name</option>
@@ -114,7 +113,7 @@
   </select>
 
   <select id="fleet">
-    <option value="">Select Fleet No Plate</option>
+    <option value="">Select Fleet</option>
     <option>SJTW-Varaha / KL30L8893</option>
   </select>
 
@@ -139,26 +138,48 @@
   </select>
 
   <input type="number" id="omr" placeholder="Enter OMR">
-  <input type="text" id="time" placeholder="Trip Start Time">
-  <input type="text" id="gps" placeholder="Trip Start Location">
+  <input type="text" id="startTime" placeholder="Trip Start Time">
+  <input type="text" id="startGPS" placeholder="Trip Start Location">
 
   <div id="error" class="error"></div>
 
-  <button class="btn-green" onclick="startTrip()">Trip Started</button>
+  <button class="btn-green" onclick="startTrip()">Start Trip</button>
 
-  <!-- 🚖 ANIMATION -->
   <div id="animationBox" class="animation-box">
     <div class="road"></div>
     <div class="taxi">🚕</div>
   </div>
   <div id="safetyText" class="safety-text"></div>
 
+  <hr>
+
+  <h2>🏁 End Trip</h2>
+
+  <input type="number" id="cmr" placeholder="Enter CMR">
+  <input type="number" id="payment" placeholder="₹ Enter Payment">
+
+  <select id="paymentMode">
+    <option value="">Select Payment Mode</option>
+    <option>UPI-C</option>
+    <option>UPI-P</option>
+    <option>Direct</option>
+    <option>Credit</option>
+    <option>Cash</option>
+  </select>
+
+  <input type="text" id="endTime" placeholder="Trip End Time">
+  <input type="text" id="endGPS" placeholder="Trip End Location">
+
+  <button class="btn-red" onclick="endTrip()">End Trip</button>
+
 </div>
 
 <script>
 
 let tripStarted = false;
+let tripEnded = false;
 
+// ===== START TRIP =====
 async function startTrip() {
 
   if (tripStarted) {
@@ -166,77 +187,109 @@ async function startTrip() {
     return;
   }
 
-  let driver = document.getElementById("driver").value;
-  let fleet = document.getElementById("fleet").value;
-  let operator = document.getElementById("operator").value;
-  let tripType = document.getElementById("tripType").value;
+  let driver = driver.value;
+  let fleet = fleet.value;
+  let operator = operator.value;
+  let tripType = tripType.value;
   let omr = document.getElementById("omr").value;
 
-  let errorBox = document.getElementById("error");
-  errorBox.innerText = "";
-
   if (!driver || !fleet || !operator || !tripType || !omr) {
-    errorBox.innerText = "Enter Valid Entries to Start Trip";
+    document.getElementById("error").innerText = "Enter Valid Entries to Start Trip";
     return;
   }
 
-  // Lock dropdowns
   document.getElementById("driver").disabled = true;
   document.getElementById("fleet").disabled = true;
   document.getElementById("operator").disabled = true;
   document.getElementById("tripType").disabled = true;
 
-  // Freeze OMR
   let omrField = document.getElementById("omr");
   omrField.readOnly = true;
   omrField.style.pointerEvents = "none";
 
-  // Time
-  let time = document.getElementById("time");
+  let time = document.getElementById("startTime");
   time.value = new Date().toLocaleString();
   time.readOnly = true;
 
-  // GPS
-  let gps = document.getElementById("gps");
+  let gps = document.getElementById("startGPS");
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(async function(pos) {
+  navigator.geolocation.getCurrentPosition(async function(pos) {
 
-      let lat = pos.coords.latitude;
-      let lon = pos.coords.longitude;
+    let lat = pos.coords.latitude;
+    let lon = pos.coords.longitude;
 
-      try {
-        let res = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
-        );
-        let data = await res.json();
+    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+    let data = await res.json();
 
-        let road = data.address.road || "";
-        let area = data.address.suburb || data.address.neighbourhood || "";
-        let city = data.address.city || data.address.town || data.address.village || "";
+    let road = data.address.road || "";
+    let area = data.address.suburb || data.address.neighbourhood || "";
+    let city = data.address.city || data.address.town || data.address.village || "";
 
-        gps.value = [road, area, city].filter(Boolean).join(", ");
-
-      } catch {
-        gps.value = lat + ", " + lon;
-      }
-
-      gps.readOnly = true;
-
-    }, function() {
-      gps.value = "GPS Permission Denied";
-      gps.readOnly = true;
-    });
-  } else {
-    gps.value = "GPS Not Supported";
+    gps.value = [road, area, city].join(", ");
     gps.readOnly = true;
-  }
 
-  // 🚖 SHOW ANIMATION
+  });
+
   document.getElementById("animationBox").style.display = "block";
   document.getElementById("safetyText").innerText = "⚠️ Fasten Your Seat Belt for Safety";
 
   tripStarted = true;
+}
+
+// ===== END TRIP =====
+async function endTrip() {
+
+  if (!tripStarted) {
+    alert("Start Trip First");
+    return;
+  }
+
+  if (tripEnded) {
+    alert("Trip already ended");
+    return;
+  }
+
+  let cmr = document.getElementById("cmr").value;
+  let payment = document.getElementById("payment").value;
+  let mode = document.getElementById("paymentMode").value;
+
+  if (!cmr || !payment || !mode) {
+    alert("Enter all End Trip details");
+    return;
+  }
+
+  document.getElementById("cmr").readOnly = true;
+  document.getElementById("payment").readOnly = true;
+  document.getElementById("paymentMode").disabled = true;
+
+  let time = document.getElementById("endTime");
+  time.value = new Date().toLocaleString();
+  time.readOnly = true;
+
+  let gps = document.getElementById("endGPS");
+
+  navigator.geolocation.getCurrentPosition(async function(pos) {
+
+    let lat = pos.coords.latitude;
+    let lon = pos.coords.longitude;
+
+    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+    let data = await res.json();
+
+    let road = data.address.road || "";
+    let area = data.address.suburb || data.address.neighbourhood || "";
+    let city = data.address.city || data.address.town || data.address.village || "";
+
+    gps.value = [road, area, city].join(", ");
+    gps.readOnly = true;
+
+  });
+
+  // Stop animation
+  document.getElementById("animationBox").style.display = "none";
+  document.getElementById("safetyText").innerText = "Trip Completed ✅";
+
+  tripEnded = true;
 }
 
 </script>
