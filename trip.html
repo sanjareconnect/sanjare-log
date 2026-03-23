@@ -3,7 +3,6 @@
 <head>
   <title>Trip System</title>
 
-  <!-- MOBILE FIX -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -39,9 +38,19 @@
       font-size: 16px;
     }
 
+    /* 🔥 Placeholder style */
+    select:invalid {
+      color: #888;
+    }
+
+    input::placeholder {
+      color: #888;
+    }
+
     input[readonly], select:disabled {
       background: #e9ecef;
       font-weight: bold;
+      color: #000;
     }
 
     button {
@@ -110,19 +119,19 @@
 
 <h2>🚖 Start Trip</h2>
 
-<select id="driver">
-  <option value="">UN-Name</option>
-  <option>Mithin Mohan / SJTW-7770</option>
-  <option>Nagaraj Mani / SJTW-8047</option>
+<select id="driver" required>
+  <option value="" disabled selected>UN-Name</option>
+  <option value="Mithin Mohan / SJTW-7770">Mithin Mohan / SJTW-7770</option>
+  <option value="Nagaraj Mani / SJTW-8047">Nagaraj Mani / SJTW-8047</option>
 </select>
 
-<select id="fleet">
-  <option value="">Fleet No Plate</option>
-  <option>SJTW-Varaha / KL30L8893</option>
+<select id="fleet" required>
+  <option value="" disabled selected>Fleet No Plate</option>
+  <option value="SJTW-Varaha / KL30L8893">SJTW-Varaha / KL30L8893</option>
 </select>
 
-<select id="operator">
-  <option value="">Operator</option>
+<select id="operator" required>
+  <option value="" disabled selected>Operator</option>
   <option>Uber</option>
   <option>OLA</option>
   <option>Yatri</option>
@@ -133,8 +142,8 @@
   <option>Personal</option>
 </select>
 
-<select id="tripType">
-  <option value="">Trip Type</option>
+<select id="tripType" required>
+  <option value="" disabled selected>Trip Type</option>
   <option>Inter-City</option>
   <option>Intra-City</option>
   <option>Official</option>
@@ -157,7 +166,7 @@
 <input type="number" id="payment" placeholder="Payment (₹)">
 
 <select id="paymentMode">
-  <option value="">Payment Mode</option>
+  <option value="" disabled selected>Payment Mode</option>
   <option>UPI-C</option>
   <option>UPI-P</option>
   <option>Direct</option>
@@ -192,7 +201,6 @@
 let tripStarted = false;
 let tripEnded = false;
 
-// LOAD AFTER REFRESH
 window.onload = function() {
   let data = JSON.parse(sessionStorage.getItem("tripData"));
   if (!data) return;
@@ -209,7 +217,6 @@ window.onload = function() {
   if (tripEnded) lockEnd();
 };
 
-// SAVE
 function saveData() {
   let values = {};
   document.querySelectorAll("input, select").forEach(el => {
@@ -223,7 +230,6 @@ function saveData() {
   }));
 }
 
-// LOCKS
 function lockStart() {
   ["driver","fleet","operator","tripType"].forEach(id=>{
     document.getElementById(id).disabled = true;
@@ -238,10 +244,7 @@ function lockEnd() {
   document.getElementById("submitBox").style.display = "block";
 }
 
-// START TRIP
 function startTrip() {
-
-  if (tripStarted) return;
 
   let driver = document.getElementById("driver").value;
   let fleet = document.getElementById("fleet").value;
@@ -257,7 +260,6 @@ function startTrip() {
   document.getElementById("startTime").value = new Date().toLocaleString();
 
   navigator.geolocation.getCurrentPosition(async pos => {
-
     let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
     let data = await res.json();
 
@@ -270,10 +272,7 @@ function startTrip() {
   });
 }
 
-// END TRIP
 function endTrip() {
-
-  if (!tripStarted || tripEnded) return;
 
   let cmr = document.getElementById("cmr").value;
   let payment = document.getElementById("payment").value;
@@ -293,7 +292,6 @@ function endTrip() {
   document.getElementById("endTime").value = new Date().toLocaleString();
 
   navigator.geolocation.getCurrentPosition(async pos => {
-
     let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
     let data = await res.json();
 
@@ -306,7 +304,6 @@ function endTrip() {
   });
 }
 
-// SUBMIT
 function submitTrip() {
   document.getElementById("dataFlow").style.display = "block";
 
