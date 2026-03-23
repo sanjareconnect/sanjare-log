@@ -47,6 +47,11 @@
     button:hover {
       background: #218838;
     }
+
+    .back {
+      background: #333;
+      margin-top: 15px;
+    }
   </style>
 </head>
 
@@ -73,6 +78,8 @@
 
   <button onclick="startTrip()">Start Trip</button>
 
+  <button class="back" onclick="goBack()">⬅ Back</button>
+
 </div>
 
 <script>
@@ -84,18 +91,30 @@ function startTrip() {
       let lat = position.coords.latitude;
       let lon = position.coords.longitude;
 
-      let locationText = "Lat: " + lat + " , Lon: " + lon;
-      document.getElementById("location").value = locationText;
+      // Convert GPS → Place Name
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+      .then(response => response.json())
+      .then(data => {
 
-      alert("Trip Started ✅ Location Captured");
+        let place = data.display_name;
+
+        document.getElementById("location").value = place;
+
+        alert("Trip Started ✅ Location Captured");
+
+      });
 
     }, function(error) {
-      alert("GPS Error: Please allow location access");
+      alert("Please allow location access");
     });
 
   } else {
-    alert("Geolocation not supported");
+    alert("GPS not supported");
   }
+}
+
+function goBack() {
+  window.location.href = "index.html";
 }
 </script>
 
