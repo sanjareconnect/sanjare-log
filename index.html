@@ -28,8 +28,11 @@
     }
 
     .btn {
-      display: block;
-      width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 220px;
       margin: 10px auto;
       padding: 12px;
       border-radius: 8px;
@@ -43,6 +46,10 @@
     .btn:hover {
       background: #e6e6e6;
     }
+
+    .emoji {
+      font-size: 20px;
+    }
   </style>
 </head>
 
@@ -53,16 +60,22 @@
   <h1>Welcome to Sanjar-E-Connect</h1>
   <p>Select an option</p>
 
-  <button class="btn" onclick="goTrip()">Trip Log</button>
-  <button class="btn" onclick="goFuel()">Fuel Log</button>
+  <button class="btn" onclick="goTrip()">
+    <span class="emoji">🚖</span>
+    <span>Trip Log</span>
+  </button>
+
+  <button class="btn" onclick="goFuel()">
+    <span class="emoji">⛽</span>
+    <span>Fuel Log</span>
+  </button>
 
 </div>
 
 <script>
 
 function goTrip() {
-  // IMPORTANT: match your trip file name here
-  window.location.href = "trip.html";
+  window.location.href = "trip.html"; // make sure name matches
 }
 
 function goFuel() {
