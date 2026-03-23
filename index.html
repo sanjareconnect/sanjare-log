@@ -25,6 +25,21 @@
       font-size: 18px;
       color: #555;
     }
+
+    .box {
+      background: white;
+      margin: 15px auto;
+      padding: 15px;
+      width: 200px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .box:hover {
+      background: #eaeaea;
+    }
   </style>
 </head>
 
@@ -32,8 +47,21 @@
 
 <div>
   <h1>Welcome to Sanjar-E-Connect</h1>
-  <p>My taxi system is starting...</p>
+  <p>Select an option</p>
+
+  <div class="box" onclick="openTrip()">Trip Log</div>
+  <div class="box" onclick="openFuel()">Fuel Log</div>
 </div>
+
+<script>
+function openTrip() {
+  window.location.href = "trip.html";
+}
+
+function openFuel() {
+  window.location.href = "fuel.html";
+}
+</script>
 
 </body>
 </html>
