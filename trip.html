@@ -128,8 +128,8 @@
 </select>
 
 <input type="number" id="omr" placeholder="Enter OMR">
-<input type="text" id="startTime">
-<input type="text" id="startGPS">
+<input type="text" id="startTime" placeholder="Trip Start Time">
+<input type="text" id="startGPS" placeholder="Trip Start Location">
 
 <div id="error" class="error"></div>
 
@@ -157,8 +157,8 @@
   <option>Cash</option>
 </select>
 
-<input type="text" id="endTime">
-<input type="text" id="endGPS">
+<input type="text" id="endTime" placeholder="Trip End Time">
+<input type="text" id="endGPS" placeholder="Trip End Location">
 
 <button class="btn-red" onclick="endTrip()">End Trip</button>
 
@@ -169,41 +169,38 @@
 let tripStarted = false;
 let tripEnded = false;
 
-// 🔄 LOAD DATA AFTER REFRESH
+// LOAD AFTER REFRESH
 window.onload = function() {
   let data = JSON.parse(localStorage.getItem("tripData"));
+  if (!data) return;
 
-  if (data) {
-    tripStarted = data.tripStarted;
-    tripEnded = data.tripEnded;
+  tripStarted = data.tripStarted;
+  tripEnded = data.tripEnded;
 
-    for (let key in data.values) {
-      if (document.getElementById(key)) {
-        document.getElementById(key).value = data.values[key];
-      }
-    }
-
-    if (tripStarted) lockStart();
-    if (tripEnded) lockEnd();
+  for (let key in data.values) {
+    let el = document.getElementById(key);
+    if (el) el.value = data.values[key];
   }
+
+  if (tripStarted) lockStart();
+  if (tripEnded) lockEnd();
 };
 
-// 💾 SAVE DATA
+// SAVE
 function saveData() {
-  let data = {
-    tripStarted,
-    tripEnded,
-    values: {}
-  };
-
+  let values = {};
   document.querySelectorAll("input, select").forEach(el => {
-    data.values[el.id] = el.value;
+    values[el.id] = el.value;
   });
 
-  localStorage.setItem("tripData", JSON.stringify(data));
+  localStorage.setItem("tripData", JSON.stringify({
+    tripStarted,
+    tripEnded,
+    values
+  }));
 }
 
-// 🔒 LOCK START
+// LOCK START
 function lockStart() {
   ["driver","fleet","operator","tripType"].forEach(id=>{
     document.getElementById(id).disabled = true;
@@ -220,7 +217,7 @@ function lockStart() {
   document.getElementById("safetyText").innerText = "⚠️ Fasten Your Seat Belt for Safety";
 }
 
-// 🔒 LOCK END
+// LOCK END
 function lockEnd() {
   document.getElementById("cmr").readOnly = true;
   document.getElementById("payment").readOnly = true;
@@ -232,15 +229,15 @@ function lockEnd() {
   document.getElementById("safetyText").innerText = "Trip Completed ✅";
 }
 
-// 🚖 START TRIP
-async function startTrip() {
+// START TRIP
+function startTrip() {
 
   if (tripStarted) return;
 
-  let driver = driver.value;
-  let fleet = fleet.value;
-  let operator = operator.value;
-  let tripType = tripType.value;
+  let driver = document.getElementById("driver").value;
+  let fleet = document.getElementById("fleet").value;
+  let operator = document.getElementById("operator").value;
+  let tripType = document.getElementById("tripType").value;
   let omr = document.getElementById("omr").value;
 
   if (!driver || !fleet || !operator || !tripType || !omr) {
@@ -268,14 +265,14 @@ async function startTrip() {
   });
 }
 
-// 🏁 END TRIP
-async function endTrip() {
+// END TRIP
+function endTrip() {
 
   if (!tripStarted || tripEnded) return;
 
-  let cmr = cmr.value;
-  let payment = payment.value;
-  let mode = paymentMode.value;
+  let cmr = document.getElementById("cmr").value;
+  let payment = document.getElementById("payment").value;
+  let mode = document.getElementById("paymentMode").value;
 
   if (!cmr || !payment || !mode) {
     alert("Enter all End Trip details");
