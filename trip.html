@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: Arial;
-      background: #f5f5f5;
+      background: #f2f2f2;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -16,38 +16,49 @@
     .card {
       background: #fff;
       padding: 20px;
-      border-radius: 10px;
-      width: 300px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      width: 320px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     h2 {
       text-align: center;
+      margin-bottom: 15px;
     }
 
-    input {
+    select, input {
       width: 100%;
       padding: 10px;
-      margin: 8px 0;
+      margin: 6px 0;
       border-radius: 6px;
       border: 1px solid #ccc;
     }
 
-    /* Locked look */
     input[readonly] {
-      background-color: #e9ecef;
+      background: #e9ecef;
       cursor: not-allowed;
       font-weight: bold;
     }
 
-    button {
+    .btn-green {
       width: 100%;
       padding: 10px;
-      background: green;
-      color: #fff;
+      background: #1f8f3a;
+      color: white;
       border: none;
       border-radius: 6px;
       margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .btn-dark {
+      width: 100%;
+      padding: 10px;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      margin-top: 8px;
       cursor: pointer;
     }
   </style>
@@ -58,50 +69,74 @@
 <div class="card">
   <h2>🚖 Trip Start</h2>
 
-  <!-- OMR -->
-  <input type="text" id="omr" placeholder="OMR" readonly>
+  <!-- SAME AS YOUR UI -->
+  <select>
+    <option>Mithin Mohan / SJTW-7770</option>
+  </select>
 
-  <!-- Trip Time -->
-  <input type="text" id="tripTime" placeholder="Trip Time" readonly>
+  <select>
+    <option>SJTW-Varaha / KL30L8893</option>
+  </select>
+
+  <select>
+    <option>OLA</option>
+  </select>
+
+  <select>
+    <option>Official</option>
+  </select>
+
+  <!-- OMR -->
+  <input type="text" id="omr" value="21457">
+
+  <!-- TIME -->
+  <input type="text" id="time">
 
   <!-- GPS -->
-  <input type="text" id="gps" placeholder="Location (Auto GPS)" readonly>
+  <input type="text" id="gps" placeholder="Location (Auto GPS)">
 
-  <button onclick="startTrip()">Trip Started</button>
+  <button class="btn-green" onclick="startTrip()">Trip Started</button>
+  <button class="btn-dark">← Back</button>
 </div>
 
 <script>
 function startTrip() {
 
-  // 1. OMR (Random example or replace with your logic)
-  let omrValue = Math.floor(10000 + Math.random() * 90000);
-  document.getElementById("omr").value = omrValue;
+  // ===== OMR FREEZE =====
+  let omr = document.getElementById("omr");
+  if (!omr.value) {
+    omr.value = Math.floor(10000 + Math.random() * 90000);
+  }
+  omr.readOnly = true;
 
-  // 2. Trip Time
+  // ===== TIME SET + FREEZE =====
+  let time = document.getElementById("time");
   let now = new Date();
-  document.getElementById("tripTime").value = now.toLocaleString();
+  time.value = now.toLocaleString();
+  time.readOnly = true;
 
-  // 3. GPS Fetch
+  // ===== GPS FETCH + FREEZE =====
+  let gps = document.getElementById("gps");
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       function(position) {
-
         let lat = position.coords.latitude;
         let lon = position.coords.longitude;
 
-        // Show lat/lon (simple & reliable)
-        document.getElementById("gps").value = lat + ", " + lon;
-
+        gps.value = lat + ", " + lon;
+        gps.readOnly = true;
       },
       function(error) {
-        document.getElementById("gps").value = "GPS Permission Denied";
+        gps.value = "GPS Permission Denied";
+        gps.readOnly = true;
       }
     );
   } else {
-    document.getElementById("gps").value = "GPS Not Supported";
+    gps.value = "GPS Not Supported";
+    gps.readOnly = true;
   }
 
-  // Fields already readonly → no need extra lock
 }
 </script>
 
