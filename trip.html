@@ -3,57 +3,64 @@
 <head>
   <title>Trip System</title>
 
+  <!-- 🔥 VERY IMPORTANT FOR MOBILE -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
       font-family: Arial;
       background: #f2f2f2;
+      margin: 0;
+      padding: 10px;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
     }
 
     .card {
       background: #fff;
       padding: 20px;
       border-radius: 12px;
-      width: 360px;
+      width: 100%;
+      max-width: 450px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      overflow-y: auto;
-      max-height: 95vh;
     }
 
-    h2 { text-align: center; }
+    h2 {
+      text-align: center;
+      font-size: 22px;
+    }
 
     label {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: bold;
-      margin-top: 8px;
+      margin-top: 10px;
       display: block;
     }
 
     select, input {
       width: 100%;
-      padding: 10px;
-      margin: 4px 0 6px 0;
-      border-radius: 6px;
+      padding: 14px;
+      margin-top: 5px;
+      border-radius: 8px;
       border: 1px solid #ccc;
+      font-size: 16px; /* 🔥 important for mobile */
     }
 
     input[readonly], select:disabled {
       background: #e9ecef;
-      cursor: not-allowed;
       font-weight: bold;
     }
 
     button {
       width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      margin-top: 10px;
+      padding: 14px;
+      border-radius: 8px;
+      margin-top: 12px;
       color: white;
       border: none;
       cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
     }
 
     .btn-green { background: #1f8f3a; }
@@ -63,30 +70,31 @@
     .submit-box {
       display: none;
       margin-top: 15px;
-      padding: 10px;
+      padding: 12px;
       border-radius: 8px;
       background: #f0f4ff;
       text-align: center;
       font-weight: bold;
+      font-size: 15px;
     }
 
     .data-flow {
       display: none;
-      margin-top: 15px;
+      margin-top: 20px;
       text-align: center;
-      font-size: 26px;
-      font-weight: bold;
+      font-size: 28px;
     }
 
     .flow-line {
       display: flex;
       justify-content: center;
-      gap: 5px;
+      gap: 6px;
     }
 
     .arrow {
       opacity: 0;
       animation: arrowMove 1.5s infinite;
+      font-size: 24px;
     }
 
     .arrow:nth-child(2) { animation-delay: 0.3s; }
@@ -101,6 +109,7 @@
     .error {
       color: red;
       text-align: center;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -205,7 +214,7 @@
 </div>
 
 <script>
-// (same JS as before — no change)
+// KEEP YOUR SAME JS (no change needed)
 </script>
 
 </body>
