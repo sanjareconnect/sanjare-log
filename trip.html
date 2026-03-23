@@ -42,21 +42,20 @@
     button {
       width: 100%;
       padding: 10px;
-      border: none;
       border-radius: 6px;
       margin-top: 10px;
-      cursor: pointer;
       color: white;
+      border: none;
+      cursor: pointer;
     }
 
     .btn-green { background: #1f8f3a; }
     .btn-red { background: #c0392b; }
 
     .animation-box {
-      margin-top: 10px;
+      display: none;
       height: 50px;
       position: relative;
-      display: none;
     }
 
     .road {
@@ -129,8 +128,8 @@
 </select>
 
 <input type="number" id="omr" placeholder="Enter OMR">
-<input type="text" id="startTime" placeholder="Trip Start Time">
-<input type="text" id="startGPS" placeholder="Trip Start Location">
+<input type="text" id="startTime">
+<input type="text" id="startGPS">
 
 <div id="error" class="error"></div>
 
@@ -158,8 +157,8 @@
   <option>Cash</option>
 </select>
 
-<input type="text" id="endTime" placeholder="Trip End Time">
-<input type="text" id="endGPS" placeholder="Trip End Location">
+<input type="text" id="endTime">
+<input type="text" id="endGPS">
 
 <button class="btn-red" onclick="endTrip()">End Trip</button>
 
@@ -170,122 +169,137 @@
 let tripStarted = false;
 let tripEnded = false;
 
-// ===== START TRIP =====
+// 🔄 LOAD DATA AFTER REFRESH
+window.onload = function() {
+  let data = JSON.parse(localStorage.getItem("tripData"));
+
+  if (data) {
+    tripStarted = data.tripStarted;
+    tripEnded = data.tripEnded;
+
+    for (let key in data.values) {
+      if (document.getElementById(key)) {
+        document.getElementById(key).value = data.values[key];
+      }
+    }
+
+    if (tripStarted) lockStart();
+    if (tripEnded) lockEnd();
+  }
+};
+
+// 💾 SAVE DATA
+function saveData() {
+  let data = {
+    tripStarted,
+    tripEnded,
+    values: {}
+  };
+
+  document.querySelectorAll("input, select").forEach(el => {
+    data.values[el.id] = el.value;
+  });
+
+  localStorage.setItem("tripData", JSON.stringify(data));
+}
+
+// 🔒 LOCK START
+function lockStart() {
+  ["driver","fleet","operator","tripType"].forEach(id=>{
+    document.getElementById(id).disabled = true;
+  });
+
+  let omr = document.getElementById("omr");
+  omr.readOnly = true;
+  omr.style.pointerEvents = "none";
+
+  document.getElementById("startTime").readOnly = true;
+  document.getElementById("startGPS").readOnly = true;
+
+  document.getElementById("animationBox").style.display = "block";
+  document.getElementById("safetyText").innerText = "⚠️ Fasten Your Seat Belt for Safety";
+}
+
+// 🔒 LOCK END
+function lockEnd() {
+  document.getElementById("cmr").readOnly = true;
+  document.getElementById("payment").readOnly = true;
+  document.getElementById("paymentMode").disabled = true;
+  document.getElementById("endTime").readOnly = true;
+  document.getElementById("endGPS").readOnly = true;
+
+  document.getElementById("animationBox").style.display = "none";
+  document.getElementById("safetyText").innerText = "Trip Completed ✅";
+}
+
+// 🚖 START TRIP
 async function startTrip() {
 
-  if (tripStarted) {
-    document.getElementById("error").innerText = "Trip already started";
-    return;
-  }
+  if (tripStarted) return;
 
-  let driver = document.getElementById("driver").value;
-  let fleet = document.getElementById("fleet").value;
-  let operator = document.getElementById("operator").value;
-  let tripType = document.getElementById("tripType").value;
+  let driver = driver.value;
+  let fleet = fleet.value;
+  let operator = operator.value;
+  let tripType = tripType.value;
   let omr = document.getElementById("omr").value;
 
-  let errorBox = document.getElementById("error");
-  errorBox.innerText = "";
-
   if (!driver || !fleet || !operator || !tripType || !omr) {
-    errorBox.innerText = "Enter Valid Entries to Start Trip";
+    document.getElementById("error").innerText = "Enter Valid Entries to Start Trip";
     return;
   }
 
-  // Freeze
-  document.getElementById("driver").disabled = true;
-  document.getElementById("fleet").disabled = true;
-  document.getElementById("operator").disabled = true;
-  document.getElementById("tripType").disabled = true;
-
-  let omrField = document.getElementById("omr");
-  omrField.readOnly = true;
-  omrField.style.pointerEvents = "none";
-
-  // Time
-  let time = document.getElementById("startTime");
-  time.value = new Date().toLocaleString();
-  time.readOnly = true;
-
-  // GPS
-  let gps = document.getElementById("startGPS");
+  document.getElementById("startTime").value = new Date().toLocaleString();
 
   navigator.geolocation.getCurrentPosition(async function(pos) {
 
-    let lat = pos.coords.latitude;
-    let lon = pos.coords.longitude;
-
-    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
     let data = await res.json();
 
     let road = data.address.road || "";
     let area = data.address.suburb || data.address.neighbourhood || "";
-    let city = data.address.city || data.address.town || data.address.village || "";
+    let city = data.address.city || "";
 
-    gps.value = [road, area, city].filter(Boolean).join(", ");
-    gps.readOnly = true;
+    document.getElementById("startGPS").value = [road, area, city].join(", ");
+
+    tripStarted = true;
+    lockStart();
+    saveData();
 
   });
-
-  document.getElementById("animationBox").style.display = "block";
-  document.getElementById("safetyText").innerText = "⚠️ Fasten Your Seat Belt for Safety";
-
-  tripStarted = true;
 }
 
-// ===== END TRIP =====
+// 🏁 END TRIP
 async function endTrip() {
 
-  if (!tripStarted) {
-    alert("Start Trip First");
-    return;
-  }
+  if (!tripStarted || tripEnded) return;
 
-  if (tripEnded) {
-    alert("Trip already ended");
-    return;
-  }
-
-  let cmr = document.getElementById("cmr").value;
-  let payment = document.getElementById("payment").value;
-  let mode = document.getElementById("paymentMode").value;
+  let cmr = cmr.value;
+  let payment = payment.value;
+  let mode = paymentMode.value;
 
   if (!cmr || !payment || !mode) {
     alert("Enter all End Trip details");
     return;
   }
 
-  document.getElementById("cmr").readOnly = true;
-  document.getElementById("payment").readOnly = true;
-  document.getElementById("paymentMode").disabled = true;
-
-  let time = document.getElementById("endTime");
-  time.value = new Date().toLocaleString();
-  time.readOnly = true;
-
-  let gps = document.getElementById("endGPS");
+  document.getElementById("endTime").value = new Date().toLocaleString();
 
   navigator.geolocation.getCurrentPosition(async function(pos) {
 
-    let lat = pos.coords.latitude;
-    let lon = pos.coords.longitude;
-
-    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
     let data = await res.json();
 
     let road = data.address.road || "";
     let area = data.address.suburb || data.address.neighbourhood || "";
-    let city = data.address.city || data.address.town || data.address.village || "";
+    let city = data.address.city || "";
 
-    gps.value = [road, area, city].filter(Boolean).join(", ");
-    gps.readOnly = true;
+    document.getElementById("endGPS").value = [road, area, city].join(", ");
+
+    tripEnded = true;
+    lockEnd();
+    saveData();
 
   });
-
-  document.getElementById("animationBox").style.display = "none";
-  document.getElementById("safetyText").innerText = "Trip Completed ✅";
-
-  tripEnded = true;
 }
 
 </script>
