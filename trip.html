@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trip Log</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .form-box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #28a745;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>🚖 Trip Start</h2>
+
+<div class="form-box">
+
+  <input type="text" placeholder="UN-Name" id="uname">
+  <input type="text" placeholder="Fleet No Plate" id="fleet">
+  <input type="text" placeholder="Operator" id="operator">
+
+  <select id="triptype">
+    <option value="">Select Trip Type</option>
+    <option>Local</option>
+    <option>Outstation</option>
+    <option>Airport</option>
+  </select>
+
+  <input type="number" placeholder="OMR" id="omr">
+
+  <input type="text" placeholder="Location (Auto GPS)" id="location" readonly>
+
+  <button onclick="startTrip()">Start Trip</button>
+
+</div>
+
+<script>
+function startTrip() {
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+
+      let lat = position.coords.latitude;
+      let lon = position.coords.longitude;
+
+      let locationText = "Lat: " + lat + " , Lon: " + lon;
+      document.getElementById("location").value = locationText;
+
+      alert("Trip Started ✅ Location Captured");
+
+    }, function(error) {
+      alert("GPS Error: Please allow location access");
+    });
+
+  } else {
+    alert("Geolocation not supported");
+  }
+}
+</script>
+
+</body>
+</html>
