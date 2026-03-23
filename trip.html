@@ -186,7 +186,7 @@
 let tripStarted = false;
 let tripEnded = false;
 
-// 🔥 LOAD DATA AFTER REFRESH
+// LOAD
 window.onload = function() {
   let data = JSON.parse(sessionStorage.getItem("tripData"));
   if (!data) return;
@@ -239,25 +239,26 @@ function startTrip() {
 
   if (tripStarted) return;
 
-  let driver = driver.value;
-  let fleet = fleet.value;
-  let operator = operator.value;
-  let tripType = tripType.value;
-  let omr = omr.value;
+  let driver = document.getElementById("driver").value;
+  let fleet = document.getElementById("fleet").value;
+  let operator = document.getElementById("operator").value;
+  let tripType = document.getElementById("tripType").value;
+  let omr = document.getElementById("omr").value;
 
   if (!driver || !fleet || !operator || !tripType || !omr) {
     document.getElementById("error").innerText = "Enter Valid Entries to Start Trip";
     return;
   }
 
-  startTime.value = new Date().toLocaleString();
+  document.getElementById("startTime").value = new Date().toLocaleString();
 
   navigator.geolocation.getCurrentPosition(async pos => {
 
     let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
     let data = await res.json();
 
-    startGPS.value = [data.address.road, data.address.city].join(", ");
+    document.getElementById("startGPS").value =
+      [data.address.road, data.address.city].join(", ");
 
     tripStarted = true;
     lockStart();
@@ -270,24 +271,30 @@ function endTrip() {
 
   if (!tripStarted || tripEnded) return;
 
-  if (Number(cmr.value) < Number(omr.value)) {
+  let cmr = document.getElementById("cmr").value;
+  let payment = document.getElementById("payment").value;
+  let mode = document.getElementById("paymentMode").value;
+  let omr = document.getElementById("omr").value;
+
+  if (Number(cmr) < Number(omr)) {
     alert("Trip Odometer Reading Error Contact Cruise Captain");
     return;
   }
 
-  if (!cmr.value || !payment.value || !paymentMode.value) {
+  if (!cmr || !payment || !mode) {
     alert("Enter all End Trip details");
     return;
   }
 
-  endTime.value = new Date().toLocaleString();
+  document.getElementById("endTime").value = new Date().toLocaleString();
 
   navigator.geolocation.getCurrentPosition(async pos => {
 
     let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
     let data = await res.json();
 
-    endGPS.value = [data.address.road, data.address.city].join(", ");
+    document.getElementById("endGPS").value =
+      [data.address.road, data.address.city].join(", ");
 
     tripEnded = true;
     lockEnd();
