@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Trip System</title>
+  <title>Sanjar-E-Connect</title>
 
   <style>
     body {
@@ -11,303 +11,62 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
 
-    .card {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      width: 360px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      overflow-y: auto;
-      max-height: 95vh;
+    .container {
+      text-align: center;
     }
 
-    h2 { text-align: center; }
-
-    select, input {
-      width: 100%;
-      padding: 10px;
-      margin: 6px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+    h1 {
+      margin-bottom: 10px;
     }
 
-    input[readonly], select:disabled {
-      background: #e9ecef;
-      cursor: not-allowed;
-      font-weight: bold;
+    p {
+      color: #555;
+      margin-bottom: 20px;
     }
 
-    button {
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      margin-top: 10px;
-      color: white;
+    .btn {
+      display: block;
+      width: 200px;
+      margin: 10px auto;
+      padding: 12px;
+      border-radius: 8px;
       border: none;
+      background: #ffffff;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
       cursor: pointer;
+      font-size: 15px;
     }
 
-    .btn-green { background: #1f8f3a; }
-    .btn-red { background: #c0392b; }
-
-    .animation-box {
-      display: none;
-      height: 50px;
-      position: relative;
-    }
-
-    .road {
-      position: absolute;
-      width: 100%;
-      bottom: 10px;
-      border-top: 2px dashed #999;
-    }
-
-    .taxi {
-      position: absolute;
-      font-size: 30px;
-      animation: moveTaxi 5s linear infinite;
-    }
-
-    @keyframes moveTaxi {
-      0% { left: -50px; }
-      100% { left: 100%; }
-    }
-
-    .safety-text {
-      text-align: center;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .error {
-      color: red;
-      text-align: center;
-      font-size: 14px;
+    .btn:hover {
+      background: #e6e6e6;
     }
   </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
 
-<h2>🚖 Start Trip</h2>
+  <h1>Welcome to Sanjar-E-Connect</h1>
+  <p>Select an option</p>
 
-<select id="driver">
-  <option value="">Select UN-Name</option>
-  <option>Mithin Mohan / SJTW-7770</option>
-  <option>Nagaraj Mani / SJTW-8047</option>
-</select>
-
-<select id="fleet">
-  <option value="">Select Fleet</option>
-  <option>SJTW-Varaha / KL30L8893</option>
-</select>
-
-<select id="operator">
-  <option value="">Select Operator</option>
-  <option>Uber</option>
-  <option>OLA</option>
-  <option>Yatri</option>
-  <option>Gozo</option>
-  <option>Gogo</option>
-  <option>MMT</option>
-  <option>Trip Advisor</option>
-  <option>Personal</option>
-</select>
-
-<select id="tripType">
-  <option value="">Select Trip Type</option>
-  <option>Inter-City</option>
-  <option>Intra-City</option>
-  <option>Official</option>
-  <option>Maintenance</option>
-</select>
-
-<input type="number" id="omr" placeholder="Enter OMR">
-<input type="text" id="startTime" placeholder="Trip Start Time">
-<input type="text" id="startGPS" placeholder="Trip Start Location">
-
-<div id="error" class="error"></div>
-
-<button class="btn-green" onclick="startTrip()">Start Trip</button>
-
-<div id="animationBox" class="animation-box">
-  <div class="road"></div>
-  <div class="taxi">🚕</div>
-</div>
-<div id="safetyText" class="safety-text"></div>
-
-<hr>
-
-<h2>🏁 End Trip</h2>
-
-<input type="number" id="cmr" placeholder="Enter CMR">
-<input type="number" id="payment" placeholder="₹ Enter Payment">
-
-<select id="paymentMode">
-  <option value="">Select Payment Mode</option>
-  <option>UPI-C</option>
-  <option>UPI-P</option>
-  <option>Direct</option>
-  <option>Credit</option>
-  <option>Cash</option>
-</select>
-
-<input type="text" id="endTime" placeholder="Trip End Time">
-<input type="text" id="endGPS" placeholder="Trip End Location">
-
-<button class="btn-red" onclick="endTrip()">End Trip</button>
+  <button class="btn" onclick="goTrip()">Trip Log</button>
+  <button class="btn" onclick="goFuel()">Fuel Log</button>
 
 </div>
 
 <script>
 
-let tripStarted = false;
-let tripEnded = false;
-
-// LOAD
-window.onload = function() {
-  let data = JSON.parse(sessionStorage.getItem("tripData"));
-  if (!data) return;
-
-  tripStarted = data.tripStarted;
-  tripEnded = data.tripEnded;
-
-  for (let key in data.values) {
-    let el = document.getElementById(key);
-    if (el) el.value = data.values[key];
-  }
-
-  if (tripStarted) lockStart();
-  if (tripEnded) lockEnd();
-};
-
-// SAVE
-function saveData() {
-  let values = {};
-  document.querySelectorAll("input, select").forEach(el => {
-    values[el.id] = el.value;
-  });
-
-  sessionStorage.setItem("tripData", JSON.stringify({
-    tripStarted,
-    tripEnded,
-    values
-  }));
+function goTrip() {
+  // IMPORTANT: match your trip file name here
+  window.location.href = "trip.html";
 }
 
-// LOCK START
-function lockStart() {
-  ["driver","fleet","operator","tripType"].forEach(id=>{
-    document.getElementById(id).disabled = true;
-  });
-
-  let omr = document.getElementById("omr");
-  omr.readOnly = true;
-  omr.style.pointerEvents = "none";
-
-  document.getElementById("startTime").readOnly = true;
-  document.getElementById("startGPS").readOnly = true;
-
-  document.getElementById("animationBox").style.display = "block";
-  document.getElementById("safetyText").innerText = "⚠️ Fasten Your Seat Belt for Safety";
-}
-
-// LOCK END
-function lockEnd() {
-  document.getElementById("cmr").readOnly = true;
-  document.getElementById("payment").readOnly = true;
-  document.getElementById("paymentMode").disabled = true;
-  document.getElementById("endTime").readOnly = true;
-  document.getElementById("endGPS").readOnly = true;
-
-  document.getElementById("animationBox").style.display = "none";
-  document.getElementById("safetyText").innerText = "Trip Completed ✅";
-}
-
-// START TRIP
-function startTrip() {
-
-  if (tripStarted) return;
-
-  let driver = document.getElementById("driver").value;
-  let fleet = document.getElementById("fleet").value;
-  let operator = document.getElementById("operator").value;
-  let tripType = document.getElementById("tripType").value;
-  let omr = document.getElementById("omr").value;
-
-  if (!driver || !fleet || !operator || !tripType || !omr) {
-    document.getElementById("error").innerText = "Enter Valid Entries to Start Trip";
-    return;
-  }
-
-  document.getElementById("startTime").value = new Date().toLocaleString();
-
-  navigator.geolocation.getCurrentPosition(async function(pos) {
-
-    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
-    let data = await res.json();
-
-    let road = data.address.road || "";
-    let area = data.address.suburb || data.address.neighbourhood || "";
-    let city = data.address.city || "";
-
-    document.getElementById("startGPS").value = [road, area, city].join(", ");
-
-    tripStarted = true;
-    lockStart();
-    saveData();
-
-  });
-}
-
-// END TRIP
-function endTrip() {
-
-  if (!tripStarted || tripEnded) return;
-
-  let cmr = document.getElementById("cmr").value;
-  let payment = document.getElementById("payment").value;
-  let mode = document.getElementById("paymentMode").value;
-  let omr = document.getElementById("omr").value;
-
-  if (Number(cmr) < Number(omr)) {
-    alert("Trip Odometer Reading Error Contact Cruise Captain");
-    return;
-  }
-
-  if (!cmr || !payment || !mode) {
-    alert("Enter all End Trip details");
-    return;
-  }
-
-  document.getElementById("endTime").value = new Date().toLocaleString();
-
-  navigator.geolocation.getCurrentPosition(async function(pos) {
-
-    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
-    let data = await res.json();
-
-    let road = data.address.road || "";
-    let area = data.address.suburb || data.address.neighbourhood || "";
-    let city = data.address.city || "";
-
-    document.getElementById("endGPS").value = [road, area, city].join(", ");
-
-    tripEnded = true;
-    lockEnd();
-    saveData();
-
-    // 🚀 REDIRECT
-    setTimeout(() => {
-      window.location.href = "thankyou.html";
-    }, 800);
-
-  });
+function goFuel() {
+  alert("Fuel Log page not created yet");
 }
 
 </script>
