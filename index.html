@@ -3,6 +3,9 @@
 <head>
   <title>Sanjar-E-Connect</title>
 
+  <!-- 🔥 Mobile Responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
       font-family: Arial;
@@ -16,39 +19,48 @@
 
     .container {
       text-align: center;
+      width: 90%;
+      max-width: 400px;
     }
 
+    /* 🔥 BIG TITLE */
     h1 {
+      font-size: 28px;
+      font-weight: bold;
       margin-bottom: 10px;
     }
 
     p {
       color: #555;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      font-size: 16px;
     }
 
+    /* 🔥 BIG BUTTONS */
     .btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      width: 220px;
-      margin: 10px auto;
-      padding: 12px;
-      border-radius: 8px;
+      gap: 12px;
+      width: 100%;
+      padding: 16px;
+      border-radius: 10px;
       border: none;
       background: #ffffff;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       cursor: pointer;
-      font-size: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 12px;
     }
 
     .btn:hover {
       background: #e6e6e6;
     }
 
+    /* 🔥 BIG EMOJI */
     .emoji {
-      font-size: 20px;
+      font-size: 26px;
     }
   </style>
 </head>
@@ -75,7 +87,7 @@
 <script>
 
 function goTrip() {
-  window.location.href = "trip.html"; // make sure name matches
+  window.location.href = "trip.html"; // ensure name correct
 }
 
 function goFuel() {
