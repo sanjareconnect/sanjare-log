@@ -23,7 +23,6 @@
 
     h2 {
       text-align: center;
-      margin-bottom: 15px;
     }
 
     select, input {
@@ -34,7 +33,7 @@
       border: 1px solid #ccc;
     }
 
-    input[readonly] {
+    input[readonly], select:disabled {
       background: #e9ecef;
       cursor: not-allowed;
       font-weight: bold;
@@ -59,7 +58,6 @@
       border: none;
       border-radius: 6px;
       margin-top: 8px;
-      cursor: pointer;
     }
   </style>
 </head>
@@ -69,21 +67,29 @@
 <div class="card">
   <h2>🚖 Trip Start</h2>
 
-  <!-- SAME AS YOUR UI -->
-  <select>
+  <!-- DRIVER DROPDOWN -->
+  <select id="driver">
     <option>Mithin Mohan / SJTW-7770</option>
+    <option>Nagaraj Main / SJTW-8888</option>
+    <option>Sanjar Captain / SJTW-9999</option>
   </select>
 
-  <select>
+  <!-- VEHICLE -->
+  <select id="vehicle">
     <option>SJTW-Varaha / KL30L8893</option>
+    <option>SJTW-Garuda / KL07AB1234</option>
   </select>
 
-  <select>
+  <!-- PLATFORM -->
+  <select id="platform">
     <option>OLA</option>
+    <option>UBER</option>
   </select>
 
-  <select>
+  <!-- TYPE -->
+  <select id="type">
     <option>Official</option>
+    <option>Personal</option>
   </select>
 
   <!-- OMR -->
@@ -102,6 +108,12 @@
 <script>
 function startTrip() {
 
+  // ===== FREEZE DROPDOWNS =====
+  document.getElementById("driver").disabled = true;
+  document.getElementById("vehicle").disabled = true;
+  document.getElementById("platform").disabled = true;
+  document.getElementById("type").disabled = true;
+
   // ===== OMR FREEZE =====
   let omr = document.getElementById("omr");
   if (!omr.value) {
@@ -109,29 +121,47 @@ function startTrip() {
   }
   omr.readOnly = true;
 
-  // ===== TIME SET + FREEZE =====
+  // ===== TIME =====
   let time = document.getElementById("time");
-  let now = new Date();
-  time.value = now.toLocaleString();
+  time.value = new Date().toLocaleString();
   time.readOnly = true;
 
-  // ===== GPS FETCH + FREEZE =====
+  // ===== GPS → PLACE NAME =====
   let gps = document.getElementById("gps");
 
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      function(position) {
-        let lat = position.coords.latitude;
-        let lon = position.coords.longitude;
+    navigator.geolocation.getCurrentPosition(async function(position) {
 
+      let lat = position.coords.latitude;
+      let lon = position.coords.longitude;
+
+      try {
+        let response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+        );
+        let data = await response.json();
+
+        let place =
+          data.address.suburb ||
+          data.address.city ||
+          data.address.town ||
+          data.address.village ||
+          "Unknown Location";
+
+        let full = place + ", " + (data.address.state || "");
+
+        gps.value = full;
+
+      } catch (e) {
         gps.value = lat + ", " + lon;
-        gps.readOnly = true;
-      },
-      function(error) {
-        gps.value = "GPS Permission Denied";
-        gps.readOnly = true;
       }
-    );
+
+      gps.readOnly = true;
+
+    }, function() {
+      gps.value = "GPS Permission Denied";
+      gps.readOnly = true;
+    });
   } else {
     gps.value = "GPS Not Supported";
     gps.readOnly = true;
