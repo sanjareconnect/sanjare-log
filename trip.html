@@ -169,24 +169,13 @@
 let tripStarted = false;
 let tripEnded = false;
 
-// LOAD (SESSION ONLY)
+// 🚫 IMPORTANT: DO NOT LOAD OLD DATA
 window.onload = function() {
-  let data = JSON.parse(sessionStorage.getItem("tripData"));
-  if (!data) return;
-
-  tripStarted = data.tripStarted;
-  tripEnded = data.tripEnded;
-
-  for (let key in data.values) {
-    let el = document.getElementById(key);
-    if (el) el.value = data.values[key];
-  }
-
-  if (tripStarted) lockStart();
-  if (tripEnded) lockEnd();
+  // Always start fresh
+  sessionStorage.removeItem("tripData");
 };
 
-// SAVE
+// SAVE (still available if needed)
 function saveData() {
   let values = {};
   document.querySelectorAll("input, select").forEach(el => {
@@ -275,7 +264,6 @@ function endTrip() {
   let mode = document.getElementById("paymentMode").value;
   let omr = document.getElementById("omr").value;
 
-  // 🚫 ODOMETER VALIDATION
   if (Number(cmr) < Number(omr)) {
     alert("Trip Odometer Reading Error Contact Cruise Captain");
     return;
@@ -302,6 +290,12 @@ function endTrip() {
     tripEnded = true;
     lockEnd();
     saveData();
+
+    // 🔥 RESET AFTER COMPLETION
+    setTimeout(() => {
+      sessionStorage.clear();
+      location.reload();
+    }, 1200);
 
   });
 }
