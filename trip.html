@@ -39,6 +39,13 @@
       font-weight: bold;
     }
 
+    /* Remove number input arrows */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
     .btn-green {
       width: 100%;
       padding: 10px;
@@ -115,7 +122,7 @@
 
 <script>
 
-let tripStarted = false; // 🚀 IMPORTANT LOCK FLAG
+let tripStarted = false;
 
 async function startTrip() {
 
@@ -140,12 +147,16 @@ async function startTrip() {
     return;
   }
 
-  // ===== LOCK EVERYTHING =====
+  // ===== FREEZE DROPDOWNS =====
   document.getElementById("driver").disabled = true;
   document.getElementById("fleet").disabled = true;
   document.getElementById("operator").disabled = true;
   document.getElementById("tripType").disabled = true;
-  document.getElementById("omr").readOnly = true;
+
+  // ===== OMR FULL FREEZE =====
+  let omrField = document.getElementById("omr");
+  omrField.readOnly = true;
+  omrField.style.pointerEvents = "none";
 
   // ===== TIME =====
   let time = document.getElementById("time");
@@ -190,7 +201,7 @@ async function startTrip() {
     gps.readOnly = true;
   }
 
-  // ✅ Mark as started (VERY IMPORTANT)
+  // ✅ LOCK SYSTEM
   tripStarted = true;
 }
 
