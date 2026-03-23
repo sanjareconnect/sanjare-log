@@ -61,22 +61,48 @@
 
 <div class="form-box">
 
-  <input type="text" placeholder="UN-Name" id="uname">
-  <input type="text" placeholder="Fleet No Plate" id="fleet">
-  <input type="text" placeholder="Operator" id="operator">
-
-  <select id="triptype">
-    <option value="">Select Trip Type</option>
-    <option>Local</option>
-    <option>Outstation</option>
-    <option>Airport</option>
+  <!-- UN Name -->
+  <select id="uname">
+    <option value="">Select UN-Name</option>
+    <option>Mithin Mohan / SJTW-7770</option>
+    <option>Nagaraj Mani / SJTW-8047</option>
   </select>
 
+  <!-- Fleet -->
+  <select id="fleet">
+    <option value="">Select Fleet</option>
+    <option>SJTW-Varaha / KL30L8893</option>
+  </select>
+
+  <!-- Operator -->
+  <select id="operator">
+    <option value="">Select Operator</option>
+    <option>Uber</option>
+    <option>OLA</option>
+    <option>Yatiri</option>
+    <option>Gozo</option>
+    <option>Gogo</option>
+    <option>MMT</option>
+    <option>Trip Advisor</option>
+    <option>Personal</option>
+  </select>
+
+  <!-- Trip Type -->
+  <select id="triptype">
+    <option value="">Select Trip Type</option>
+    <option>Inter-City</option>
+    <option>Intra-City</option>
+    <option>Official</option>
+    <option>Maintenance</option>
+  </select>
+
+  <!-- OMR -->
   <input type="number" placeholder="OMR" id="omr">
 
-  <!-- NEW FIELD -->
+  <!-- Start Time -->
   <input type="text" placeholder="Trip Start Time" id="starttime" readonly>
 
+  <!-- Location -->
   <input type="text" placeholder="Location (Auto GPS)" id="location" readonly>
 
   <button onclick="startTrip()">Start Trip</button>
@@ -88,27 +114,36 @@
 <script>
 function startTrip() {
 
-  // 🔹 Set Current Time
-  let now = new Date();
-  let timeString = now.toLocaleString();
-  document.getElementById("starttime").value = timeString;
+  let uname = document.getElementById("uname").value;
+  let fleet = document.getElementById("fleet").value;
+  let operator = document.getElementById("operator").value;
+  let triptype = document.getElementById("triptype").value;
+  let omr = document.getElementById("omr").value;
 
-  // 🔹 Get GPS Location
+  // ✅ Validation
+  if (!uname || !fleet || !operator || !triptype || !omr) {
+    alert("Enter Valid Entries to Start Trip");
+    return;
+  }
+
+  // ✅ Set Time
+  let now = new Date();
+  document.getElementById("starttime").value = now.toLocaleString();
+
+  // ✅ Get GPS
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
 
       let lat = position.coords.latitude;
       let lon = position.coords.longitude;
 
-      // Convert GPS → Address
       fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
       .then(response => response.json())
       .then(data => {
 
-        let place = data.display_name;
-        document.getElementById("location").value = place;
+        document.getElementById("location").value = data.display_name;
 
-        alert("Trip Started ✅ Time & Location Captured");
+        alert("Trip Started ✅");
 
       });
 
