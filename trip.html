@@ -62,6 +62,43 @@
       font-size: 14px;
       margin-top: 5px;
     }
+
+    /* 🚖 Animation Section */
+    .animation-box {
+      margin-top: 15px;
+      height: 50px;
+      overflow: hidden;
+      position: relative;
+      display: none;
+    }
+
+    .road {
+      position: absolute;
+      width: 100%;
+      bottom: 10px;
+      border-top: 2px dashed #999;
+    }
+
+    .taxi {
+      position: absolute;
+      left: -50px;
+      font-size: 30px;
+      animation: moveTaxi 5s linear infinite;
+    }
+
+    @keyframes moveTaxi {
+      0% { left: -50px; }
+      100% { left: 100%; }
+    }
+
+    .safety-text {
+      text-align: center;
+      font-size: 13px;
+      color: #444;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+
   </style>
 </head>
 
@@ -102,14 +139,20 @@
   </select>
 
   <input type="number" id="omr" placeholder="Enter OMR">
-
   <input type="text" id="time" placeholder="Trip Start Time">
-
   <input type="text" id="gps" placeholder="Trip Start Location">
 
   <div id="error" class="error"></div>
 
   <button class="btn-green" onclick="startTrip()">Trip Started</button>
+
+  <!-- 🚖 ANIMATION -->
+  <div id="animationBox" class="animation-box">
+    <div class="road"></div>
+    <div class="taxi">🚕</div>
+  </div>
+  <div id="safetyText" class="safety-text"></div>
+
 </div>
 
 <script>
@@ -153,7 +196,7 @@ async function startTrip() {
   time.value = new Date().toLocaleString();
   time.readOnly = true;
 
-  // GPS (Street + Area + City)
+  // GPS
   let gps = document.getElementById("gps");
 
   if (navigator.geolocation) {
@@ -188,6 +231,10 @@ async function startTrip() {
     gps.value = "GPS Not Supported";
     gps.readOnly = true;
   }
+
+  // 🚖 SHOW ANIMATION
+  document.getElementById("animationBox").style.display = "block";
+  document.getElementById("safetyText").innerText = "⚠️ Fasten Your Seat Belt for Safety";
 
   tripStarted = true;
 }
