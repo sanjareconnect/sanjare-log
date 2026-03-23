@@ -17,7 +17,7 @@
       background: #fff;
       padding: 20px;
       border-radius: 12px;
-      width: 320px;
+      width: 340px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
@@ -50,14 +50,11 @@
       cursor: pointer;
     }
 
-    .btn-dark {
-      width: 100%;
-      padding: 10px;
-      background: #333;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      margin-top: 8px;
+    .error {
+      color: red;
+      text-align: center;
+      font-size: 14px;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -67,54 +64,80 @@
 <div class="card">
   <h2>🚖 Trip Start</h2>
 
-  <!-- DRIVER DROPDOWN -->
+  <!-- UN NAME -->
   <select id="driver">
+    <option value="">Select UN-Name</option>
     <option>Mithin Mohan / SJTW-7770</option>
-    <option>Nagaraj Main / SJTW-8888</option>
-    <option>Sanjar Captain / SJTW-9999</option>
+    <option>Nagaraj Mani / SJTW-8047</option>
   </select>
 
-  <!-- VEHICLE -->
-  <select id="vehicle">
+  <!-- FLEET -->
+  <select id="fleet">
+    <option value="">Select Fleet No Plate</option>
     <option>SJTW-Varaha / KL30L8893</option>
-    <option>SJTW-Garuda / KL07AB1234</option>
   </select>
 
-  <!-- PLATFORM -->
-  <select id="platform">
+  <!-- OPERATOR -->
+  <select id="operator">
+    <option value="">Select Operator</option>
+    <option>Uber</option>
     <option>OLA</option>
-    <option>UBER</option>
+    <option>Yatri</option>
+    <option>Gozo</option>
+    <option>Gogo</option>
+    <option>MMT</option>
+    <option>Trip Advisor</option>
+    <option>Personal</option>
   </select>
 
-  <!-- TYPE -->
-  <select id="type">
+  <!-- TRIP TYPE -->
+  <select id="tripType">
+    <option value="">Select Trip Type</option>
+    <option>Inter-City</option>
+    <option>Intra-City</option>
     <option>Official</option>
-    <option>Personal</option>
+    <option>Maintenance</option>
   </select>
 
   <!-- OMR -->
   <input type="text" id="omr" value="21457">
 
   <!-- TIME -->
-  <input type="text" id="time">
+  <input type="text" id="time" placeholder="Trip Start Time">
 
   <!-- GPS -->
-  <input type="text" id="gps" placeholder="Location (Auto GPS)">
+  <input type="text" id="gps" placeholder="Trip Start Location">
+
+  <!-- ERROR -->
+  <div id="error" class="error"></div>
 
   <button class="btn-green" onclick="startTrip()">Trip Started</button>
-  <button class="btn-dark">← Back</button>
 </div>
 
 <script>
-function startTrip() {
+async function startTrip() {
+
+  let driver = document.getElementById("driver").value;
+  let fleet = document.getElementById("fleet").value;
+  let operator = document.getElementById("operator").value;
+  let tripType = document.getElementById("tripType").value;
+
+  let errorBox = document.getElementById("error");
+  errorBox.innerText = "";
+
+  // ✅ VALIDATION
+  if (!driver || !fleet || !operator || !tripType) {
+    errorBox.innerText = "Enter Valid Entries to Start Trip";
+    return;
+  }
 
   // ===== FREEZE DROPDOWNS =====
   document.getElementById("driver").disabled = true;
-  document.getElementById("vehicle").disabled = true;
-  document.getElementById("platform").disabled = true;
-  document.getElementById("type").disabled = true;
+  document.getElementById("fleet").disabled = true;
+  document.getElementById("operator").disabled = true;
+  document.getElementById("tripType").disabled = true;
 
-  // ===== OMR FREEZE =====
+  // ===== OMR =====
   let omr = document.getElementById("omr");
   if (!omr.value) {
     omr.value = Math.floor(10000 + Math.random() * 90000);
@@ -126,33 +149,30 @@ function startTrip() {
   time.value = new Date().toLocaleString();
   time.readOnly = true;
 
-  // ===== GPS → PLACE NAME =====
+  // ===== GPS =====
   let gps = document.getElementById("gps");
 
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(async function(position) {
+    navigator.geolocation.getCurrentPosition(async function(pos) {
 
-      let lat = position.coords.latitude;
-      let lon = position.coords.longitude;
+      let lat = pos.coords.latitude;
+      let lon = pos.coords.longitude;
 
       try {
-        let response = await fetch(
+        let res = await fetch(
           `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
         );
-        let data = await response.json();
+        let data = await res.json();
 
         let place =
           data.address.suburb ||
           data.address.city ||
           data.address.town ||
           data.address.village ||
-          "Unknown Location";
+          "Unknown";
 
-        let full = place + ", " + (data.address.state || "");
-
-        gps.value = full;
-
-      } catch (e) {
+        gps.value = place + ", " + (data.address.state || "");
+      } catch {
         gps.value = lat + ", " + lon;
       }
 
