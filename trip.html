@@ -51,6 +51,17 @@
 
     .btn-green { background: #1f8f3a; }
     .btn-red { background: #c0392b; }
+    .btn-blue { background: #2c7be5; }
+
+    .submit-box {
+      display: none;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f0f4ff;
+      text-align: center;
+      font-weight: bold;
+    }
 
     .animation-box {
       display: none;
@@ -162,6 +173,12 @@
 
 <button class="btn-red" onclick="endTrip()">End Trip</button>
 
+<!-- 🔥 SUBMIT BOX -->
+<div id="submitBox" class="submit-box">
+  Trip Ready for Submission ✅
+  <button class="btn-blue" onclick="submitTrip()">Submit Trip</button>
+</div>
+
 </div>
 
 <script>
@@ -169,13 +186,11 @@
 let tripStarted = false;
 let tripEnded = false;
 
-// 🚫 IMPORTANT: DO NOT LOAD OLD DATA
+// ALWAYS FRESH
 window.onload = function() {
-  // Always start fresh
   sessionStorage.removeItem("tripData");
 };
 
-// SAVE (still available if needed)
 function saveData() {
   let values = {};
   document.querySelectorAll("input, select").forEach(el => {
@@ -189,7 +204,6 @@ function saveData() {
   }));
 }
 
-// LOCK START
 function lockStart() {
   ["driver","fleet","operator","tripType"].forEach(id=>{
     document.getElementById(id).disabled = true;
@@ -206,7 +220,6 @@ function lockStart() {
   document.getElementById("safetyText").innerText = "⚠️ Fasten Your Seat Belt for Safety";
 }
 
-// LOCK END
 function lockEnd() {
   document.getElementById("cmr").readOnly = true;
   document.getElementById("payment").readOnly = true;
@@ -216,9 +229,11 @@ function lockEnd() {
 
   document.getElementById("animationBox").style.display = "none";
   document.getElementById("safetyText").innerText = "Trip Completed ✅";
+
+  // SHOW SUBMIT BOX
+  document.getElementById("submitBox").style.display = "block";
 }
 
-// START TRIP
 function startTrip() {
 
   if (tripStarted) return;
@@ -254,7 +269,6 @@ function startTrip() {
   });
 }
 
-// END TRIP
 function endTrip() {
 
   if (!tripStarted || tripEnded) return;
@@ -291,13 +305,13 @@ function endTrip() {
     lockEnd();
     saveData();
 
-    // 🔥 RESET AFTER COMPLETION
-    setTimeout(() => {
-      sessionStorage.clear();
-      location.reload();
-    }, 1200);
-
   });
+}
+
+// 🔥 FINAL SUBMIT
+function submitTrip() {
+  sessionStorage.clear();
+  location.reload();
 }
 
 </script>
