@@ -3,40 +3,58 @@
 <head>
   <title>Sanjar-E-Connect</title>
 
-  <!-- 🔥 Mobile Responsive -->
+  <!-- Mobile Responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       font-family: Arial;
-      background: #f2f2f2;
+      margin: 0;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
+
+      /* 🔥 Background Image */
+      background: url('https://static.vecteezy.com/system/resources/thumbnails/020/173/227/small/businessman-using-virtual-of-global-logistics-network-distribution-smart-logistics-transportation-import-export-concept-cargo-freight-ship-truck-at-industrial-port-global-business-and-technology-photo.jpg') 
+                  no-repeat center center/cover;
+    }
+
+    /* 🔥 Dark Overlay */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 0;
     }
 
     .container {
       text-align: center;
       width: 90%;
       max-width: 400px;
+      position: relative;
+      z-index: 1;
     }
 
-    /* 🔥 BIG TITLE */
+    /* 🔥 Title */
     h1 {
       font-size: 28px;
       font-weight: bold;
       margin-bottom: 10px;
+      color: #ffffff;
     }
 
     p {
-      color: #555;
+      color: #ddd;
       margin-bottom: 25px;
       font-size: 16px;
     }
 
-    /* 🔥 BIG BUTTONS */
+    /* 🔥 Buttons */
     .btn {
       display: flex;
       align-items: center;
@@ -46,8 +64,8 @@
       padding: 16px;
       border-radius: 10px;
       border: none;
-      background: #ffffff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       cursor: pointer;
       font-size: 18px;
       font-weight: bold;
@@ -55,10 +73,10 @@
     }
 
     .btn:hover {
-      background: #e6e6e6;
+      background: #ffffff;
     }
 
-    /* 🔥 BIG EMOJI */
+    /* 🔥 Emoji */
     .emoji {
       font-size: 26px;
     }
@@ -87,7 +105,7 @@
 <script>
 
 function goTrip() {
-  window.location.href = "trip.html"; // ensure name correct
+  window.location.href = "trip.html"; // ensure correct file name
 }
 
 function goFuel() {
