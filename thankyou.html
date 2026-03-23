@@ -18,26 +18,35 @@
       padding: 30px;
       border-radius: 12px;
       text-align: center;
-      width: 300px;
+      width: 320px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    h2 { color: green; }
+    h2 {
+      color: green;
+      margin-bottom: 10px;
+    }
 
     p {
       font-size: 14px;
-      margin-top: 10px;
+      color: #444;
+      line-height: 1.5;
     }
 
     button {
       margin-top: 20px;
-      padding: 10px;
+      padding: 12px;
       width: 100%;
       background: #1f8f3a;
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:hover {
+      background: #176e2d;
     }
   </style>
 </head>
@@ -57,8 +66,12 @@
 
 <script>
 function goHome() {
+
+  // ✅ Clear previous trip data
   sessionStorage.clear();
-  window.location.href = "index.html";
+
+  // ✅ Force clean redirect to main page
+  window.location.replace("index.html");
 }
 </script>
 
