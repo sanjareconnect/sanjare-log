@@ -23,9 +23,7 @@
       max-height: 95vh;
     }
 
-    h2 {
-      text-align: center;
-    }
+    h2 { text-align: center; }
 
     select, input {
       width: 100%;
@@ -41,16 +39,6 @@
       font-weight: bold;
     }
 
-    .btn-green {
-      background: #1f8f3a;
-      color: white;
-    }
-
-    .btn-red {
-      background: #c0392b;
-      color: white;
-    }
-
     button {
       width: 100%;
       padding: 10px;
@@ -58,13 +46,11 @@
       border-radius: 6px;
       margin-top: 10px;
       cursor: pointer;
+      color: white;
     }
 
-    .error {
-      color: red;
-      text-align: center;
-      font-size: 14px;
-    }
+    .btn-green { background: #1f8f3a; }
+    .btn-red { background: #c0392b; }
 
     .animation-box {
       margin-top: 10px;
@@ -97,6 +83,11 @@
       font-weight: bold;
     }
 
+    .error {
+      color: red;
+      text-align: center;
+      font-size: 14px;
+    }
   </style>
 </head>
 
@@ -104,73 +95,73 @@
 
 <div class="card">
 
-  <h2>🚖 Start Trip</h2>
+<h2>🚖 Start Trip</h2>
 
-  <select id="driver">
-    <option value="">Select UN-Name</option>
-    <option>Mithin Mohan / SJTW-7770</option>
-    <option>Nagaraj Mani / SJTW-8047</option>
-  </select>
+<select id="driver">
+  <option value="">Select UN-Name</option>
+  <option>Mithin Mohan / SJTW-7770</option>
+  <option>Nagaraj Mani / SJTW-8047</option>
+</select>
 
-  <select id="fleet">
-    <option value="">Select Fleet</option>
-    <option>SJTW-Varaha / KL30L8893</option>
-  </select>
+<select id="fleet">
+  <option value="">Select Fleet</option>
+  <option>SJTW-Varaha / KL30L8893</option>
+</select>
 
-  <select id="operator">
-    <option value="">Select Operator</option>
-    <option>Uber</option>
-    <option>OLA</option>
-    <option>Yatri</option>
-    <option>Gozo</option>
-    <option>Gogo</option>
-    <option>MMT</option>
-    <option>Trip Advisor</option>
-    <option>Personal</option>
-  </select>
+<select id="operator">
+  <option value="">Select Operator</option>
+  <option>Uber</option>
+  <option>OLA</option>
+  <option>Yatri</option>
+  <option>Gozo</option>
+  <option>Gogo</option>
+  <option>MMT</option>
+  <option>Trip Advisor</option>
+  <option>Personal</option>
+</select>
 
-  <select id="tripType">
-    <option value="">Select Trip Type</option>
-    <option>Inter-City</option>
-    <option>Intra-City</option>
-    <option>Official</option>
-    <option>Maintenance</option>
-  </select>
+<select id="tripType">
+  <option value="">Select Trip Type</option>
+  <option>Inter-City</option>
+  <option>Intra-City</option>
+  <option>Official</option>
+  <option>Maintenance</option>
+</select>
 
-  <input type="number" id="omr" placeholder="Enter OMR">
-  <input type="text" id="startTime" placeholder="Trip Start Time">
-  <input type="text" id="startGPS" placeholder="Trip Start Location">
+<input type="number" id="omr" placeholder="Enter OMR">
+<input type="text" id="startTime" placeholder="Trip Start Time">
+<input type="text" id="startGPS" placeholder="Trip Start Location">
 
-  <div id="error" class="error"></div>
+<div id="error" class="error"></div>
 
-  <button class="btn-green" onclick="startTrip()">Start Trip</button>
+<button class="btn-green" onclick="startTrip()">Start Trip</button>
 
-  <div id="animationBox" class="animation-box">
-    <div class="road"></div>
-    <div class="taxi">🚕</div>
-  </div>
-  <div id="safetyText" class="safety-text"></div>
+<div id="animationBox" class="animation-box">
+  <div class="road"></div>
+  <div class="taxi">🚕</div>
+</div>
+<div id="safetyText" class="safety-text"></div>
 
-  <hr>
+<hr>
 
-  <h2>🏁 End Trip</h2>
+<h2>🏁 End Trip</h2>
 
-  <input type="number" id="cmr" placeholder="Enter CMR">
-  <input type="number" id="payment" placeholder="₹ Enter Payment">
+<input type="number" id="cmr" placeholder="Enter CMR">
+<input type="number" id="payment" placeholder="₹ Enter Payment">
 
-  <select id="paymentMode">
-    <option value="">Select Payment Mode</option>
-    <option>UPI-C</option>
-    <option>UPI-P</option>
-    <option>Direct</option>
-    <option>Credit</option>
-    <option>Cash</option>
-  </select>
+<select id="paymentMode">
+  <option value="">Select Payment Mode</option>
+  <option>UPI-C</option>
+  <option>UPI-P</option>
+  <option>Direct</option>
+  <option>Credit</option>
+  <option>Cash</option>
+</select>
 
-  <input type="text" id="endTime" placeholder="Trip End Time">
-  <input type="text" id="endGPS" placeholder="Trip End Location">
+<input type="text" id="endTime" placeholder="Trip End Time">
+<input type="text" id="endGPS" placeholder="Trip End Location">
 
-  <button class="btn-red" onclick="endTrip()">End Trip</button>
+<button class="btn-red" onclick="endTrip()">End Trip</button>
 
 </div>
 
@@ -187,17 +178,21 @@ async function startTrip() {
     return;
   }
 
-  let driver = driver.value;
-  let fleet = fleet.value;
-  let operator = operator.value;
-  let tripType = tripType.value;
+  let driver = document.getElementById("driver").value;
+  let fleet = document.getElementById("fleet").value;
+  let operator = document.getElementById("operator").value;
+  let tripType = document.getElementById("tripType").value;
   let omr = document.getElementById("omr").value;
 
+  let errorBox = document.getElementById("error");
+  errorBox.innerText = "";
+
   if (!driver || !fleet || !operator || !tripType || !omr) {
-    document.getElementById("error").innerText = "Enter Valid Entries to Start Trip";
+    errorBox.innerText = "Enter Valid Entries to Start Trip";
     return;
   }
 
+  // Freeze
   document.getElementById("driver").disabled = true;
   document.getElementById("fleet").disabled = true;
   document.getElementById("operator").disabled = true;
@@ -207,10 +202,12 @@ async function startTrip() {
   omrField.readOnly = true;
   omrField.style.pointerEvents = "none";
 
+  // Time
   let time = document.getElementById("startTime");
   time.value = new Date().toLocaleString();
   time.readOnly = true;
 
+  // GPS
   let gps = document.getElementById("startGPS");
 
   navigator.geolocation.getCurrentPosition(async function(pos) {
@@ -225,7 +222,7 @@ async function startTrip() {
     let area = data.address.suburb || data.address.neighbourhood || "";
     let city = data.address.city || data.address.town || data.address.village || "";
 
-    gps.value = [road, area, city].join(", ");
+    gps.value = [road, area, city].filter(Boolean).join(", ");
     gps.readOnly = true;
 
   });
@@ -280,12 +277,11 @@ async function endTrip() {
     let area = data.address.suburb || data.address.neighbourhood || "";
     let city = data.address.city || data.address.town || data.address.village || "";
 
-    gps.value = [road, area, city].join(", ");
+    gps.value = [road, area, city].filter(Boolean).join(", ");
     gps.readOnly = true;
 
   });
 
-  // Stop animation
   document.getElementById("animationBox").style.display = "none";
   document.getElementById("safetyText").innerText = "Trip Completed ✅";
 
