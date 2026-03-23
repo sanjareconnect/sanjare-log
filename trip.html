@@ -39,7 +39,6 @@
       font-weight: bold;
     }
 
-    /* Remove number input arrows */
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
       -webkit-appearance: none;
@@ -71,20 +70,17 @@
 <div class="card">
   <h2>🚖 Trip Start</h2>
 
-  <!-- UN NAME -->
   <select id="driver">
     <option value="">Select UN-Name</option>
     <option>Mithin Mohan / SJTW-7770</option>
     <option>Nagaraj Mani / SJTW-8047</option>
   </select>
 
-  <!-- FLEET -->
   <select id="fleet">
     <option value="">Select Fleet No Plate</option>
     <option>SJTW-Varaha / KL30L8893</option>
   </select>
 
-  <!-- OPERATOR -->
   <select id="operator">
     <option value="">Select Operator</option>
     <option>Uber</option>
@@ -97,7 +93,6 @@
     <option>Personal</option>
   </select>
 
-  <!-- TRIP TYPE -->
   <select id="tripType">
     <option value="">Select Trip Type</option>
     <option>Inter-City</option>
@@ -106,13 +101,10 @@
     <option>Maintenance</option>
   </select>
 
-  <!-- OMR -->
   <input type="number" id="omr" placeholder="Enter OMR">
 
-  <!-- TIME -->
   <input type="text" id="time" placeholder="Trip Start Time">
 
-  <!-- GPS -->
   <input type="text" id="gps" placeholder="Trip Start Location">
 
   <div id="error" class="error"></div>
@@ -126,7 +118,6 @@ let tripStarted = false;
 
 async function startTrip() {
 
-  // 🚫 Prevent second click
   if (tripStarted) {
     document.getElementById("error").innerText = "Trip already started";
     return;
@@ -141,29 +132,28 @@ async function startTrip() {
   let errorBox = document.getElementById("error");
   errorBox.innerText = "";
 
-  // ✅ VALIDATION
   if (!driver || !fleet || !operator || !tripType || !omr) {
     errorBox.innerText = "Enter Valid Entries to Start Trip";
     return;
   }
 
-  // ===== FREEZE DROPDOWNS =====
+  // Lock dropdowns
   document.getElementById("driver").disabled = true;
   document.getElementById("fleet").disabled = true;
   document.getElementById("operator").disabled = true;
   document.getElementById("tripType").disabled = true;
 
-  // ===== OMR FULL FREEZE =====
+  // Freeze OMR
   let omrField = document.getElementById("omr");
   omrField.readOnly = true;
   omrField.style.pointerEvents = "none";
 
-  // ===== TIME =====
+  // Time
   let time = document.getElementById("time");
   time.value = new Date().toLocaleString();
   time.readOnly = true;
 
-  // ===== GPS =====
+  // GPS (Street + Area + City)
   let gps = document.getElementById("gps");
 
   if (navigator.geolocation) {
@@ -178,14 +168,12 @@ async function startTrip() {
         );
         let data = await res.json();
 
-        let place =
-          data.address.suburb ||
-          data.address.city ||
-          data.address.town ||
-          data.address.village ||
-          "Unknown";
+        let road = data.address.road || "";
+        let area = data.address.suburb || data.address.neighbourhood || "";
+        let city = data.address.city || data.address.town || data.address.village || "";
 
-        gps.value = place + ", " + (data.address.state || "");
+        gps.value = [road, area, city].filter(Boolean).join(", ");
+
       } catch {
         gps.value = lat + ", " + lon;
       }
@@ -201,7 +189,6 @@ async function startTrip() {
     gps.readOnly = true;
   }
 
-  // ✅ LOCK SYSTEM
   tripStarted = true;
 }
 
