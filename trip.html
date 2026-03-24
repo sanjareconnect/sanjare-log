@@ -38,18 +38,12 @@
       font-size: 16px;
     }
 
-    select:invalid {
-      color: #888;
-    }
-
-    input::placeholder {
-      color: #888;
-    }
+    select:invalid { color: #888; }
+    input::placeholder { color: #888; }
 
     input[readonly], select:disabled {
       background: #e9ecef;
       font-weight: bold;
-      color: #000;
     }
 
     button {
@@ -78,74 +72,70 @@
       font-weight: bold;
     }
 
-    .data-flow {
-      display: none;
-      margin-top: 20px;
-      text-align: center;
-      font-size: 28px;
-    }
-
-    .flow-line {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    .arrow {
-      opacity: 0;
-      animation: arrowMove 1.5s infinite;
-    }
-
-    .arrow:nth-child(2) { animation-delay: 0.3s; }
-    .arrow:nth-child(3) { animation-delay: 0.6s; }
-
-    @keyframes arrowMove {
-      0% { opacity: 0; transform: translateX(-10px); }
-      50% { opacity: 1; }
-      100% { opacity: 0; transform: translateX(10px); }
-    }
-
     .error {
       color: red;
       text-align: center;
     }
 
-    /* 🚖 TAXI ROAD ANIMATION */
+    /* 🚖 PROFESSIONAL ROAD */
     .road-box {
       display: none;
       margin-top: 15px;
+      height: 60px;
+      position: relative;
       overflow: hidden;
-      background: #222;
-      border-radius: 8px;
-      padding: 10px;
+      border-radius: 10px;
+      background: linear-gradient(#444, #222);
     }
 
-    .road {
+    /* road line */
+    .road-box::after {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 2px;
+      background: repeating-linear-gradient(
+        to right,
+        white 0px,
+        white 20px,
+        transparent 20px,
+        transparent 40px
+      );
+      top: 50%;
+      left: 0;
+      animation: roadMove 1s linear infinite;
+    }
+
+    @keyframes roadMove {
+      from { transform: translateX(0); }
+      to { transform: translateX(-40px); }
+    }
+
+    /* 🚖 CAR + TEXT GROUP */
+    .car-group {
+      position: absolute;
       display: flex;
       align-items: center;
-      white-space: nowrap;
+      gap: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      animation: drive 6s linear infinite;
     }
 
     .car {
-      font-size: 28px;
-      animation: moveCar 4s linear infinite;
+      font-size: 30px;
     }
 
-    .text-scroll {
+    .drive-text {
       font-size: 14px;
       color: #fff;
-      margin-left: 15px;
-      animation: scrollText 6s linear infinite;
+      white-space: nowrap;
+      font-weight: bold;
     }
 
-    @keyframes moveCar {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(400%); }
-    }
-
-    @keyframes scrollText {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
+    @keyframes drive {
+      0% { left: -60%; }
+      100% { left: 110%; }
     }
 
   </style>
@@ -159,13 +149,13 @@
 
 <select id="driver" required>
   <option value="" disabled selected>UN-Name</option>
-  <option value="Mithin Mohan / SJTW-7770">Mithin Mohan / SJTW-7770</option>
-  <option value="Nagaraj Mani / SJTW-8047">Nagaraj Mani / SJTW-8047</option>
+  <option>Mithin Mohan / SJTW-7770</option>
+  <option>Nagaraj Mani / SJTW-8047</option>
 </select>
 
 <select id="fleet" required>
   <option value="" disabled selected>Fleet No Plate</option>
-  <option value="SJTW-Varaha / KL30L8893">SJTW-Varaha / KL30L8893</option>
+  <option>SJTW-Varaha / KL30L8893</option>
 </select>
 
 <select id="operator" required>
@@ -196,11 +186,11 @@
 
 <button class="btn-green" onclick="startTrip()">Start Trip</button>
 
-<!-- 🚖 ANIMATION -->
+<!-- 🚖 NEW PROFESSIONAL ANIMATION -->
 <div id="roadBox" class="road-box">
-  <div class="road">
+  <div class="car-group">
     <div class="car">🚖</div>
-    <div class="text-scroll">Fasten Your Seat Belt For Safety</div>
+    <div class="drive-text">Fasten Your Seat Belt For Safety</div>
   </div>
 </div>
 
@@ -230,65 +220,12 @@
   <button class="btn-blue" onclick="submitTrip()">Submit Trip</button>
 </div>
 
-<div id="dataFlow" class="data-flow">
-  🚖
-  <div class="flow-line">
-    <span class="arrow">➡️</span>
-    <span class="arrow">➡️</span>
-    <span class="arrow">➡️</span>
-  </div>
-  📡 ☁️ 🏢
-</div>
-
 </div>
 
 <script>
 
 let tripStarted = false;
 let tripEnded = false;
-
-window.onload = function() {
-  let data = JSON.parse(sessionStorage.getItem("tripData"));
-  if (!data) return;
-
-  tripStarted = data.tripStarted;
-  tripEnded = data.tripEnded;
-
-  for (let key in data.values) {
-    let el = document.getElementById(key);
-    if (el) el.value = data.values[key];
-  }
-
-  if (tripStarted) lockStart();
-  if (tripEnded) lockEnd();
-};
-
-function saveData() {
-  let values = {};
-  document.querySelectorAll("input, select").forEach(el => {
-    values[el.id] = el.value;
-  });
-
-  sessionStorage.setItem("tripData", JSON.stringify({
-    tripStarted,
-    tripEnded,
-    values
-  }));
-}
-
-function lockStart() {
-  ["driver","fleet","operator","tripType"].forEach(id=>{
-    document.getElementById(id).disabled = true;
-  });
-  document.getElementById("omr").readOnly = true;
-}
-
-function lockEnd() {
-  document.getElementById("cmr").readOnly = true;
-  document.getElementById("payment").readOnly = true;
-  document.getElementById("paymentMode").disabled = true;
-  document.getElementById("submitBox").style.display = "block";
-}
 
 function startTrip() {
 
@@ -305,64 +242,15 @@ function startTrip() {
 
   document.getElementById("startTime").value = new Date().toLocaleString();
 
-  navigator.geolocation.getCurrentPosition(async pos => {
-    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
-    let data = await res.json();
+  tripStarted = true;
 
-    document.getElementById("startGPS").value =
-      [data.address.road, data.address.city].join(", ");
-
-    tripStarted = true;
-
-    document.getElementById("roadBox").style.display = "block";
-
-    lockStart();
-    saveData();
-  });
+  document.getElementById("roadBox").style.display = "block";
 }
 
 function endTrip() {
 
-  let cmr = document.getElementById("cmr").value;
-  let payment = document.getElementById("payment").value;
-  let mode = document.getElementById("paymentMode").value;
-  let omr = document.getElementById("omr").value;
+  document.getElementById("roadBox").style.display = "none";
 
-  if (Number(cmr) < Number(omr)) {
-    alert("Trip Odometer Reading Error Contact Cruise Captain");
-    return;
-  }
-
-  if (!cmr || !payment || !mode) {
-    alert("Enter all End Trip details");
-    return;
-  }
-
-  document.getElementById("endTime").value = new Date().toLocaleString();
-
-  navigator.geolocation.getCurrentPosition(async pos => {
-    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
-    let data = await res.json();
-
-    document.getElementById("endGPS").value =
-      [data.address.road, data.address.city].join(", ");
-
-    tripEnded = true;
-
-    document.getElementById("roadBox").style.display = "none";
-
-    lockEnd();
-    saveData();
-  });
-}
-
-function submitTrip() {
-  document.getElementById("dataFlow").style.display = "block";
-
-  setTimeout(() => {
-    sessionStorage.clear();
-    location.reload();
-  }, 5000);
 }
 
 </script>
