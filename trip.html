@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+
+    * {
+      box-sizing: border-box; /* 🔥 MAIN FIX */
+    }
+
     body {
       font-family: Arial;
       background: #f2f2f2;
@@ -27,12 +32,13 @@
     h2 {
       text-align: center;
       font-size: 22px;
+      margin-bottom: 10px;
     }
 
     select, input {
       width: 100%;
       padding: 14px;
-      margin-top: 8px;
+      margin-top: 10px;
       border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 16px;
@@ -44,14 +50,13 @@
     input[readonly], select:disabled {
       background: #e9ecef;
       font-weight: bold;
-      color: #000;
     }
 
     button {
       width: 100%;
       padding: 14px;
       border-radius: 8px;
-      margin-top: 12px;
+      margin-top: 14px;
       color: white;
       border: none;
       font-size: 16px;
@@ -62,6 +67,12 @@
     .btn-green { background: #1f8f3a; }
     .btn-red { background: #c0392b; }
     .btn-blue { background: #2c7be5; }
+
+    hr {
+      margin: 20px 0;
+      border: none;
+      border-top: 1px solid #ddd;
+    }
 
     .submit-box {
       display: none;
@@ -103,7 +114,9 @@
     .error {
       color: red;
       text-align: center;
+      margin-top: 10px;
     }
+
   </style>
 </head>
 
@@ -240,7 +253,7 @@ function lockEnd() {
 
 function startTrip() {
 
-  if (tripStarted) return; // 🔥 FIX
+  if (tripStarted) return;
 
   let driver = document.getElementById("driver").value;
   let fleet = document.getElementById("fleet").value;
@@ -260,7 +273,15 @@ function startTrip() {
     let data = await res.json();
 
     document.getElementById("startGPS").value =
-      [data.address.road, data.address.city].join(", ");
+      [
+        data.address.road,
+        data.address.suburb,
+        data.address.city || data.address.town,
+        data.address.district,
+        data.address.state,
+        data.address.country,
+        data.address.postcode
+      ].filter(Boolean).join(", ");
 
     tripStarted = true;
 
@@ -271,7 +292,7 @@ function startTrip() {
 
 function endTrip() {
 
-  if (!tripStarted || tripEnded) return; // 🔥 FIX
+  if (!tripStarted || tripEnded) return;
 
   let cmr = document.getElementById("cmr").value;
   let payment = document.getElementById("payment").value;
@@ -295,7 +316,15 @@ function endTrip() {
     let data = await res.json();
 
     document.getElementById("endGPS").value =
-      [data.address.road, data.address.city].join(", ");
+      [
+        data.address.road,
+        data.address.suburb,
+        data.address.city || data.address.town,
+        data.address.district,
+        data.address.state,
+        data.address.country,
+        data.address.postcode
+      ].filter(Boolean).join(", ");
 
     tripEnded = true;
 
