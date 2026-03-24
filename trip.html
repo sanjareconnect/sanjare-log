@@ -38,13 +38,8 @@
       font-size: 16px;
     }
 
-    select:invalid {
-      color: #888;
-    }
-
-    input::placeholder {
-      color: #888;
-    }
+    select:invalid { color: #888; }
+    input::placeholder { color: #888; }
 
     input[readonly], select:disabled {
       background: #e9ecef;
@@ -245,6 +240,8 @@ function lockEnd() {
 
 function startTrip() {
 
+  if (tripStarted) return; // 🔥 FIX
+
   let driver = document.getElementById("driver").value;
   let fleet = document.getElementById("fleet").value;
   let operator = document.getElementById("operator").value;
@@ -273,6 +270,8 @@ function startTrip() {
 }
 
 function endTrip() {
+
+  if (!tripStarted || tripEnded) return; // 🔥 FIX
 
   let cmr = document.getElementById("cmr").value;
   let payment = document.getElementById("payment").value;
