@@ -38,7 +38,6 @@
       font-size: 16px;
     }
 
-    /* 🔥 Placeholder style */
     select:invalid {
       color: #888;
     }
@@ -110,6 +109,45 @@
       color: red;
       text-align: center;
     }
+
+    /* 🚖 TAXI ROAD ANIMATION */
+    .road-box {
+      display: none;
+      margin-top: 15px;
+      overflow: hidden;
+      background: #222;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .road {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .car {
+      font-size: 28px;
+      animation: moveCar 4s linear infinite;
+    }
+
+    .text-scroll {
+      font-size: 14px;
+      color: #fff;
+      margin-left: 15px;
+      animation: scrollText 6s linear infinite;
+    }
+
+    @keyframes moveCar {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(400%); }
+    }
+
+    @keyframes scrollText {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
   </style>
 </head>
 
@@ -157,6 +195,14 @@
 <div id="error" class="error"></div>
 
 <button class="btn-green" onclick="startTrip()">Start Trip</button>
+
+<!-- 🚖 ANIMATION -->
+<div id="roadBox" class="road-box">
+  <div class="road">
+    <div class="car">🚖</div>
+    <div class="text-scroll">Fasten Your Seat Belt For Safety</div>
+  </div>
+</div>
 
 <hr>
 
@@ -267,6 +313,9 @@ function startTrip() {
       [data.address.road, data.address.city].join(", ");
 
     tripStarted = true;
+
+    document.getElementById("roadBox").style.display = "block";
+
     lockStart();
     saveData();
   });
@@ -299,6 +348,9 @@ function endTrip() {
       [data.address.road, data.address.city].join(", ");
 
     tripEnded = true;
+
+    document.getElementById("roadBox").style.display = "none";
+
     lockEnd();
     saveData();
   });
