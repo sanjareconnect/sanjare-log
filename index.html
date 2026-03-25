@@ -46,14 +46,12 @@
       margin-bottom: 20px;
     }
 
-    /* 🔥 GRID LAYOUT */
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
     }
 
-    /* 🔥 APP BUTTON STYLE */
     .btn {
       display: flex;
       flex-direction: column;
@@ -99,7 +97,6 @@
 
   <div class="grid">
 
-    <!-- ROW 1 -->
     <button class="btn" onclick="goAttendance()">
       <div class="emoji">👨‍✈️📲</div>
       UN-Attendance
@@ -110,7 +107,6 @@
       Trip Log
     </button>
 
-    <!-- ROW 2 -->
     <button class="btn" onclick="goFuel()">
       <div class="emoji">⛽</div>
       Fuel Log
@@ -121,7 +117,6 @@
       Empty Slot 1
     </button>
 
-    <!-- ROW 3 -->
     <button class="btn empty">
       <div class="emoji">➕</div>
       Empty Slot 2
@@ -132,7 +127,6 @@
       Empty Slot 3
     </button>
 
-    <!-- ROW 4 -->
     <button class="btn empty">
       <div class="emoji">➕</div>
       Empty Slot 4
@@ -157,8 +151,9 @@ function goTrip() {
   window.location.href = "trip.html";
 }
 
+/* 🔥 FIXED HERE */
 function goFuel() {
-  alert("Fuel Log page not created yet");
+  window.location.href = "fuel.html";
 }
 
 </script>
