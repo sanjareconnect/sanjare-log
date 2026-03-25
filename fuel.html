@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fuel Log</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    input[readonly], select:disabled {
+      background: #e9ecef;
+      font-weight: bold;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      margin-top: 14px;
+      color: white;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-green { background: #1f8f3a; }
+    .btn-blue { background: #2c7be5; }
+
+    .submit-box {
+      display: none;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #f0f4ff;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .data-flow {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 28px;
+    }
+
+    .flow-line {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .arrow {
+      opacity: 0;
+      animation: arrowMove 1.5s infinite;
+    }
+
+    .arrow:nth-child(2) { animation-delay: 0.3s; }
+    .arrow:nth-child(3) { animation-delay: 0.6s; }
+
+    @keyframes arrowMove {
+      0% { opacity: 0; transform: translateX(-10px); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translateX(10px); }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>⛽ Fuel Log</h2>
+
+<select id="driver">
+  <option value="" disabled selected>UN-Name</option>
+  <option>Mithin Mohan / SJTW-7770</option>
+  <option>Nagaraj Mani / SJTW-8047</option>
+</select>
+
+<select id="fleet">
+  <option value="" disabled selected>Fleet No Plate</option>
+  <option>SJTW-Varaha / KL30L8839 / Maruti Suzuki Ertiga</option>
+</select>
+
+<select id="fuelType">
+  <option value="" disabled selected>Fuel Type</option>
+  <option>Petrol</option>
+  <option>Diesel</option>
+  <option>CNG</option>
+  <option>LPG</option>
+  <option>Hydrogen</option>
+  <option>Electric</option>
+</select>
+
+<select id="ro">
+  <option value="" disabled selected>Retail Outlet</option>
+  <option>IOCL</option>
+  <option>HPCL</option>
+  <option>BPCL</option>
+  <option>AG&P</option>
+  <option>JioBP</option>
+  <option>Nayara</option>
+  <option>Reliance</option>
+  <option>Shell</option>
+  <option>IOAGL</option>
+</select>
+
+<input type="number" id="odometer" placeholder="Odometer Reading">
+<input type="number" id="unitPrice" placeholder="Unit Price (₹)">
+
+<select id="units">
+  <option value="" disabled selected>Units</option>
+  <option>Liters</option>
+  <option>KG</option>
+  <option>E-Unit</option>
+</select>
+
+<input type="number" id="fmr" placeholder="Fuel Meter Reading (FMR)">
+<input type="number" id="totalFuel" placeholder="Total Fuel">
+<input type="number" id="totalAmount" placeholder="Total Amount (₹)">
+
+<select id="payment">
+  <option value="" disabled selected>Payment Mode</option>
+  <option>UPI-P</option>
+  <option>UPI-C</option>
+  <option>Cash</option>
+  <option>Credit</option>
+  <option>Direct</option>
+</select>
+
+<select id="billCollected">
+  <option value="" disabled selected>Bill Collected</option>
+  <option>Yes</option>
+  <option>No</option>
+</select>
+
+<input type="text" id="billNo" placeholder="Bill No">
+
+<input type="text" id="fuelTime" placeholder="Fueled Time (Auto)" readonly>
+<input type="text" id="fuelGPS" placeholder="Fueled Location (Auto GPS)" readonly>
+
+<button class="btn-green" onclick="fuelNow()">Fuel Filled</button>
+
+<div id="submitBox" class="submit-box">
+  Fuel Log Ready ✅
+  <button class="btn-blue" onclick="submitFuel()">Submit</button>
+</div>
+
+<div id="dataFlow" class="data-flow">
+  ⛽
+  <div class="flow-line">
+    <span class="arrow">➡️</span>
+    <span class="arrow">➡️</span>
+    <span class="arrow">➡️</span>
+  </div>
+  ☁️ 🏢
+</div>
+
+</div>
+
+<script>
+
+let fueled = false;
+
+function fuelNow() {
+
+  if (fueled) return;
+
+  let driver = document.getElementById("driver").value;
+  let fleet = document.getElementById("fleet").value;
+  let fuelType = document.getElementById("fuelType").value;
+  let ro = document.getElementById("ro").value;
+
+  if (!driver || !fleet || !fuelType || !ro) {
+    alert("Fill required fields");
+    return;
+  }
+
+  document.getElementById("fuelTime").value = new Date().toLocaleString();
+
+  navigator.geolocation.getCurrentPosition(async pos => {
+    let res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+    let data = await res.json();
+
+    document.getElementById("fuelGPS").value =
+      [
+        data.address.road,
+        data.address.suburb,
+        data.address.city || data.address.town,
+        data.address.district,
+        data.address.state,
+        data.address.country,
+        data.address.postcode
+      ].filter(Boolean).join(", ");
+
+    fueled = true;
+
+    document.querySelectorAll("input, select").forEach(el=>{
+      if(el.id !== "billNo") el.disabled = true;
+    });
+
+    document.getElementById("submitBox").style.display = "block";
+  });
+}
+
+function submitFuel() {
+  document.getElementById("dataFlow").style.display = "block";
+
+  setTimeout(() => {
+    location.reload();
+  }, 5000);
+}
+
+</script>
+
+</body>
+</html>
