@@ -2,11 +2,9 @@
 <html>
 <head>
   <title>Fuel Log</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-
     * { box-sizing: border-box; }
 
     body {
@@ -98,7 +96,6 @@
       50% { opacity: 1; }
       100% { opacity: 0; transform: translateX(10px); }
     }
-
   </style>
 </head>
 
@@ -153,7 +150,6 @@
 </select>
 
 <input type="number" id="fmr" placeholder="Fuel Meter Reading (FMR)">
-
 <input type="number" id="totalAmount" placeholder="Total Amount (₹)">
 
 <select id="payment">
@@ -202,6 +198,14 @@ let fueled = false;
 function fuelNow() {
 
   if (fueled) return;
+
+  let billNo = document.getElementById("billNo").value.trim();
+
+  // ✅ MAIN VALIDATION (YOUR RULE)
+  if (billNo === "") {
+    alert("Fueling not accepted contact the Cruise Captain");
+    return;
+  }
 
   let driver = document.getElementById("driver").value;
   let fleet = document.getElementById("fleet").value;
