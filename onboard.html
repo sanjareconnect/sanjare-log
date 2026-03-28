@@ -68,13 +68,15 @@
       cursor: pointer;
     }
 
-    .terms-box {
-      margin-top: 15px;
+    .terms-inline {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 10px;
+      margin-top: 15px;
       font-size: 13px;
-      line-height: 1.4;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f8f9fa;
     }
 
   </style>
@@ -156,7 +158,7 @@
 
 </div>
 
-<!-- MANDATORY UPLOAD -->
+<!-- MANDATORY -->
 <h3>📸 Mandatory Upload</h3>
 <div class="grid">
 
@@ -180,7 +182,7 @@
 
 </div>
 
-<!-- AUTO CAPTURE -->
+<!-- AUTO -->
 <h3>⏱️📍 UN-Attendance Auto Capture</h3>
 
 <input id="time" class="auto full" readonly placeholder="Attendance IN Time (Auto)">
@@ -188,15 +190,12 @@
 
 <!-- REMARK -->
 <h3>📝 Remarks</h3>
-<textarea maxlength="200" placeholder="Enter remarks"></textarea>
+<textarea id="remark" maxlength="200" placeholder="Give remarks (Max 200 characters)"></textarea>
 
 <!-- TERMS -->
-<div class="terms-box">
+<div class="terms-inline">
 <input type="checkbox" id="agree">
-<label>
-Selecting this is legally accepting the Terms and Conditions of Sanjar Tranzways. 
-Please read and understand all policies carefully before confirming this declaration.
-</label>
+<span>I accept the Terms & Conditions of Sanjar Tranzways.</span>
 </div>
 
 <button onclick="captureAttendance()">Capture Attendance</button>
@@ -212,7 +211,8 @@ function captureAttendance() {
     return;
   }
 
-  document.getElementById("time").value = new Date().toLocaleString();
+  document.getElementById("time").value =
+    new Date().toLocaleString();
 
   navigator.geolocation.getCurrentPosition(async function(pos) {
 
@@ -233,6 +233,8 @@ function captureAttendance() {
         data.address.postcode
       ].filter(Boolean).join(", ");
 
+  }, function() {
+    alert("GPS permission required");
   });
 
 }
