@@ -16,22 +16,43 @@
 
     .card {
       background: #fff;
-      padding: 20px;
+      padding: 18px;
       border-radius: 12px;
       width: 100%;
-      max-width: 450px;
+      max-width: 500px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     h2 { text-align: center; }
-    h3 { margin-top: 20px; color: #1f8f3a; }
+    h3 { margin-top: 18px; color: #1f8f3a; font-size: 15px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+    }
 
     select, input, textarea {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      border-radius: 8px;
+      padding: 10px;
+      margin-top: 4px;
+      border-radius: 6px;
       border: 1px solid #ccc;
+      font-size: 13px;
+    }
+
+    textarea {
+      width: 100%;
+      resize: none;
+    }
+
+    .full {
+      grid-column: span 2;
     }
 
     .auto {
@@ -51,9 +72,10 @@
     }
 
     .checkbox {
-      margin-top: 15px;
+      margin-top: 10px;
       display: flex;
       gap: 10px;
+      font-size: 13px;
     }
 
   </style>
@@ -65,84 +87,140 @@
 
 <h2>👨‍✈️📋 UN Duty Logger</h2>
 
-<!-- DUTY SETUP -->
+<!-- DUTY -->
 <h3>🧾 Duty Setup</h3>
 
+<div class="grid">
+
+<div class="field">
+<label>Driver (UN-Onboard)</label>
 <select>
-  <option disabled selected>Driver (UN-Onboard)</option>
-  <option>Mithin Mohan / SJTW-7770</option>
-  <option>Nagaraj Mani / SJTW-8047</option>
+<option disabled selected>Select</option>
+<option>Mithin Mohan / SJTW-7770</option>
+<option>Nagaraj Mani / SJTW-8047</option>
 </select>
+</div>
 
+<div class="field">
+<label>Assigned Fleet</label>
 <select>
-  <option disabled selected>Fleet</option>
-  <option>SJTW-Varaha / KL30L8839</option>
+<option disabled selected>Select</option>
+<option>SJTW-Varaha / KL30L8839</option>
 </select>
+</div>
 
+<div class="field">
+<label>Previous Driver</label>
 <select>
-  <option disabled selected>Previous Driver</option>
-  <option>Mithin Mohan</option>
-  <option>Nagaraj Mani</option>
+<option disabled selected>Select</option>
+<option>Mithin Mohan</option>
+<option>Nagaraj Mani</option>
 </select>
+</div>
 
+<div class="field">
+<label>Duty Type</label>
 <select>
-  <option disabled selected>Duty Type</option>
-  <option>First Shift</option>
-  <option>Second Shift</option>
+<option disabled selected>Select</option>
+<option>First Shift</option>
+<option>Second Shift</option>
 </select>
+</div>
 
+<div class="field">
+<label>Duty Mode</label>
 <select>
-  <option disabled selected>Duty Mode</option>
-  <option>90°</option>
-  <option>180°</option>
-  <option>270°</option>
-  <option>360°</option>
+<option disabled selected>Select</option>
+<option>90°</option>
+<option>180°</option>
+<option>270°</option>
+<option>360°</option>
 </select>
+</div>
 
-<input type="number" placeholder="OMR (Opening Meter Reading)">
+<div class="field">
+<label>OMR</label>
+<input type="number">
+</div>
 
-<!-- VEHICLE HEALTH -->
-<h3>🚗 Vehicle Health Check</h3>
+</div>
 
-<select><option disabled selected>Exterior & Body</option><option>OK</option><option>Minor Issue</option><option>Major Issue</option></select>
+<!-- VEHICLE -->
+<h3>🚗 Vehicle Health</h3>
 
-<select><option disabled selected>Tyres & Pressure</option><option>Good</option><option>Moderate</option><option>Poor</option></select>
+<div class="grid">
 
-<select><option disabled selected>Cleanliness</option><option>Clean</option><option>Moderate</option><option>Poor</option></select>
+<div class="field">
+<label>Exterior</label>
+<select><option>OK</option><option>Minor</option><option>Major</option></select>
+</div>
 
-<select><option disabled selected>Visibility (Glass/Mirrors)</option><option>Clear</option><option>Issue</option><option>Critical</option></select>
+<div class="field">
+<label>Tyres</label>
+<select><option>Good</option><option>Wear</option><option>Damaged</option></select>
+</div>
 
-<select><option disabled selected>Lights & Indicators</option><option>All Working</option><option>Partial</option><option>Faulty</option></select>
+<div class="field">
+<label>Air Pressure</label>
+<select><option>Correct</option><option>Low</option><option>High</option></select>
+</div>
 
-<select><option disabled selected>Brakes & Steering</option><option>Good</option><option>Moderate</option><option>Unsafe</option></select>
+<div class="field">
+<label>Cleanliness</label>
+<select><option>Clean</option><option>Dirty</option></select>
+</div>
 
-<select><option disabled selected>Battery & Engine Start</option><option>Good</option><option>Delay</option><option>Weak</option></select>
+<div class="field">
+<label>Lights</label>
+<select><option>OK</option><option>Issue</option></select>
+</div>
 
-<select><option disabled selected>Fuel Level</option><option>Full</option><option>Half</option><option>Low</option></select>
+<div class="field">
+<label>Brakes</label>
+<select><option>Good</option><option>Weak</option></select>
+</div>
+
+</div>
 
 <!-- SAFETY -->
-<h3>🛡️ Safety & Compliance</h3>
+<h3>🛡️ Safety</h3>
 
-<select><option disabled selected>Emergency Kit (Tyre/Jack/Tools)</option><option>Complete</option><option>Partial</option><option>Missing</option></select>
+<div class="grid">
 
-<select><option disabled selected>First Aid & Fire Safety</option><option>Ready</option><option>Partial</option><option>Missing</option></select>
+<div class="field">
+<label>Fuel Level</label>
+<select><option>Full</option><option>Low</option></select>
+</div>
 
-<select><option disabled selected>Vehicle Documents</option><option>All Available</option><option>Partial</option><option>Missing</option></select>
+<div class="field">
+<label>Battery</label>
+<select><option>Good</option><option>Weak</option></select>
+</div>
 
-<select><option disabled selected>Driver Essentials (Charger/Holder)</option><option>Good</option><option>Partial</option><option>Missing</option></select>
+<div class="field">
+<label>Emergency Kit</label>
+<select><option>Complete</option><option>Missing</option></select>
+</div>
+
+<div class="field">
+<label>Documents</label>
+<select><option>Available</option><option>Missing</option></select>
+</div>
+
+</div>
 
 <!-- REMARK -->
-<h3>📝 Remarks / Issues</h3>
+<h3>📝 Remarks</h3>
 
-<textarea maxlength="200" placeholder="Enter any issue or note"></textarea>
+<textarea class="full" maxlength="200"></textarea>
 
 <!-- AUTO -->
-<input class="auto" readonly placeholder="Attendance IN Time (Auto)">
-<input class="auto" readonly placeholder="Attendance IN Location (Auto)">
+<input class="auto full" readonly placeholder="Attendance IN Time (Auto)">
+<input class="auto full" readonly placeholder="Attendance IN Location (Auto)">
 
 <div class="checkbox">
-  <input type="checkbox">
-  <label>I agree the terms and conditions</label>
+<input type="checkbox">
+<label>I agree the terms and conditions</label>
 </div>
 
 <button>Submit Attendance</button>
