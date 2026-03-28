@@ -200,10 +200,24 @@ function fuelNow() {
 
   document.getElementById("fuelTime").value = new Date().toLocaleString();
 
-  navigator.geolocation.getCurrentPosition(function(pos) {
+  navigator.geolocation.getCurrentPosition(async function(pos) {
+
+    let res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`
+    );
+
+    let data = await res.json();
 
     document.getElementById("fuelGPS").value =
-      pos.coords.latitude + ", " + pos.coords.longitude;
+      [
+        data.address.road,
+        data.address.suburb,
+        data.address.city || data.address.town,
+        data.address.district,
+        data.address.state,
+        data.address.country,
+        data.address.postcode
+      ].filter(Boolean).join(", ");
 
     fueled = true;
 
