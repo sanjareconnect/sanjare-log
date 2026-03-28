@@ -9,7 +9,7 @@
     body {
       font-family: Arial;
       margin: 0;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -20,7 +20,7 @@
 
     body::before {
       content: "";
-      position: absolute;
+      position: fixed;
       width: 100%;
       height: 100%;
       background: rgba(0,0,0,0.5);
@@ -50,6 +50,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
+      margin-bottom: 20px;
     }
 
     .btn {
@@ -91,54 +92,72 @@
   <h1>Sanjar-E-Connect</h1>
   <p>Select an option</p>
 
+  <!-- MAIN GRID -->
   <div class="grid">
 
-    <!-- ATTENDANCE -->
     <button class="btn" onclick="goAttendance()">
       <div class="emoji">👨‍✈️📲</div>
       UN-Attendance
     </button>
 
-    <!-- TRIP -->
     <button class="btn" onclick="goTrip()">
       <div class="emoji">🚖</div>
       Trip Log
     </button>
 
-    <!-- FUEL -->
     <button class="btn" onclick="goFuel()">
       <div class="emoji">⛽</div>
       Fuel Log
     </button>
 
-    <!-- LEADS -->
     <button class="btn" onclick="goLeads()">
       <div class="emoji">📞🚖</div>
       UN-Leads
     </button>
 
-    <!-- MARKET SPOT -->
     <button class="btn" onclick="goMarketSpot()">
       <div class="emoji">👥🚉✈️🚢</div>
       Market-Spot
     </button>
 
-    <!-- DAY STATUS -->
     <button class="btn" onclick="goStatus()">
       <div class="emoji">📊🏆</div>
       Day Status
     </button>
 
-    <!-- BUSINESS BAY -->
     <button class="btn" onclick="goBusiness()">
       <div class="emoji">💼📈</div>
       Business Bay
     </button>
 
-    <!-- HEAT SPOT -->
     <button class="btn" onclick="goHeatSpot()">
       <div class="emoji">🔥🚦</div>
       Heat-Spot
+    </button>
+
+  </div>
+
+  <!-- NEW 2x2 GRID -->
+  <div class="grid">
+
+    <button class="btn" onclick="goLevelUp()">
+      <div class="emoji">🚀🎯</div>
+      Level-Up
+    </button>
+
+    <button class="btn" onclick="goRewards()">
+      <div class="emoji">🎁🏅</div>
+      Rewards
+    </button>
+
+    <button class="btn" onclick="goRanking()">
+      <div class="emoji">🏆📊</div>
+      Ranking
+    </button>
+
+    <button class="btn" onclick="goDropBox()">
+      <div class="emoji">📥🕊️</div>
+      Drop Box
     </button>
 
   </div>
@@ -147,37 +166,20 @@
 
 <script>
 
-function goAttendance() {
-  window.location.href = "attendance.html";
-}
+function goAttendance(){window.location.href="attendance.html";}
+function goTrip(){window.location.href="trip.html";}
+function goFuel(){window.location.href="fuel.html";}
 
-function goTrip() {
-  window.location.href = "trip.html";
-}
+function goLeads(){alert("UN-Leads page not created yet");}
+function goMarketSpot(){alert("Market-Spot page not created yet");}
+function goStatus(){alert("Day Status page not created yet");}
+function goBusiness(){alert("Business Bay page not created yet");}
+function goHeatSpot(){alert("Heat-Spot page not created yet");}
 
-function goFuel() {
-  window.location.href = "fuel.html";
-}
-
-function goLeads() {
-  alert("UN-Leads page not created yet");
-}
-
-function goMarketSpot() {
-  alert("Market-Spot page not created yet");
-}
-
-function goStatus() {
-  alert("Day Status page not created yet");
-}
-
-function goBusiness() {
-  alert("Business Bay page not created yet");
-}
-
-function goHeatSpot() {
-  alert("Heat-Spot page not created yet");
-}
+function goLevelUp(){alert("Level-Up page not created yet");}
+function goRewards(){alert("Rewards page not created yet");}
+function goRanking(){alert("Ranking page not created yet");}
+function goDropBox(){alert("Drop Box page not created yet");}
 
 </script>
 
