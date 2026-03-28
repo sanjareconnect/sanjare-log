@@ -28,7 +28,6 @@
     h2 {
       text-align: center;
       font-size: 22px;
-      margin-bottom: 10px;
     }
 
     select, input {
@@ -38,11 +37,6 @@
       border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 16px;
-    }
-
-    input[readonly], select:disabled {
-      background: #e9ecef;
-      font-weight: bold;
     }
 
     button {
@@ -60,22 +54,8 @@
     .btn-green { background: #1f8f3a; }
     .btn-blue { background: #2c7be5; }
 
-    .submit-box {
-      display: none;
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 8px;
-      background: #f0f4ff;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .data-flow {
-      display: none;
-      margin-top: 20px;
-      text-align: center;
-      font-size: 20px;
-    }
+    .submit-box { display: none; margin-top: 15px; text-align: center; }
+    .data-flow { display: none; margin-top: 15px; text-align: center; }
   </style>
 </head>
 
@@ -149,8 +129,8 @@
 
 <input type="text" id="billNo" placeholder="Bill No">
 
-<input type="text" id="fuelTime" readonly placeholder="Fueled Time (Auto)">
-<input type="text" id="fuelGPS" readonly placeholder="Fueled Location (Auto GPS)">
+<input type="text" id="fuelTime" readonly placeholder="Fueled Time">
+<input type="text" id="fuelGPS" readonly placeholder="Fuel Location">
 
 <button class="btn-green" onclick="fuelNow()">Fuel Filled</button>
 
@@ -160,14 +140,14 @@
 </div>
 
 <div id="dataFlow" class="data-flow">
-  ⛽ Sending data to server...
+  ⛽ Sending data...
 </div>
 
 </div>
 
 <script>
 
-const SCRIPT_URL = "PASTE_YOUR_SCRIPT_URL_HERE";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyawN8LoWhFOiF2-7K-Rv4YjNf76qGm7NgkODcGiGx14SWKG_IWbZ-Y6sJAojLQqkQl/exec";
 
 let fueled = false;
 
@@ -252,21 +232,13 @@ function submitFuel() {
 
   fetch(SCRIPT_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    mode: "no-cors",
     body: JSON.stringify(data)
-  })
-  .then(res => res.json())
-  .then(response => {
-    setTimeout(() => {
-      location.reload();
-    }, 3000);
-  })
-  .catch(err => {
-    alert("Error sending data");
-    console.error(err);
   });
+
+  setTimeout(() => {
+    location.reload();
+  }, 3000);
 }
 
 </script>
