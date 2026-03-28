@@ -19,7 +19,7 @@
       padding: 20px;
       border-radius: 12px;
       width: 100%;
-      max-width: 500px;
+      max-width: 450px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
@@ -32,10 +32,7 @@
       margin-top: 8px;
       border-radius: 8px;
       border: 1px solid #ccc;
-      font-size: 14px;
     }
-
-    textarea { resize: none; }
 
     .auto {
       background: #e9ecef;
@@ -50,16 +47,13 @@
       border: none;
       background: #1f8f3a;
       color: white;
-      font-size: 16px;
       font-weight: bold;
-      cursor: pointer;
     }
 
     .checkbox {
       margin-top: 15px;
       display: flex;
       gap: 10px;
-      align-items: center;
     }
 
   </style>
@@ -69,119 +63,91 @@
 
 <div class="card">
 
-<h2>👨‍✈️📋 UN-Duty Logger</h2>
+<h2>👨‍✈️📋 UN Duty Logger</h2>
 
-<!-- BASIC -->
-<select id="driver">
-  <option disabled selected>UN-Onboard</option>
+<!-- DUTY SETUP -->
+<h3>🧾 Duty Setup</h3>
+
+<select>
+  <option disabled selected>Driver (UN-Onboard)</option>
   <option>Mithin Mohan / SJTW-7770</option>
   <option>Nagaraj Mani / SJTW-8047</option>
 </select>
 
-<select id="fleet">
-  <option disabled selected>Assigned Fleet</option>
+<select>
+  <option disabled selected>Fleet</option>
   <option>SJTW-Varaha / KL30L8839</option>
 </select>
 
-<select id="previous">
-  <option disabled selected>Prior Driver</option>
-  <option>Mithin Mohan / SJTW-7770</option>
-  <option>Nagaraj Mani / SJTW-8047</option>
+<select>
+  <option disabled selected>Previous Driver</option>
+  <option>Mithin Mohan</option>
+  <option>Nagaraj Mani</option>
 </select>
 
-<select id="type">
+<select>
   <option disabled selected>Duty Type</option>
   <option>First Shift</option>
   <option>Second Shift</option>
 </select>
 
-<select id="mode">
+<select>
   <option disabled selected>Duty Mode</option>
-  <option>90° (12-16 Hrs)</option>
-  <option>180° (24-28 Hrs)</option>
-  <option>270° (36-40 Hrs)</option>
-  <option>360° (48-52 Hrs)</option>
+  <option>90°</option>
+  <option>180°</option>
+  <option>270°</option>
+  <option>360°</option>
 </select>
 
-<input id="omr" type="number" placeholder="OMR (Opening Meter Reading)">
+<input type="number" placeholder="OMR (Opening Meter Reading)">
 
-<!-- VEHICLE CONDITION -->
-<h3>🚗 Vehicle Condition</h3>
+<!-- VEHICLE HEALTH -->
+<h3>🚗 Vehicle Health Check</h3>
 
-<select><option disabled selected>Exterior</option><option>OK</option><option>Minor scratches</option><option>Dent noticed</option><option>Major damage</option></select>
+<select><option disabled selected>Exterior & Body</option><option>OK</option><option>Minor Issue</option><option>Major Issue</option></select>
 
-<select><option disabled selected>Tyres condition</option><option>Good</option><option>Slight wear</option><option>Worn out</option><option>Damaged</option></select>
+<select><option disabled selected>Tyres & Pressure</option><option>Good</option><option>Moderate</option><option>Poor</option></select>
 
-<select><option disabled selected>Tyre air pressure</option><option>Correct</option><option>Slightly low</option><option>Very low</option><option>Overinflated</option></select>
+<select><option disabled selected>Cleanliness</option><option>Clean</option><option>Moderate</option><option>Poor</option></select>
 
-<select><option disabled selected>Vehicle hygiene</option><option>Clean</option><option>Slightly dirty</option><option>Dirty</option><option>Very dirty</option></select>
+<select><option disabled selected>Visibility (Glass/Mirrors)</option><option>Clear</option><option>Issue</option><option>Critical</option></select>
 
-<select><option disabled selected>Windshield</option><option>Clear</option><option>Slight dust</option><option>Visibility issue</option><option>Damaged</option></select>
+<select><option disabled selected>Lights & Indicators</option><option>All Working</option><option>Partial</option><option>Faulty</option></select>
 
-<select><option disabled selected>Lights</option><option>All working</option><option>One dim</option><option>One not working</option><option>Multiple not working</option></select>
+<select><option disabled selected>Brakes & Steering</option><option>Good</option><option>Moderate</option><option>Unsafe</option></select>
 
-<!-- STATUS -->
-<h3>⚙️ Vehicle Status</h3>
+<select><option disabled selected>Battery & Engine Start</option><option>Good</option><option>Delay</option><option>Weak</option></select>
 
-<select><option disabled selected>Fuel level</option><option>Full</option><option>Above half</option><option>Low</option><option>Reserve</option></select>
+<select><option disabled selected>Fuel Level</option><option>Full</option><option>Half</option><option>Low</option></select>
 
-<select><option disabled selected>Dashboard warning</option><option>None</option><option>One minor</option><option>Multiple</option><option>Critical</option></select>
+<!-- SAFETY -->
+<h3>🛡️ Safety & Compliance</h3>
 
-<select><option disabled selected>Brakes</option><option>Good</option><option>Slight delay</option><option>Weak</option><option>Not safe</option></select>
+<select><option disabled selected>Emergency Kit (Tyre/Jack/Tools)</option><option>Complete</option><option>Partial</option><option>Missing</option></select>
 
-<select><option disabled selected>Horn</option><option>Working</option><option>Low sound</option><option>Intermittent</option><option>Not working</option></select>
+<select><option disabled selected>First Aid & Fire Safety</option><option>Ready</option><option>Partial</option><option>Missing</option></select>
 
-<select><option disabled selected>Steering</option><option>Smooth</option><option>Slight vibration</option><option>Hard</option><option>Issue</option></select>
+<select><option disabled selected>Vehicle Documents</option><option>All Available</option><option>Partial</option><option>Missing</option></select>
 
-<select><option disabled selected>Battery</option><option>Good start</option><option>Slight delay</option><option>Weak</option><option>Replace</option></select>
+<select><option disabled selected>Driver Essentials (Charger/Holder)</option><option>Good</option><option>Partial</option><option>Missing</option></select>
 
 <!-- REMARK -->
-<h3>📝 Remarks</h3>
-<textarea id="remark" maxlength="200"></textarea>
+<h3>📝 Remarks / Issues</h3>
+
+<textarea maxlength="200" placeholder="Enter any issue or note"></textarea>
 
 <!-- AUTO -->
-<input id="time" class="auto" readonly placeholder="Attendance IN Time (Auto)">
-<input id="gps" class="auto" readonly placeholder="Attendance IN Location (Auto Location)">
+<input class="auto" readonly placeholder="Attendance IN Time (Auto)">
+<input class="auto" readonly placeholder="Attendance IN Location (Auto)">
 
 <div class="checkbox">
-  <input type="checkbox" id="agree">
-  <label>I agree the terms and condition</label>
+  <input type="checkbox">
+  <label>I agree the terms and conditions</label>
 </div>
 
-<button onclick="capture()">Capture Attendance</button>
+<button>Submit Attendance</button>
 
 </div>
-
-<script>
-
-function capture() {
-
-  if (!document.getElementById("agree").checked) {
-    alert("Please accept terms");
-    return;
-  }
-
-  document.getElementById("time").value = new Date().toLocaleString();
-
-  navigator.geolocation.getCurrentPosition(async function(pos) {
-
-    let res = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`
-    );
-
-    let data = await res.json();
-
-    document.getElementById("gps").value =
-      [
-        data.address.road,
-        data.address.city || data.address.town,
-        data.address.state,
-        data.address.country
-      ].filter(Boolean).join(", ");
-  });
-}
-
-</script>
 
 </body>
 </html>
