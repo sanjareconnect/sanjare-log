@@ -17,7 +17,7 @@
 
     .container {
       width: 95%;
-      max-width: 360px;
+      max-width: 380px;
       text-align: center;
     }
 
@@ -28,22 +28,23 @@
       font-size: 20px;
     }
 
-    .card {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
 
     .btn {
       display: flex;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      justify-content: space-between;
 
-      padding: 26px;
+      padding: 22px;
       border-radius: 18px;
       border: none;
 
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
 
       cursor: pointer;
@@ -55,30 +56,29 @@
     }
 
     .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
+      transform: translateY(-3px);
     }
 
     .emoji {
-      font-size: 26px;
+      font-size: 28px;
+      margin-bottom: 6px;
     }
 
     .onboard {
       background: linear-gradient(135deg, #28a745, #218838);
     }
 
-    .deboard {
-      background: linear-gradient(135deg, #dc3545, #c82333);
+    .swap {
+      background: linear-gradient(135deg, #17a2b8, #117a8b);
     }
 
-    .arrow {
-      font-size: 20px;
-      opacity: 0.8;
+    .extend {
+      background: linear-gradient(135deg, #ffc107, #e0a800);
+      color: #000;
+    }
+
+    .deboard {
+      background: linear-gradient(135deg, #dc3545, #c82333);
     }
 
     .back {
@@ -90,6 +90,7 @@
       color: #1a2b4c;
       cursor: pointer;
       font-weight: 600;
+      width: 100%;
     }
 
     .back:hover {
@@ -105,24 +106,30 @@
 
   <h2>🧑‍✈️ Urban Navigator Attendance Log</h2>
 
-  <div class="card">
+  <div class="grid">
 
     <!-- ONBOARD -->
     <button class="btn onboard" onclick="goOnboard()">
-      <div class="left">
-        <span class="emoji">🧑‍✈️📲🟢</span>
-        <span>Start Duty (Onboard)</span>
-      </div>
-      <span class="arrow">›</span>
+      <div class="emoji">🧑‍✈️📲🟢</div>
+      Onboard
+    </button>
+
+    <!-- TRIP SWAP -->
+    <button class="btn swap" onclick="goSwap()">
+      <div class="emoji">🔄🚖</div>
+      Trip Swap
+    </button>
+
+    <!-- DUTY EXTEND -->
+    <button class="btn extend" onclick="goExtend()">
+      <div class="emoji">⏱️➕</div>
+      Duty Extend
     </button>
 
     <!-- DEBOARD -->
     <button class="btn deboard" onclick="goDeboard()">
-      <div class="left">
-        <span class="emoji">🧑‍✈️📲🔴</span>
-        <span>End Duty (Deboard)</span>
-      </div>
-      <span class="arrow">›</span>
+      <div class="emoji">🧑‍✈️📲🔴</div>
+      Deboard
     </button>
 
   </div>
@@ -135,6 +142,14 @@
 
 function goOnboard() {
   window.location.href = "onboard.html";
+}
+
+function goSwap() {
+  alert("Trip Swap page not created yet");
+}
+
+function goExtend() {
+  alert("Duty Extend page not created yet");
 }
 
 function goDeboard() {
