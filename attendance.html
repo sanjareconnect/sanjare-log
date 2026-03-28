@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>UN-Attendance</title>
+  <title>Attendance Log</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -12,13 +12,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
       background: linear-gradient(135deg, #e6f0ff, #f8fbff);
     }
 
     .container {
       width: 95%;
-      max-width: 420px;
+      max-width: 360px; /* slightly reduced width */
       text-align: center;
     }
 
@@ -26,12 +25,13 @@
       color: #1a2b4c;
       margin-bottom: 25px;
       font-weight: 600;
+      font-size: 20px;
     }
 
     .card {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 20px;
     }
 
     .btn {
@@ -39,49 +39,48 @@
       align-items: center;
       justify-content: space-between;
 
-      padding: 22px;
-      border-radius: 16px;
+      padding: 26px; /* bigger height */
+      border-radius: 18px;
       border: none;
 
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 600;
 
       cursor: pointer;
 
-      background: #ffffff;
-      color: #1a2b4c;
+      color: white;
 
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 
       transition: 0.25s;
     }
 
     .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.12);
     }
 
     .left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
     .emoji {
-      font-size: 24px;
+      font-size: 26px;
     }
 
+    /* Filled Colors */
     .onboard {
-      border-left: 6px solid #28a745;
+      background: linear-gradient(135deg, #28a745, #218838);
     }
 
     .deboard {
-      border-left: 6px solid #dc3545;
+      background: linear-gradient(135deg, #dc3545, #c82333);
     }
 
     .arrow {
-      font-size: 18px;
-      opacity: 0.6;
+      font-size: 20px;
+      opacity: 0.8;
     }
 
     .back {
@@ -106,7 +105,7 @@
 
 <div class="container">
 
-  <h2>🧑‍✈️ UN-Attendance</h2>
+  <h2>🧑‍✈️ Urban Navigator Attendance Log</h2>
 
   <div class="card">
 
@@ -114,7 +113,7 @@
     <button class="btn onboard" onclick="goOnboard()">
       <div class="left">
         <span class="emoji">🧑‍✈️📲🟢</span>
-        <span>UN-Onboard</span>
+        <span>Start Duty (Onboard)</span>
       </div>
       <span class="arrow">›</span>
     </button>
@@ -123,7 +122,7 @@
     <button class="btn deboard" onclick="goDeboard()">
       <div class="left">
         <span class="emoji">🧑‍✈️📲🔴</span>
-        <span>UN-Deboard</span>
+        <span>End Duty (Deboard)</span>
       </div>
       <span class="arrow">›</span>
     </button>
