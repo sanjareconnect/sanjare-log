@@ -69,6 +69,7 @@
       background: #1f8f3a;
       color: white;
       font-weight: bold;
+      cursor: pointer;
     }
 
     .checkbox {
@@ -76,6 +77,7 @@
       display: flex;
       gap: 10px;
       font-size: 13px;
+      align-items: center;
     }
 
   </style>
@@ -240,20 +242,61 @@
 <!-- REMARK -->
 <h3>📝 Remarks</h3>
 
-<textarea class="full" maxlength="200"></textarea>
+<textarea maxlength="200" placeholder="Enter remarks"></textarea>
 
 <!-- AUTO -->
-<input class="auto full" readonly placeholder="Attendance IN Time (Auto)">
-<input class="auto full" readonly placeholder="Attendance IN Location (Auto)">
+<input id="time" class="auto full" readonly placeholder="Attendance IN Time (Auto)">
+<input id="gps" class="auto full" readonly placeholder="Attendance IN Location (Auto)">
 
 <div class="checkbox">
-<input type="checkbox">
+<input type="checkbox" id="agree">
 <label>I agree the terms and conditions</label>
 </div>
 
-<button>Submit Attendance</button>
+<button onclick="captureAttendance()">Capture Attendance</button>
 
 </div>
+
+<script>
+
+function captureAttendance() {
+
+  if (!document.getElementById("agree").checked) {
+    alert("Please accept the terms and conditions");
+    return;
+  }
+
+  // Time
+  document.getElementById("time").value =
+    new Date().toLocaleString();
+
+  // GPS
+  navigator.geolocation.getCurrentPosition(async function(pos) {
+
+    let res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`
+    );
+
+    let data = await res.json();
+
+    document.getElementById("gps").value =
+      [
+        data.address.road,
+        data.address.suburb,
+        data.address.city || data.address.town,
+        data.address.district,
+        data.address.state,
+        data.address.country,
+        data.address.postcode
+      ].filter(Boolean).join(", ");
+
+  }, function() {
+    alert("GPS permission required");
+  });
+
+}
+
+</script>
 
 </body>
 </html>
