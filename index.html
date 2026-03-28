@@ -77,7 +77,7 @@
     }
 
     .emoji {
-      font-size: 28px;
+      font-size: 26px;
       margin-bottom: 6px;
     }
 
@@ -121,17 +121,19 @@
       UN-Leads
     </button>
 
-    <!-- EMPTY SLOT -->
-    <button class="btn empty">
-      <div class="emoji">➕</div>
-      Empty Slot 2
+    <!-- MARKET SPOT -->
+    <button class="btn" onclick="goMarketSpot()">
+      <div class="emoji">🏙️🚉✈️🌊</div>
+      Market-Spot
     </button>
 
+    <!-- EMPTY SLOT -->
     <button class="btn empty">
       <div class="emoji">➕</div>
       Empty Slot 3
     </button>
 
+    <!-- EMPTY SLOT -->
     <button class="btn empty">
       <div class="emoji">➕</div>
       Empty Slot 4
@@ -163,14 +165,14 @@ function goFuel() {
 
 function goLeads() {
   alert("UN-Leads page not created yet");
-  // future:
-  // window.location.href = "leads.html";
+}
+
+function goMarketSpot() {
+  alert("Market-Spot page not created yet");
 }
 
 function goHeatSpot() {
   alert("Heat-Spot page not created yet");
-  // future:
-  // window.location.href = "heatspot.html";
 }
 
 </script>
