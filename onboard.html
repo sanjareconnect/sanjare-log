@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UN Duty Logger</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #1f8f3a;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      border-radius: 8px;
+      border: none;
+      background: #1f8f3a;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .checkbox {
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .auto {
+      background: #e9ecef;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>👨‍✈️📋 UN-Duty Logger</h2>
+
+<!-- BASIC DETAILS -->
+<select>
+  <option disabled selected>UN-Onboard</option>
+  <option>Mithin Mohan / SJTW-7770</option>
+  <option>Nagaraj Mani / SJTW-8047</option>
+</select>
+
+<select>
+  <option disabled selected>Assigned Fleet</option>
+  <option>SJTW-Varaha / KL30L8839</option>
+</select>
+
+<select>
+  <option disabled selected>Prior Driver</option>
+  <option>Mithin Mohan / SJTW-7770</option>
+  <option>Nagaraj Mani / SJTW-8047</option>
+</select>
+
+<select>
+  <option disabled selected>Duty Type</option>
+  <option>First Shift</option>
+  <option>Second Shift</option>
+</select>
+
+<select>
+  <option disabled selected>Duty Mode</option>
+  <option>90° (12-16 Hrs)</option>
+  <option>180° (24-28 Hrs)</option>
+  <option>270° (36-40 Hrs)</option>
+  <option>360° (48-52 Hrs)</option>
+</select>
+
+<input type="number" placeholder="OMR (Opening Meter Reading)">
+
+<!-- VEHICLE CONDITION -->
+<h3>🚗 Vehicle Condition</h3>
+
+<select><option disabled selected>Exterior</option><option>OK</option><option>Minor scratches</option><option>Dent noticed</option><option>Major damage</option></select>
+
+<select><option disabled selected>Tyres condition</option><option>Good</option><option>Slight wear</option><option>Worn out</option><option>Damaged</option></select>
+
+<select><option disabled selected>Tyre air pressure</option><option>Correct</option><option>Slightly low</option><option>Very low</option><option>Overinflated</option></select>
+
+<select><option disabled selected>Vehicle hygiene</option><option>Clean</option><option>Slightly dirty</option><option>Dirty</option><option>Very dirty</option></select>
+
+<!-- STATUS -->
+<h3>⚙️ Vehicle Status</h3>
+
+<select><option disabled selected>Fuel level</option><option>Full</option><option>Above half</option><option>Low</option><option>Reserve</option></select>
+
+<select><option disabled selected>Brakes</option><option>Good</option><option>Slight delay</option><option>Weak</option><option>Not safe</option></select>
+
+<!-- COMFORT -->
+<h3>❄️ Comfort & Visibility</h3>
+
+<select><option disabled selected>AC</option><option>Good cooling</option><option>Moderate</option><option>Low</option><option>Not working</option></select>
+
+<select><option disabled selected>Wipers</option><option>Good</option><option>Slow</option><option>Worn</option><option>Not working</option></select>
+
+<!-- SAFETY -->
+<h3>🛡️ Safety & Emergency</h3>
+
+<select><option disabled selected>Spare tyre</option><option>Good</option><option>Usable</option><option>Worn</option><option>Damaged</option></select>
+
+<select><option disabled selected>First aid kit</option><option>Complete</option><option>Few items missing</option><option>Almost empty</option><option>Not available</option></select>
+
+<!-- REMARK -->
+<h3>📝 Remarks</h3>
+
+<textarea maxlength="200" placeholder="Enter remarks (Max 200 characters)"></textarea>
+
+<!-- AUTO -->
+<input class="auto" readonly placeholder="Attendance IN Time (Auto)">
+<input class="auto" readonly placeholder="Attendance IN Location (Auto)">
+
+<!-- AGREEMENT -->
+<div class="checkbox">
+  <input type="checkbox">
+  <label>I agree the terms and condition</label>
+</div>
+
+<button>Submit Attendance</button>
+
+</div>
+
+</body>
+</html>
