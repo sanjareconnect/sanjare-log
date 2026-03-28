@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UN-Attendance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #1f8f3a, #2c7be5);
+    }
+
+    .container {
+      width: 95%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    h2 {
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+
+      padding: 18px;
+      border-radius: 14px;
+      border: none;
+
+      font-size: 18px;
+      font-weight: bold;
+
+      cursor: pointer;
+
+      background: white;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn:hover {
+      transform: scale(1.03);
+    }
+
+    .emoji {
+      font-size: 28px;
+    }
+
+    .onboard { color: #1f8f3a; }
+    .deboard { color: #d9534f; }
+
+    .back {
+      margin-top: 20px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>👨‍✈️ UN-Attendance</h2>
+
+  <div class="card">
+
+    <!-- ONBOARD -->
+    <button class="btn onboard" onclick="goOnboard()">
+      <span class="emoji">🚗➡️👨‍✈️</span>
+      UN-Onboard
+    </button>
+
+    <!-- DEBOARD -->
+    <button class="btn deboard" onclick="goDeboard()">
+      <span class="emoji">👨‍✈️➡️🚶‍♂️</span>
+      UN-Deboard
+    </button>
+
+  </div>
+
+  <button class="btn back" onclick="goBack()">⬅ Back</button>
+
+</div>
+
+<script>
+
+function goOnboard() {
+  alert("Onboard page next");
+}
+
+function goDeboard() {
+  alert("Deboard page next");
+}
+
+function goBack() {
+  window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>
