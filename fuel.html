@@ -199,10 +199,16 @@ function fuelNow() {
 
   if (fueled) return;
 
+  let billCollected = document.getElementById("billCollected").value;
   let billNo = document.getElementById("billNo").value.trim();
 
-  // ✅ MAIN VALIDATION (YOUR RULE)
-  if (billNo === "") {
+  // ✅ FINAL VALIDATION LOGIC
+  if (billCollected === "Yes" && billNo === "") {
+    alert("Please Enter the valid Fuel Bill/Invoice Number");
+    return;
+  }
+
+  if (billCollected === "No" && billNo === "") {
     alert("Fueling not accepted contact the Cruise Captain");
     return;
   }
