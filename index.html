@@ -81,10 +81,6 @@
       margin-bottom: 6px;
     }
 
-    .empty {
-      opacity: 0.4;
-    }
-
   </style>
 </head>
 
@@ -127,21 +123,21 @@
       Market-Spot
     </button>
 
-    <!-- EMPTY SLOT -->
-    <button class="btn empty">
-      <div class="emoji">➕</div>
-      Empty Slot 3
+    <!-- UN STATUS -->
+    <button class="btn" onclick="goStatus()">
+      <div class="emoji">📊🏆</div>
+      UN-Status
     </button>
 
-    <!-- EMPTY SLOT -->
-    <button class="btn empty">
-      <div class="emoji">➕</div>
-      Empty Slot 4
+    <!-- UN BUSINESS -->
+    <button class="btn" onclick="goBusiness()">
+      <div class="emoji">💼📈</div>
+      UN-Business
     </button>
 
     <!-- HEAT SPOT -->
     <button class="btn" onclick="goHeatSpot()">
-      <div class="emoji">📍🔥🚦</div>
+      <div class="emoji">📍</div>
       Heat-Spot
     </button>
 
@@ -169,6 +165,14 @@ function goLeads() {
 
 function goMarketSpot() {
   alert("Market-Spot page not created yet");
+}
+
+function goStatus() {
+  alert("UN-Status page not created yet");
+}
+
+function goBusiness() {
+  alert("UN-Business page not created yet");
 }
 
 function goHeatSpot() {
