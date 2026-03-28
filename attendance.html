@@ -6,13 +6,14 @@
 
   <style>
     body {
-      font-family: Arial;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #1f8f3a, #2c7be5);
+
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     }
 
     .container {
@@ -22,51 +23,90 @@
     }
 
     h2 {
-      color: white;
-      margin-bottom: 20px;
+      color: #ffffff;
+      margin-bottom: 25px;
+      font-weight: 600;
+      letter-spacing: 1px;
     }
 
     .card {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
     }
 
     .btn {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
+      justify-content: space-between;
 
       padding: 18px;
-      border-radius: 14px;
+      border-radius: 16px;
       border: none;
 
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 16px;
+      font-weight: 600;
 
       cursor: pointer;
 
-      background: white;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      color: white;
+
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+
+      transition: 0.3s;
     }
 
     .btn:hover {
-      transform: scale(1.03);
+      transform: translateY(-3px) scale(1.02);
+      background: rgba(255,255,255,0.15);
     }
 
-    .emoji {
-      font-size: 28px;
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .onboard { color: #1f8f3a; }
-    .deboard { color: #d9534f; }
+    .icon {
+      font-size: 26px;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .arrow {
+      font-size: 22px;
+      opacity: 0.7;
+    }
+
+    .onboard {
+      border-left: 5px solid #28a745;
+    }
+
+    .deboard {
+      border-left: 5px solid #dc3545;
+    }
 
     .back {
-      margin-top: 20px;
-      background: rgba(255,255,255,0.2);
+      margin-top: 25px;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: rgba(255,255,255,0.1);
       color: white;
+      cursor: pointer;
+      font-weight: 600;
     }
+
+    .back:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
   </style>
 </head>
 
@@ -80,30 +120,40 @@
 
     <!-- ONBOARD -->
     <button class="btn onboard" onclick="goOnboard()">
-      <span class="emoji">🚗➡️👨‍✈️</span>
-      UN-Onboard
+      <div class="left">
+        <span class="icon">🚗</span>
+        <span class="icon">➡️</span>
+        <span class="icon">👨‍✈️</span>
+        <span>UN-Onboard</span>
+      </div>
+      <span class="arrow">➜</span>
     </button>
 
     <!-- DEBOARD -->
     <button class="btn deboard" onclick="goDeboard()">
-      <span class="emoji">👨‍✈️➡️🚶‍♂️</span>
-      UN-Deboard
+      <div class="left">
+        <span class="icon">👨‍✈️</span>
+        <span class="icon">➡️</span>
+        <span class="icon">🚶‍♂️</span>
+        <span>UN-Deboard</span>
+      </div>
+      <span class="arrow">➜</span>
     </button>
 
   </div>
 
-  <button class="btn back" onclick="goBack()">⬅ Back</button>
+  <button class="back" onclick="goBack()">⬅ Back</button>
 
 </div>
 
 <script>
 
 function goOnboard() {
-  alert("Onboard page next");
+  window.location.href = "onboard.html";
 }
 
 function goDeboard() {
-  alert("Deboard page next");
+  window.location.href = "deboard.html";
 }
 
 function goBack() {
