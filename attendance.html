@@ -13,7 +13,7 @@
       justify-content: center;
       align-items: center;
 
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(135deg, #e6f0ff, #f8fbff);
     }
 
     .container {
@@ -23,10 +23,9 @@
     }
 
     h2 {
-      color: #ffffff;
+      color: #1a2b4c;
       margin-bottom: 25px;
       font-weight: 600;
-      letter-spacing: 1px;
     }
 
     .card {
@@ -40,27 +39,26 @@
       align-items: center;
       justify-content: space-between;
 
-      padding: 18px;
+      padding: 22px;
       border-radius: 16px;
       border: none;
 
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 600;
 
       cursor: pointer;
 
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(10px);
-      color: white;
+      background: #ffffff;
+      color: #1a2b4c;
 
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 
-      transition: 0.3s;
+      transition: 0.25s;
     }
 
     .btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      background: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.12);
     }
 
     .left {
@@ -69,27 +67,21 @@
       gap: 12px;
     }
 
-    .icon {
-      font-size: 26px;
-      animation: float 2s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
-    }
-
-    .arrow {
-      font-size: 22px;
-      opacity: 0.7;
+    .emoji {
+      font-size: 24px;
     }
 
     .onboard {
-      border-left: 5px solid #28a745;
+      border-left: 6px solid #28a745;
     }
 
     .deboard {
-      border-left: 5px solid #dc3545;
+      border-left: 6px solid #dc3545;
+    }
+
+    .arrow {
+      font-size: 18px;
+      opacity: 0.6;
     }
 
     .back {
@@ -97,14 +89,14 @@
       padding: 14px;
       border-radius: 12px;
       border: none;
-      background: rgba(255,255,255,0.1);
-      color: white;
+      background: #dbe7ff;
+      color: #1a2b4c;
       cursor: pointer;
       font-weight: 600;
     }
 
     .back:hover {
-      background: rgba(255,255,255,0.2);
+      background: #c9dcff;
     }
 
   </style>
@@ -114,30 +106,26 @@
 
 <div class="container">
 
-  <h2>👨‍✈️ UN-Attendance</h2>
+  <h2>🧑‍✈️ UN-Attendance</h2>
 
   <div class="card">
 
     <!-- ONBOARD -->
     <button class="btn onboard" onclick="goOnboard()">
       <div class="left">
-        <span class="icon">🚗</span>
-        <span class="icon">➡️</span>
-        <span class="icon">👨‍✈️</span>
+        <span class="emoji">🧑‍✈️📲🟢</span>
         <span>UN-Onboard</span>
       </div>
-      <span class="arrow">➜</span>
+      <span class="arrow">›</span>
     </button>
 
     <!-- DEBOARD -->
     <button class="btn deboard" onclick="goDeboard()">
       <div class="left">
-        <span class="icon">👨‍✈️</span>
-        <span class="icon">➡️</span>
-        <span class="icon">🚶‍♂️</span>
+        <span class="emoji">🧑‍✈️📲🔴</span>
         <span>UN-Deboard</span>
       </div>
-      <span class="arrow">➜</span>
+      <span class="arrow">›</span>
     </button>
 
   </div>
