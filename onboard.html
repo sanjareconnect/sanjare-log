@@ -19,7 +19,7 @@
       padding: 18px;
       border-radius: 12px;
       width: 100%;
-      max-width: 500px;
+      max-width: 520px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
@@ -85,26 +85,24 @@
 
 <div class="card">
 
-<h2>👨‍✈️📋 UN Duty Logger</h2>
+<h2>👨‍✈️📋 UN-Duty Logger</h2>
 
-<!-- DUTY -->
+<!-- DUTY SETUP -->
 <h3>🧾 Duty Setup</h3>
 
 <div class="grid">
 
 <div class="field">
-<label>Driver (UN-Onboard)</label>
+<label>Driver</label>
 <select>
-<option disabled selected>Select</option>
 <option>Mithin Mohan / SJTW-7770</option>
 <option>Nagaraj Mani / SJTW-8047</option>
 </select>
 </div>
 
 <div class="field">
-<label>Assigned Fleet</label>
+<label>Fleet</label>
 <select>
-<option disabled selected>Select</option>
 <option>SJTW-Varaha / KL30L8839</option>
 </select>
 </div>
@@ -112,7 +110,6 @@
 <div class="field">
 <label>Previous Driver</label>
 <select>
-<option disabled selected>Select</option>
 <option>Mithin Mohan</option>
 <option>Nagaraj Mani</option>
 </select>
@@ -121,7 +118,6 @@
 <div class="field">
 <label>Duty Type</label>
 <select>
-<option disabled selected>Select</option>
 <option>First Shift</option>
 <option>Second Shift</option>
 </select>
@@ -130,7 +126,6 @@
 <div class="field">
 <label>Duty Mode</label>
 <select>
-<option disabled selected>Select</option>
 <option>90°</option>
 <option>180°</option>
 <option>270°</option>
@@ -145,67 +140,100 @@
 
 </div>
 
-<!-- VEHICLE -->
-<h3>🚗 Vehicle Health</h3>
+<!-- VEHICLE CONDITION -->
+<h3>🚗 Vehicle Condition</h3>
 
 <div class="grid">
 
-<div class="field">
-<label>Exterior</label>
-<select><option>OK</option><option>Minor</option><option>Major</option></select>
+<div class="field"><label>Exterior</label><select><option>OK</option><option>Minor</option><option>Dent</option><option>Major</option></select></div>
+<div class="field"><label>Tyres</label><select><option>Good</option><option>Wear</option><option>Damaged</option></select></div>
+<div class="field"><label>Air Pressure</label><select><option>Correct</option><option>Low</option><option>High</option></select></div>
+<div class="field"><label>Cleanliness</label><select><option>Clean</option><option>Dirty</option></select></div>
+<div class="field"><label>Windshield</label><select><option>Clear</option><option>Issue</option></select></div>
+<div class="field"><label>Lights</label><select><option>OK</option><option>Fault</option></select></div>
+
 </div>
 
-<div class="field">
-<label>Tyres</label>
-<select><option>Good</option><option>Wear</option><option>Damaged</option></select>
+<!-- VEHICLE STATUS -->
+<h3>⚙️ Vehicle Status</h3>
+
+<div class="grid">
+
+<div class="field"><label>Fuel</label><select><option>Full</option><option>Half</option><option>Low</option></select></div>
+<div class="field"><label>Warnings</label><select><option>None</option><option>Minor</option><option>Critical</option></select></div>
+<div class="field"><label>Brakes</label><select><option>Good</option><option>Weak</option></select></div>
+<div class="field"><label>Horn</label><select><option>OK</option><option>Issue</option></select></div>
+<div class="field"><label>Steering</label><select><option>Smooth</option><option>Issue</option></select></div>
+<div class="field"><label>Battery</label><select><option>Good</option><option>Weak</option></select></div>
+
 </div>
 
-<div class="field">
-<label>Air Pressure</label>
-<select><option>Correct</option><option>Low</option><option>High</option></select>
+<!-- COMFORT -->
+<h3>❄️ Comfort & Visibility</h3>
+
+<div class="grid">
+
+<div class="field"><label>AC</label><select><option>Good</option><option>Low</option><option>Not working</option></select></div>
+<div class="field"><label>Wipers</label><select><option>Good</option><option>Worn</option></select></div>
+<div class="field"><label>Washer</label><select><option>Full</option><option>Low</option></select></div>
+
 </div>
 
-<div class="field">
-<label>Cleanliness</label>
-<select><option>Clean</option><option>Dirty</option></select>
-</div>
+<!-- ESSENTIALS -->
+<h3>🧰 Essentials</h3>
 
-<div class="field">
-<label>Lights</label>
-<select><option>OK</option><option>Issue</option></select>
-</div>
+<div class="grid">
 
-<div class="field">
-<label>Brakes</label>
-<select><option>Good</option><option>Weak</option></select>
-</div>
+<div class="field"><label>Engine Oil</label><select><option>Good</option><option>Low</option></select></div>
+<div class="field"><label>Coolant</label><select><option>Good</option><option>Low</option></select></div>
+<div class="field"><label>Brake Fluid</label><select><option>Good</option><option>Low</option></select></div>
 
 </div>
 
 <!-- SAFETY -->
-<h3>🛡️ Safety</h3>
+<h3>🛡️ Safety & Emergency</h3>
 
 <div class="grid">
 
-<div class="field">
-<label>Fuel Level</label>
-<select><option>Full</option><option>Low</option></select>
+<div class="field"><label>Spare Tyre</label><select><option>Good</option><option>Damaged</option></select></div>
+<div class="field"><label>Tyre Pressure</label><select><option>Correct</option><option>Low</option></select></div>
+<div class="field"><label>Tools</label><select><option>Complete</option><option>Missing</option></select></div>
+<div class="field"><label>Repair Kit</label><select><option>Available</option><option>Missing</option></select></div>
+<div class="field"><label>Air Compressor</label><select><option>Working</option><option>Faulty</option></select></div>
+<div class="field"><label>First Aid</label><select><option>Complete</option><option>Missing</option></select></div>
+<div class="field"><label>Fire Extinguisher</label><select><option>Valid</option><option>Expired</option></select></div>
+
 </div>
 
-<div class="field">
-<label>Battery</label>
-<select><option>Good</option><option>Weak</option></select>
+<!-- ASSETS -->
+<h3>📦 Vehicle Assets</h3>
+
+<div class="grid">
+
+<div class="field"><label>Mobile Holder</label><select><option>Good</option><option>Broken</option></select></div>
+<div class="field"><label>Charging</label><select><option>Working</option><option>Faulty</option></select></div>
+<div class="field"><label>Seat Cover</label><select><option>Clean</option><option>Torn</option></select></div>
+<div class="field"><label>Floor Mats</label><select><option>Clean</option><option>Dirty</option></select></div>
+
 </div>
 
-<div class="field">
-<label>Emergency Kit</label>
-<select><option>Complete</option><option>Missing</option></select>
+<!-- COMPLIANCE -->
+<h3>📄 Compliance</h3>
+
+<div class="grid">
+
+<div class="field"><label>Documents</label><select><option>All</option><option>Missing</option></select></div>
+<div class="field"><label>Keys</label><select><option>Received</option><option>Issue</option></select></div>
+
 </div>
 
-<div class="field">
-<label>Documents</label>
-<select><option>Available</option><option>Missing</option></select>
-</div>
+<!-- MANDATORY -->
+<h3>📸 Mandatory Upload</h3>
+
+<div class="grid">
+
+<div class="field"><label>Vehicle Photos</label><select><option>Yes</option><option>No</option></select></div>
+<div class="field"><label>Odometer Photo</label><select><option>Yes</option><option>No</option></select></div>
 
 </div>
 
