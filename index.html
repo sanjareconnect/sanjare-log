@@ -97,26 +97,31 @@
 
   <div class="grid">
 
+    <!-- ATTENDANCE -->
     <button class="btn" onclick="goAttendance()">
       <div class="emoji">👨‍✈️📲</div>
       UN-Attendance
     </button>
 
+    <!-- TRIP -->
     <button class="btn" onclick="goTrip()">
       <div class="emoji">🚖</div>
       Trip Log
     </button>
 
+    <!-- FUEL -->
     <button class="btn" onclick="goFuel()">
       <div class="emoji">⛽</div>
       Fuel Log
     </button>
 
-    <button class="btn empty">
-      <div class="emoji">➕</div>
-      Empty Slot 1
+    <!-- NEW LEADS -->
+    <button class="btn" onclick="goLeads()">
+      <div class="emoji">📞🚖</div>
+      UN-Leads
     </button>
 
+    <!-- EMPTY -->
     <button class="btn empty">
       <div class="emoji">➕</div>
       Empty Slot 2
@@ -153,6 +158,12 @@ function goTrip() {
 
 function goFuel() {
   window.location.href = "fuel.html";
+}
+
+function goLeads() {
+  alert("UN-Leads page not created yet");
+  // Later you can use:
+  // window.location.href = "leads.html";
 }
 
 </script>
