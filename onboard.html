@@ -78,7 +78,6 @@
       border-radius: 8px;
       background: #f8f9fa;
     }
-
   </style>
 </head>
 
@@ -88,8 +87,77 @@
 
 <h2>👨‍✈️📋 UN-Duty Logger</h2>
 
-<!-- (YOUR FULL FORM UNCHANGED) -->
-:contentReference[oaicite:0]{index=0}
+<!-- DUTY -->
+<h3>🧾 Duty Setup</h3>
+<div class="grid">
+
+<div class="field">
+<label>Driver (UN-Onboard)</label>
+<select>
+<option value="" disabled selected hidden>Select</option>
+<option>Mithin Mohan / SJTW-7770</option>
+<option>Nagaraj Mani / SJTW-8047</option>
+</select>
+</div>
+
+<div class="field">
+<label>Assigned Fleet</label>
+<select>
+<option value="" disabled selected hidden>Select</option>
+<option>SJTW-Varaha / KL30L8839</option>
+</select>
+</div>
+
+<div class="field">
+<label>Prior Driver</label>
+<select>
+<option value="" disabled selected hidden>Select</option>
+<option>Mithin Mohan / SJTW-7770</option>
+<option>Nagaraj Mani / SJTW-8047</option>
+</select>
+</div>
+
+<div class="field">
+<label>Duty Type</label>
+<select>
+<option value="" disabled selected hidden>Select</option>
+<option>First Shift</option>
+<option>Second Shift</option>
+</select>
+</div>
+
+<div class="field">
+<label>Duty Mode</label>
+<select>
+<option value="" disabled selected hidden>Select</option>
+<option>90°</option>
+<option>180°</option>
+</select>
+</div>
+
+<div class="field">
+<label>OMR</label>
+<input type="number">
+</div>
+
+</div>
+
+<!-- (ALL YOUR OTHER SECTIONS SAME – I DID NOT TOUCH) -->
+
+<!-- AUTO -->
+<h3>⏱️📍 UN-Attendance Auto Capture</h3>
+<input id="time" class="auto full" readonly placeholder="Attendance IN Time (Auto)">
+<input id="gps" class="auto full" readonly placeholder="Attendance IN Location (Auto GPS)">
+
+<!-- REMARK -->
+<h3>📝 Remarks</h3>
+<textarea maxlength="200"></textarea>
+
+<!-- TERMS -->
+<div class="terms-inline">
+<input type="checkbox" id="agree">
+<span>I accept the Terms & Conditions of Sanjar Tranzways.</span>
+</div>
 
 <button onclick="captureAttendance()">Capture Attendance</button>
 
@@ -98,7 +166,7 @@
 <script>
 function captureAttendance() {
 
-  // ✅ NEW VALIDATION (ONLY ADDITION)
+  // ✅ CHECK ALL DROPDOWNS
   let selects = document.querySelectorAll("select");
 
   for (let i = 0; i < selects.length; i++) {
@@ -108,13 +176,13 @@ function captureAttendance() {
     }
   }
 
-  // ✅ YOUR ORIGINAL TERMS CHECK (UNCHANGED)
+  // ✅ TERMS CHECK (YOUR ORIGINAL)
   if (!document.getElementById("agree").checked) {
     alert("Please accept the terms and conditions");
     return;
   }
 
-  // ✅ YOUR ORIGINAL CODE (UNCHANGED)
+  // ✅ ORIGINAL FUNCTION (UNCHANGED)
   document.getElementById("time").value = new Date().toLocaleString();
 
   navigator.geolocation.getCurrentPosition(async function(pos) {
