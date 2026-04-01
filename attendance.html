@@ -47,10 +47,6 @@
       cursor: pointer;
     }
 
-    .btn:hover {
-      background: #1558b0;
-    }
-
     .checkbox {
       margin-top: 15px;
       display: flex;
@@ -72,55 +68,49 @@
 
 <h2>🧑‍✈️ UN-Duty Logger</h2>
 
-<!-- DRIVER -->
+<!-- DROPDOWNS -->
 <label>UN-Onboard</label>
-<select id="driver">
-  <option value="">Select</option>
-  <option>Mithin Mohan / SJTW-7770</option>
-  <option>Nagaraj Mani / SJTW-8047</option>
+<select>
+  <option>Select</option>
+  <option>Mithin Mohan</option>
+  <option>Nagaraj Mani</option>
 </select>
 
 <label>Assigned Fleet</label>
-<select id="fleet">
-  <option value="">Select</option>
-  <option>SJTW-Varaha / KL30L8839</option>
+<select>
+  <option>Select</option>
+  <option>SJTW-Varaha</option>
 </select>
 
 <label>Duty Type</label>
-<select id="dutyType">
-  <option value="">Select</option>
+<select>
+  <option>Select</option>
   <option>First Shift</option>
   <option>Second Shift</option>
 </select>
 
 <label>Duty Mode</label>
-<select id="dutyMode">
-  <option value="">Select</option>
-  <option>90° (12-16 Hrs)</option>
-  <option>180° (24-28 Hrs)</option>
-  <option>270° (36-40 Hrs)</option>
-  <option>360° (48-52 Hrs)</option>
+<select>
+  <option>Select</option>
+  <option>90°</option>
+  <option>180°</option>
 </select>
 
-<label>OMR (Opening Meter Reading)</label>
-<input type="number" id="omr">
-
-<!-- MANDATORY -->
-<label>Vehicle Photo Uploaded</label>
-<select id="vehiclePhoto">
-  <option value="">Select</option>
+<label>Vehicle Photo</label>
+<select>
+  <option>Select</option>
   <option>Yes</option>
   <option>No</option>
 </select>
 
 <label>Odometer & Fuel Photo</label>
-<select id="fuelPhoto">
-  <option value="">Select</option>
+<select>
+  <option>Select</option>
   <option>Yes</option>
   <option>No</option>
 </select>
 
-<!-- AUTO CAPTURE -->
+<!-- AUTO -->
 <div class="auto-box">
   <label>Attendance IN Time (Auto)</label>
   <input type="text" id="attendanceTime" readonly>
@@ -131,16 +121,16 @@
 
 <!-- REMARK -->
 <label>Remark (Optional)</label>
-<textarea id="remarkBox" maxlength="200" placeholder="Enter remarks..."></textarea>
+<textarea id="remarkBox" maxlength="200"></textarea>
 
 <!-- TERMS -->
 <div class="checkbox">
   <input type="checkbox" id="agreeTerms">
-  <label>Selecting this means you accept terms & conditions</label>
+  <label>I accept Terms and Conditions</label>
 </div>
 
 <!-- BUTTON -->
-<button class="btn" onclick="captureAttendance()">Capture Attendance</button>
+<button class="btn" onclick="validateAndCapture()">Capture Attendance</button>
 
 <script>
 
@@ -164,45 +154,38 @@ setTime();
 setLocation();
 
 
-// VALIDATION + SUBMIT
-function captureAttendance() {
+// MAIN VALIDATION
+function validateAndCapture() {
 
   let selects = document.querySelectorAll("select");
-  let omr = document.getElementById("omr").value;
-  let time = document.getElementById("attendanceTime").value;
-  let loc = document.getElementById("attendanceLocation").value;
-  let agree = document.getElementById("agreeTerms");
 
-  // DROPDOWN CHECK
+  // CHECK ALL DROPDOWNS
   for (let i = 0; i < selects.length; i++) {
-    if (selects[i].value === "") {
-      alert("Please complete all required selections");
+    if (selects[i].value === "Select") {
+      alert("Please fill all the Mandatory Vehicle Report");
       return;
     }
   }
 
-  // OMR CHECK
-  if (omr === "") {
-    alert("Please enter Odometer Reading");
-    return;
-  }
-
-  // AUTO CHECK
-  if (time === "" || loc === "") {
-    alert("Auto time/location not captured");
-    return;
-  }
-
   // TERMS CHECK
+  let agree = document.getElementById("agreeTerms");
   if (!agree.checked) {
-    alert("Please accept Terms & Conditions");
+    alert("Please accept Terms and Conditions");
     return;
   }
 
-  // SUCCESS
+  // ✅ SUCCESS → RUN ORIGINAL FLOW
+  captureAttendance();
+}
+
+
+// YOUR ORIGINAL FUNCTION
+function captureAttendance() {
+
   alert("Attendance Captured Successfully");
 
-  location.reload();
+  // your existing animation / submit logic stays here
+
 }
 
 </script>
