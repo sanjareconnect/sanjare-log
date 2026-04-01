@@ -1,64 +1,100 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>UN-Duty Logger</title>
+  <title>Attendance Log</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
-      font-family: Arial;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      padding: 15px;
-      background: linear-gradient(135deg, #eef5ff, #ffffff);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #e6f0ff, #f8fbff);
+    }
+
+    .container {
+      width: 95%;
+      max-width: 380px;
+      text-align: center;
     }
 
     h2 {
-      text-align: center;
       color: #1a2b4c;
+      margin-bottom: 25px;
+      font-weight: 600;
+      font-size: 20px;
     }
 
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 12px;
-    }
-
-    select, input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-    }
-
-    textarea {
-      resize: none;
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
 
     .btn {
-      margin-top: 20px;
-      padding: 14px;
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      background: #1a73e8;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .checkbox {
-      margin-top: 15px;
       display: flex;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      gap: 10px;
+
+      padding: 22px;
+      border-radius: 18px;
+      border: none;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      color: white;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+
+      transition: 0.25s;
     }
 
-    .auto-box {
-      background: #f1f5ff;
-      padding: 10px;
-      border-radius: 10px;
-      margin-top: 10px;
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .emoji {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .onboard {
+      background: linear-gradient(135deg, #28a745, #218838);
+    }
+
+    .swap {
+      background: linear-gradient(135deg, #17a2b8, #117a8b);
+    }
+
+    .extend {
+      background: linear-gradient(135deg, #ffc107, #e0a800);
+      color: #000;
+    }
+
+    .deboard {
+      background: linear-gradient(135deg, #dc3545, #c82333);
+    }
+
+    .back {
+      margin-top: 25px;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: #dbe7ff;
+      color: #1a2b4c;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .back:hover {
+      background: #c9dcff;
     }
 
   </style>
@@ -66,126 +102,62 @@
 
 <body>
 
-<h2>🧑‍✈️ UN-Duty Logger</h2>
+<div class="container">
 
-<!-- DROPDOWNS -->
-<label>UN-Onboard</label>
-<select>
-  <option>Select</option>
-  <option>Mithin Mohan</option>
-  <option>Nagaraj Mani</option>
-</select>
+  <h2>🧑‍✈️ Urban Navigator Attendance Log</h2>
 
-<label>Assigned Fleet</label>
-<select>
-  <option>Select</option>
-  <option>SJTW-Varaha</option>
-</select>
+  <div class="grid">
 
-<label>Duty Type</label>
-<select>
-  <option>Select</option>
-  <option>First Shift</option>
-  <option>Second Shift</option>
-</select>
+    <!-- ONBOARD -->
+    <button class="btn onboard" onclick="goOnboard()">
+      <div class="emoji">🧑‍✈️📲🟢</div>
+      Onboard
+    </button>
 
-<label>Duty Mode</label>
-<select>
-  <option>Select</option>
-  <option>90°</option>
-  <option>180°</option>
-</select>
+    <!-- TRIP SWAP -->
+    <button class="btn swap" onclick="goSwap()">
+      <div class="emoji">🔄🚖</div>
+      Trip Swap
+    </button>
 
-<label>Vehicle Photo</label>
-<select>
-  <option>Select</option>
-  <option>Yes</option>
-  <option>No</option>
-</select>
+    <!-- DUTY EXTEND -->
+    <button class="btn extend" onclick="goExtend()">
+      <div class="emoji">⏱️➕</div>
+      Duty Extend
+    </button>
 
-<label>Odometer & Fuel Photo</label>
-<select>
-  <option>Select</option>
-  <option>Yes</option>
-  <option>No</option>
-</select>
+    <!-- DEBOARD -->
+    <button class="btn deboard" onclick="goDeboard()">
+      <div class="emoji">🧑‍✈️📲🔴</div>
+      Deboard
+    </button>
 
-<!-- AUTO -->
-<div class="auto-box">
-  <label>Attendance IN Time (Auto)</label>
-  <input type="text" id="attendanceTime" readonly>
+  </div>
 
-  <label>Attendance IN Location (Auto GPS)</label>
-  <input type="text" id="attendanceLocation" readonly>
+  <button class="back" onclick="goBack()">⬅ Back</button>
+
 </div>
-
-<!-- REMARK -->
-<label>Remark (Optional)</label>
-<textarea id="remarkBox" maxlength="200"></textarea>
-
-<!-- TERMS -->
-<div class="checkbox">
-  <input type="checkbox" id="agreeTerms">
-  <label>I accept Terms and Conditions</label>
-</div>
-
-<!-- BUTTON -->
-<button class="btn" onclick="validateAndCapture()">Capture Attendance</button>
 
 <script>
 
-// AUTO TIME
-function setTime() {
-  let now = new Date();
-  document.getElementById("attendanceTime").value = now.toLocaleString();
+function goOnboard() {
+  window.location.href = "onboard.html";
 }
 
-// AUTO GPS
-function setLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(pos) {
-      document.getElementById("attendanceLocation").value =
-        pos.coords.latitude + ", " + pos.coords.longitude;
-    });
-  }
+function goSwap() {
+  alert("Trip Swap page not created yet");
 }
 
-setTime();
-setLocation();
-
-
-// MAIN VALIDATION
-function validateAndCapture() {
-
-  let selects = document.querySelectorAll("select");
-
-  // CHECK ALL DROPDOWNS
-  for (let i = 0; i < selects.length; i++) {
-    if (selects[i].value === "Select") {
-      alert("Please fill all the Mandatory Vehicle Report");
-      return;
-    }
-  }
-
-  // TERMS CHECK
-  let agree = document.getElementById("agreeTerms");
-  if (!agree.checked) {
-    alert("Please accept Terms and Conditions");
-    return;
-  }
-
-  // ✅ SUCCESS → RUN ORIGINAL FLOW
-  captureAttendance();
+function goExtend() {
+  alert("Duty Extend page not created yet");
 }
 
+function goDeboard() {
+  window.location.href = "deboard.html";
+}
 
-// YOUR ORIGINAL FUNCTION
-function captureAttendance() {
-
-  alert("Attendance Captured Successfully");
-
-  // your existing animation / submit logic stays here
-
+function goBack() {
+  window.location.href = "index.html";
 }
 
 </script>
