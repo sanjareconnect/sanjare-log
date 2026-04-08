@@ -26,6 +26,15 @@
       margin-bottom: 20px;
     }
 
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 5px;
+      font-size: 13px;
+      color: #333;
+      font-weight: 600;
+    }
+
     select, input {
       width: 100%;
       padding: 12px;
@@ -46,8 +55,8 @@
       cursor: pointer;
     }
 
-    button:active {
-      transform: scale(0.97);
+    button:hover {
+      opacity: 0.95;
     }
 
     .animation {
@@ -78,23 +87,27 @@
 
   <h2>🔄 Trip Swapper</h2>
 
-  <!-- DROPDOWN -->
+  <!-- UN NAME -->
+  <label>Trip Swapper UN Name:</label>
   <select id="driver">
-    <option value="">Enter T-Swapper Code</option>
+    <option value="">Select UN Name</option>
     <option>Mithin Mohan / SJTW-7770</option>
     <option>Nagaraj Mani / SJTW-8047</option>
   </select>
 
-  <!-- CMR INPUT -->
+  <!-- SWAPPER CODE -->
+  <label>T-Swapper Code:</label>
+  <input type="text" id="code" placeholder="Enter Code">
+
+  <!-- CMR -->
+  <label>CMR:</label>
   <input type="number" id="cmr" placeholder="Enter CMR Number">
 
   <!-- BUTTON -->
-  <button id="fetchBtn">T-Swap Fetch Details</button>
+  <button onclick="startProcess()">T-Swap Fetch Details</button>
 
   <!-- ANIMATION -->
-  <div class="animation" id="animationBox">
-    👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢
-  </div>
+  <div class="animation" id="animationBox"></div>
 
   <!-- BLINK TEXT -->
   <div class="blink" id="loadingText">
@@ -105,39 +118,39 @@
 
 <script>
 
-let timer;
+function startProcess() {
 
-// PRESS AND HOLD START
-document.getElementById("fetchBtn").addEventListener("mousedown", startHold);
-document.getElementById("fetchBtn").addEventListener("touchstart", startHold);
+  let driver = document.getElementById("driver").value;
+  let code = document.getElementById("code").value;
+  let cmr = document.getElementById("cmr").value;
 
-// RELEASE CANCEL
-document.getElementById("fetchBtn").addEventListener("mouseup", cancelHold);
-document.getElementById("fetchBtn").addEventListener("mouseleave", cancelHold);
-document.getElementById("fetchBtn").addEventListener("touchend", cancelHold);
+  // VALIDATION
+  if (driver === "" || code === "" || cmr === "") {
+    alert("Please fill all fields");
+    return;
+  }
 
-function startHold() {
-  timer = setTimeout(runAnimation, 3000); // 3 seconds hold
-}
-
-function cancelHold() {
-  clearTimeout(timer);
-}
-
-function runAnimation() {
   const anim = document.getElementById("animationBox");
   const text = document.getElementById("loadingText");
 
+  // SHOW
   anim.style.display = "block";
   text.style.display = "block";
 
-  // Forward animation
+  // FORWARD (0–3 sec)
   anim.innerHTML = "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢";
 
   setTimeout(() => {
-    // Reverse animation
+    // REVERSE (3–6 sec)
     anim.innerHTML = "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️";
-  }, 1500);
+  }, 3000);
+
+  setTimeout(() => {
+    // HIDE AFTER 6 sec
+    anim.style.display = "none";
+    text.style.display = "none";
+  }, 6000);
+
 }
 
 </script>
