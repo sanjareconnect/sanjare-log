@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trip Swapper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #e6f0ff, #f8fbff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 95%;
+      max-width: 380px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #1a2b4c;
+      margin-bottom: 20px;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0ca678, #087f5b);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .animation {
+      margin-top: 20px;
+      font-size: 22px;
+      display: none;
+    }
+
+    .blink {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #555;
+      display: none;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0% {opacity: 1;}
+      50% {opacity: 0.3;}
+      100% {opacity: 1;}
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>🔄 Trip Swapper</h2>
+
+  <!-- DROPDOWN -->
+  <select id="driver">
+    <option value="">Enter T-Swapper Code</option>
+    <option>Mithin Mohan / SJTW-7770</option>
+    <option>Nagaraj Mani / SJTW-8047</option>
+  </select>
+
+  <!-- CMR INPUT -->
+  <input type="number" id="cmr" placeholder="Enter CMR Number">
+
+  <!-- BUTTON -->
+  <button id="fetchBtn">T-Swap Fetch Details</button>
+
+  <!-- ANIMATION -->
+  <div class="animation" id="animationBox">
+    👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢
+  </div>
+
+  <!-- BLINK TEXT -->
+  <div class="blink" id="loadingText">
+    Please wait Fetching data from Sanjar-E-Smart Grid Control Station
+  </div>
+
+</div>
+
+<script>
+
+let timer;
+
+// PRESS AND HOLD START
+document.getElementById("fetchBtn").addEventListener("mousedown", startHold);
+document.getElementById("fetchBtn").addEventListener("touchstart", startHold);
+
+// RELEASE CANCEL
+document.getElementById("fetchBtn").addEventListener("mouseup", cancelHold);
+document.getElementById("fetchBtn").addEventListener("mouseleave", cancelHold);
+document.getElementById("fetchBtn").addEventListener("touchend", cancelHold);
+
+function startHold() {
+  timer = setTimeout(runAnimation, 3000); // 3 seconds hold
+}
+
+function cancelHold() {
+  clearTimeout(timer);
+}
+
+function runAnimation() {
+  const anim = document.getElementById("animationBox");
+  const text = document.getElementById("loadingText");
+
+  anim.style.display = "block";
+  text.style.display = "block";
+
+  // Forward animation
+  anim.innerHTML = "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢";
+
+  setTimeout(() => {
+    // Reverse animation
+    anim.innerHTML = "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️";
+  }, 1500);
+}
+
+</script>
+
+</body>
+</html>
