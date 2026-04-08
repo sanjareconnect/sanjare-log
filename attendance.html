@@ -39,19 +39,14 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-
       padding: 22px;
       border-radius: 18px;
       border: none;
-
       font-size: 14px;
       font-weight: 600;
-
       cursor: pointer;
-
       color: white;
       box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-
       transition: 0.25s;
     }
 
@@ -96,7 +91,6 @@
     .back:hover {
       background: #c9dcff;
     }
-
   </style>
 </head>
 
@@ -108,25 +102,22 @@
 
   <div class="grid">
 
-    <!-- ONBOARD -->
     <button class="btn onboard" onclick="goOnboard()">
       <div class="emoji">🧑‍✈️📲🟢</div>
       Onboard
     </button>
 
-    <!-- TRIP SWAP -->
+    <!-- FIXED HERE -->
     <button class="btn swap" onclick="goSwap()">
       <div class="emoji">🔄🚖</div>
       Trip Swap
     </button>
 
-    <!-- DUTY EXTEND -->
     <button class="btn extend" onclick="goExtend()">
       <div class="emoji">⏱️➕</div>
       Duty Extend
     </button>
 
-    <!-- DEBOARD -->
     <button class="btn deboard" onclick="goDeboard()">
       <div class="emoji">🧑‍✈️📲🔴</div>
       Deboard
@@ -144,8 +135,9 @@ function goOnboard() {
   window.location.href = "onboard.html";
 }
 
+/* ✅ THIS IS THE MAIN CHANGE */
 function goSwap() {
-  alert("Trip Swap page not created yet");
+  window.location.href = "Tripswap.html";
 }
 
 function goExtend() {
