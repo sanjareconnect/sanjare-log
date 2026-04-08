@@ -59,12 +59,14 @@
       margin-bottom: 8px;
     }
 
+    /* 🔄 Trip-Swapper (Elite Teal Action) */
     .swapper {
-      background: linear-gradient(135deg, #007bff, #004aad);
+      background: linear-gradient(135deg, #0ca678, #087f5b);
     }
 
+    /* 📥 Trip-Swapee (Elite Amber Receive) */
     .swapee {
-      background: linear-gradient(135deg, #6f42c1, #4b1fa6);
+      background: linear-gradient(135deg, #f59f00, #d9480f);
     }
 
     .back {
@@ -93,13 +95,13 @@
 
   <div class="grid">
 
-    <!-- ELITE TRIP SWAPPER -->
+    <!-- TRIP SWAPPER -->
     <button class="btn swapper" onclick="goSwapper()">
       <div class="emoji">👨‍✈️⇄🚖</div>
       Trip-Swapper
     </button>
 
-    <!-- ELITE TRIP SWAPEE -->
+    <!-- TRIP SWAPEE -->
     <button class="btn swapee" onclick="goSwapee()">
       <div class="emoji">🚖⬇️👨‍✈️</div>
       Trip-Swapee
@@ -114,11 +116,11 @@
 <script>
 
 function goSwapper() {
-  window.location.href = "swapper.html";   // 👈 create this file next
+  window.location.href = "swapper.html";
 }
 
 function goSwapee() {
-  window.location.href = "swapee.html";   // 👈 create this file next
+  window.location.href = "swapee.html";
 }
 
 function goBack() {
