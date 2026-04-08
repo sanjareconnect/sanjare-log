@@ -78,6 +78,23 @@
       50% {opacity: 0.3;}
       100% {opacity: 1;}
     }
+
+    /* RESULT BOX */
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: left;
+      display: none;
+    }
+
+    .result p {
+      margin: 6px 0;
+      font-size: 14px;
+    }
+
   </style>
 </head>
 
@@ -95,7 +112,7 @@
     <option>Nagaraj Mani / SJTW-8047</option>
   </select>
 
-  <!-- SWAPPER CODE -->
+  <!-- CODE -->
   <label>T-Swapper Code:</label>
   <input type="text" id="code" placeholder="Enter Code">
 
@@ -104,7 +121,7 @@
   <input type="number" id="cmr" placeholder="Enter CMR Number">
 
   <!-- BUTTON -->
-  <button onclick="startProcess()">T-Swap Fetch Details</button>
+  <button onclick="startProcess()" id="fetchBtn">T-Swap Fetch Details</button>
 
   <!-- ANIMATION -->
   <div class="animation" id="animationBox"></div>
@@ -112,6 +129,13 @@
   <!-- BLINK TEXT -->
   <div class="blink" id="loadingText">
     Please wait Fetching data from Sanjar-E-Smart Grid Control Station
+  </div>
+
+  <!-- RESULT DISPLAY -->
+  <div class="result" id="resultBox">
+    <p><b>T-Swapper UN:</b> <span id="resSwapper"></span></p>
+    <p><b>T-Swapee:</b> <span id="resSwapee"></span></p>
+    <p><b>Trip Pickup:</b> <span id="resPickup"></span></p>
   </div>
 
 </div>
@@ -124,7 +148,6 @@ function startProcess() {
   let code = document.getElementById("code").value;
   let cmr = document.getElementById("cmr").value;
 
-  // VALIDATION
   if (driver === "" || code === "" || cmr === "") {
     alert("Please fill all fields");
     return;
@@ -132,23 +155,50 @@ function startProcess() {
 
   const anim = document.getElementById("animationBox");
   const text = document.getElementById("loadingText");
+  const resultBox = document.getElementById("resultBox");
 
-  // SHOW
+  // RESET RESULT
+  resultBox.style.display = "none";
+
+  // SHOW ANIMATION
   anim.style.display = "block";
   text.style.display = "block";
 
-  // FORWARD (0–3 sec)
+  // FORWARD
   anim.innerHTML = "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢";
 
   setTimeout(() => {
-    // REVERSE (3–6 sec)
+    // REVERSE
     anim.innerHTML = "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️";
   }, 3000);
 
   setTimeout(() => {
-    // HIDE AFTER 6 sec
+
+    fetch("https://script.google.com/macros/s/AKfycby8anaeBo0RF6RNpT0yIn_KGP9DudFH4K9L9NxoqGBxS3Ze87QGEanscx0TQiTYvl_VVQ/exec?code=" + code)
+      .then(res => res.json())
+      .then(data => {
+
+        if (data.status === "found") {
+
+          document.getElementById("resSwapper").innerText = data.swapper;
+          document.getElementById("resSwapee").innerText = data.swapee;
+          document.getElementById("resPickup").innerText = data.pickup;
+
+          resultBox.style.display = "block";
+
+        } else {
+          alert("No matching T-Swapper Code found");
+        }
+
+      })
+      .catch(err => {
+        alert("Error connecting to control station");
+      });
+
+    // HIDE ANIMATION
     anim.style.display = "none";
     text.style.display = "none";
+
   }, 6000);
 
 }
