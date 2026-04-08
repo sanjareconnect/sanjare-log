@@ -1,70 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Trip Swap</title>
+  <title>Trip Swap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #e6f0ff, #f8fbff);
+    }
 
-        .container {
-            display: flex;
-            gap: 40px;
-        }
+    .container {
+      width: 95%;
+      max-width: 380px;
+      text-align: center;
+    }
 
-        .box {
-            width: 200px;
-            height: 150px;
-            background-color: #4CAF50;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+    h2 {
+      color: #1a2b4c;
+      margin-bottom: 25px;
+      font-weight: 600;
+      font-size: 20px;
+    }
 
-        .box:hover {
-            background-color: #45a049;
-            transform: scale(1.05);
-        }
-    </style>
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      border-radius: 18px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      transition: 0.25s;
+    }
+
+    .btn:hover {
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    .emoji {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .swapper {
+      background: linear-gradient(135deg, #007bff, #004aad);
+    }
+
+    .swapee {
+      background: linear-gradient(135deg, #6f42c1, #4b1fa6);
+    }
+
+    .back {
+      margin-top: 25px;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: #dbe7ff;
+      color: #1a2b4c;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .back:hover {
+      background: #c9dcff;
+    }
+  </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <!-- Trip Swapper Box -->
-        <div class="box" onclick="goToSwapper()">
-            Trip Swapper
-        </div>
+<div class="container">
 
-        <!-- Trip Swappee Box -->
-        <div class="box" onclick="goToSwappee()">
-            Trip Swappee
-        </div>
-    </div>
+  <h2>🔄 Trip Swap Selection</h2>
 
-    <script>
-        function goToSwapper() {
-            window.location.href = "T-Swapper.html";
-        }
+  <div class="grid">
 
-        function goToSwappee() {
-            window.location.href = "T-Swappee.html";
-        }
-    </script>
+    <!-- ELITE TRIP SWAPPER -->
+    <button class="btn swapper" onclick="goSwapper()">
+      <div class="emoji">👨‍✈️⇄🚖</div>
+      Trip-Swapper
+    </button>
+
+    <!-- ELITE TRIP SWAPEE -->
+    <button class="btn swapee" onclick="goSwapee()">
+      <div class="emoji">🚖⬇️👨‍✈️</div>
+      Trip-Swapee
+    </button>
+
+  </div>
+
+  <button class="back" onclick="goBack()">⬅ Back</button>
+
+</div>
+
+<script>
+
+function goSwapper() {
+  window.location.href = "swapper.html";   // 👈 create this file next
+}
+
+function goSwapee() {
+  window.location.href = "swapee.html";   // 👈 create this file next
+}
+
+function goBack() {
+  window.location.href = "attendance.html";
+}
+
+</script>
 
 </body>
 </html>
