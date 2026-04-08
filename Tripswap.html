@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trip Swap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #e6f0ff, #f8fbff);
+    }
+
+    .container {
+      width: 95%;
+      max-width: 380px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #1a2b4c;
+      margin-bottom: 25px;
+      font-weight: 600;
+      font-size: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      padding: 22px;
+      border-radius: 18px;
+      border: none;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      color: white;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+
+      transition: 0.25s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .emoji {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .swapper {
+      background: linear-gradient(135deg, #007bff, #0056b3);
+    }
+
+    .swapee {
+      background: linear-gradient(135deg, #6f42c1, #4e2a8e);
+    }
+
+    .back {
+      margin-top: 25px;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: #dbe7ff;
+      color: #1a2b4c;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .back:hover {
+      background: #c9dcff;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>🔄 Trip Swap Selection</h2>
+
+  <div class="grid">
+
+    <!-- TRIP SWAPPER -->
+    <button class="btn swapper" onclick="goSwapper()">
+      <div class="emoji">🔄👤</div>
+      Trip-Swapper
+    </button>
+
+    <!-- TRIP SWAPEE -->
+    <button class="btn swapee" onclick="goSwapee()">
+      <div class="emoji">👤📥</div>
+      Trip-Swapee
+    </button>
+
+  </div>
+
+  <button class="back" onclick="goBack()">⬅ Back</button>
+
+</div>
+
+<script>
+
+function goSwapper() {
+  alert("Trip-Swapper page not created yet");
+  // later you can redirect:
+  // window.location.href = "swapper.html";
+}
+
+function goSwapee() {
+  alert("Trip-Swapee page not created yet");
+  // later you can redirect:
+  // window.location.href = "swapee.html";
+}
+
+function goBack() {
+  window.location.href = "attendance.html";
+}
+
+</script>
+
+</body>
+</html>
