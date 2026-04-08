@@ -39,37 +39,32 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-
-      padding: 22px;
+      padding: 24px;
       border-radius: 18px;
       border: none;
-
       font-size: 14px;
       font-weight: 600;
-
       cursor: pointer;
-
       color: white;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       transition: 0.25s;
     }
 
     .btn:hover {
-      transform: translateY(-3px);
+      transform: translateY(-4px) scale(1.02);
     }
 
     .emoji {
-      font-size: 28px;
-      margin-bottom: 6px;
+      font-size: 32px;
+      margin-bottom: 8px;
     }
 
     .swapper {
-      background: linear-gradient(135deg, #007bff, #0056b3);
+      background: linear-gradient(135deg, #007bff, #004aad);
     }
 
     .swapee {
-      background: linear-gradient(135deg, #6f42c1, #4e2a8e);
+      background: linear-gradient(135deg, #6f42c1, #4b1fa6);
     }
 
     .back {
@@ -98,15 +93,15 @@
 
   <div class="grid">
 
-    <!-- TRIP SWAPPER -->
+    <!-- ELITE TRIP SWAPPER -->
     <button class="btn swapper" onclick="goSwapper()">
-      <div class="emoji">🔄👤</div>
+      <div class="emoji">👨‍✈️⇄🚖</div>
       Trip-Swapper
     </button>
 
-    <!-- TRIP SWAPEE -->
+    <!-- ELITE TRIP SWAPEE -->
     <button class="btn swapee" onclick="goSwapee()">
-      <div class="emoji">👤📥</div>
+      <div class="emoji">🚖⬇️👨‍✈️</div>
       Trip-Swapee
     </button>
 
@@ -120,14 +115,10 @@
 
 function goSwapper() {
   alert("Trip-Swapper page not created yet");
-  // later you can redirect:
-  // window.location.href = "swapper.html";
 }
 
 function goSwapee() {
   alert("Trip-Swapee page not created yet");
-  // later you can redirect:
-  // window.location.href = "swapee.html";
 }
 
 function goBack() {
