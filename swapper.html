@@ -55,19 +55,14 @@
       cursor: pointer;
     }
 
-    /* 🔥 BUFFER ANIMATION */
-    .animation {
-      margin-top: 20px;
-      font-size: 24px;
-      display: none;
-      letter-spacing: 4px;
-      animation: flow 1s infinite linear;
+    button:hover {
+      opacity: 0.95;
     }
 
-    @keyframes flow {
-      0% { letter-spacing: 2px; opacity: 0.6; }
-      50% { letter-spacing: 8px; opacity: 1; }
-      100% { letter-spacing: 2px; opacity: 0.6; }
+    .animation {
+      margin-top: 20px;
+      font-size: 22px;
+      display: none;
     }
 
     .blink {
@@ -100,7 +95,7 @@
     <option>Nagaraj Mani / SJTW-8047</option>
   </select>
 
-  <!-- CODE -->
+  <!-- SWAPPER CODE -->
   <label>T-Swapper Code:</label>
   <input type="text" id="code" placeholder="Enter Code">
 
@@ -129,6 +124,7 @@ function startProcess() {
   let code = document.getElementById("code").value;
   let cmr = document.getElementById("cmr").value;
 
+  // VALIDATION
   if (driver === "" || code === "" || cmr === "") {
     alert("Please fill all fields");
     return;
@@ -137,18 +133,20 @@ function startProcess() {
   const anim = document.getElementById("animationBox");
   const text = document.getElementById("loadingText");
 
+  // SHOW
   anim.style.display = "block";
   text.style.display = "block";
 
-  // 🔄 FORWARD FLOW (3 sec)
-  anim.innerHTML = "👨‍✈️ ➤➤➤ 📱 ➤➤➤ ☁️ ➤➤➤ 🏢";
+  // FORWARD (0–3 sec)
+  anim.innerHTML = "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢";
 
   setTimeout(() => {
-    // 🔄 REVERSE FLOW (3 sec)
-    anim.innerHTML = "🏢 ➤➤➤ ☁️ ➤➤➤ 📱 ➤➤➤ 👨‍✈️";
+    // REVERSE (3–6 sec)
+    anim.innerHTML = "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️";
   }, 3000);
 
   setTimeout(() => {
+    // HIDE AFTER 6 sec
     anim.style.display = "none";
     text.style.display = "none";
   }, 6000);
