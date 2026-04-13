@@ -79,12 +79,6 @@
       display: none;
       text-align: left;
     }
-
-    .result p {
-      margin: 6px 0;
-      font-size: 14px;
-    }
-
   </style>
 </head>
 
@@ -102,10 +96,10 @@
   </select>
 
   <label>T-Swapper Code:</label>
-  <input type="text" id="code" placeholder="Enter Code">
+  <input type="text" id="code">
 
   <label>CMR:</label>
-  <input type="number" id="cmr" placeholder="Enter CMR Number">
+  <input type="number" id="cmr">
 
   <button onclick="startProcess()">T-Swap Fetch Details</button>
 
@@ -150,60 +144,71 @@ function startProcess() {
   anim.style.display = "block";
   text.style.display = "block";
 
-  anim.innerHTML = "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢";
+  // LOOP animation (buffer style 🔥)
+  let step = 0;
+  const animationFrames = [
+    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢",
+    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢 .",
+    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢 ..",
+    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢 ...",
+    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️",
+    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️ .",
+    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️ ..",
+    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️ ..."
+  ];
 
-  setTimeout(() => {
-    anim.innerHTML = "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️";
-  }, 3000);
+  const interval = setInterval(() => {
+    anim.innerHTML = animationFrames[step % animationFrames.length];
+    step++;
+  }, 400);
 
-  setTimeout(() => {
+  // FETCH DATA (REAL TIME)
+  fetch("https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec?code=" + encodeURIComponent(code))
+    .then(res => res.json())
+    .then(data => {
 
-    fetch("https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec?code=" + encodeURIComponent(code))
-      .then(res => res.json())
-      .then(data => {
+      clearInterval(interval); // 🛑 STOP animation
 
-        if (data.status === "found") {
+      if (data.status === "found") {
 
-          document.getElementById("resSwapper").innerText = data.swapper || "-";
-          document.getElementById("resPickup").innerText = data.pickup || "-";
-          document.getElementById("resDestination").innerText = data.destination || "-";
+        document.getElementById("resSwapper").innerText = data.swapper || "-";
+        document.getElementById("resPickup").innerText = data.pickup || "-";
+        document.getElementById("resDestination").innerText = data.destination || "-";
 
-          // ✅ DATE FORMAT FIX (FINAL)
-          let formattedTime = "-";
-          if (data.startTime && data.startTime !== "-") {
-            let dt = new Date(data.startTime);
-            formattedTime = dt.toLocaleString("en-IN", {
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true
-            });
-          }
-          document.getElementById("resStartTime").innerText = formattedTime;
-
-          document.getElementById("resSwapLocation").innerText = data.swapLocation || "-";
-          document.getElementById("resSwapee").innerText = data.swapee || "-";
-          document.getElementById("resMobile").innerText = data.mobile || "-";
-
-          resultBox.style.display = "block";
-
-        } else {
-          alert("No matching T-Swapper Code found");
+        let formattedTime = "-";
+        if (data.startTime && data.startTime !== "-") {
+          let dt = new Date(data.startTime);
+          formattedTime = dt.toLocaleString("en-IN", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+          });
         }
+        document.getElementById("resStartTime").innerText = formattedTime;
 
-      })
-      .catch(() => {
-        alert("Error connecting to control station");
-      });
+        document.getElementById("resSwapLocation").innerText = data.swapLocation || "-";
+        document.getElementById("resSwapee").innerText = data.swapee || "-";
+        document.getElementById("resMobile").innerText = data.mobile || "-";
 
-    // HIDE animation
-    anim.style.display = "none";
-    text.style.display = "none";
+        resultBox.style.display = "block";
 
-  }, 6000);
+      } else {
+        alert("No matching T-Swapper Code found");
+      }
+
+    })
+    .catch(() => {
+      clearInterval(interval);
+      alert("Error connecting to control station");
+    })
+    .finally(() => {
+      anim.style.display = "none";
+      text.style.display = "none";
+    });
 }
 
 </script>
