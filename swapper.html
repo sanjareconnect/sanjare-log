@@ -18,88 +18,43 @@
     .container {
       width: 95%;
       max-width: 380px;
-      text-align: center;
-    }
-
-    h2 {
-      color: #1a2b4c;
-      margin-bottom: 20px;
     }
 
     label {
-      display: block;
-      text-align: left;
-      margin-bottom: 5px;
       font-size: 13px;
       font-weight: 600;
+      display: block;
+      margin-top: 10px;
     }
 
-    select, input {
+    input, select, button {
       width: 100%;
       padding: 12px;
-      margin-bottom: 15px;
+      margin-top: 5px;
       border-radius: 10px;
       border: 1px solid #ccc;
     }
 
     button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: none;
-      background: linear-gradient(135deg, #0ca678, #087f5b);
+      background: linear-gradient(135deg,#0ca678,#087f5b);
       color: white;
       font-weight: 600;
-      cursor: pointer;
+    }
+
+    .result, .consent, .jobBox, .swapExtra {
+      display: none;
+      margin-top: 15px;
+      background: white;
+      padding: 12px;
+      border-radius: 10px;
     }
 
     .animation {
-      margin-top: 20px;
-      font-size: 22px;
-      display: none;
-    }
-
-    .blink {
+      text-align: center;
+      font-size: 20px;
       margin-top: 10px;
-      font-size: 12px;
-      color: #666;
       display: none;
-      animation: blink 1s infinite;
     }
-
-    @keyframes blink {
-      50% { opacity: 0.3; }
-    }
-
-    .result {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 12px;
-      background: white;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      display: none;
-      text-align: left;
-    }
-
-    .result p {
-      margin: 5px 0;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .consent {
-      display: none;
-      margin-top: 15px;
-      text-align: left;
-      font-size: 13px;
-    }
-
-    /* NEW SECTION */
-    .jobBox {
-      display: none;
-      margin-top: 10px;
-    }
-
   </style>
 </head>
 
@@ -107,110 +62,127 @@
 
 <div class="container">
 
-  <h2>🔄 Trip Swapper</h2>
+<h3>🔄 Trip Swapper</h3>
 
-  <label>Trip Swapper UN Name:</label>
-  <select id="driver">
-    <option value="">Select</option>
-    <option>Mithin Mohan / SJTW-7770</option>
-    <option>Nagaraj Mani / SJTW-8047</option>
-  </select>
+<select id="driver">
+<option value="">Select</option>
+<option>Mithin Mohan / SJTW-7770</option>
+<option>Nagaraj Mani / SJTW-8047</option>
+</select>
 
-  <label>T-Swapper Code:</label>
-  <input type="text" id="code">
+<input id="code" placeholder="T-Swapper Code">
+<input id="cmr" placeholder="CMR">
 
-  <label>CMR:</label>
-  <input type="number" id="cmr">
+<button onclick="startProcess()">T-Swap Fetch Details</button>
 
-  <button onclick="startProcess()">T-Swap Fetch Details</button>
+<div id="anim" class="animation"></div>
 
-  <div class="animation" id="animationBox"></div>
+<div class="result" id="resultBox">
+<p><b>Swapper:</b> <span id="resSwapper"></span></p>
+<p><b>Pickup:</b> <span id="resPickup"></span></p>
+<p><b>Destination:</b> <span id="resDestination"></span></p>
+<p><b>Start:</b> <span id="resStartTime"></span></p>
+<p><b>Swap:</b> <span id="resSwapLocation"></span></p>
+<p><b>Swapee:</b> <span id="resSwapee"></span></p>
+<p><b>Mobile:</b> <span id="resMobile"></span></p>
+</div>
 
-  <div class="blink" id="loadingText">
-    Please wait Fetching data from Sanjar-E-Smart Grid Control Station - Do not refresh the page
-  </div>
+<div class="consent" id="consentBox">
+<input type="checkbox" id="acceptCheck"> I accept the swap
+</div>
 
-  <div class="result" id="resultBox">
-    <p><b>T-Swapper UN:</b> <span id="resSwapper"></span></p>
-    <p><b>Trip Pickup:</b> <span id="resPickup"></span></p>
-    <p><b>Trip Destination:</b> <span id="resDestination"></span></p>
-    <p><b>Trip Start Time:</b> <span id="resStartTime"></span></p>
-    <p><b>Swap Location:</b> <span id="resSwapLocation"></span></p>
-    <p><b>T-Swapee Name:</b> <span id="resSwapee"></span></p>
-    <p><b>T-Swapee Mobile:</b> <span id="resMobile"></span></p>
-  </div>
+<!-- UN JOB -->
+<div class="jobBox" id="jobBox">
+<label>UN-Job No</label>
+<input id="jobNo">
+</div>
 
-  <!-- ✅ CONSENT -->
-  <div class="consent" id="consentBox">
-    <label>
-      <input type="checkbox" id="acceptCheck">
-      I accept the above swapping and agree to all terms and conditions
-    </label>
-  </div>
+<!-- NEW SECTION -->
+<div class="swapExtra" id="swapExtra">
 
-  <!-- ✅ NEW UN-JOB NO BOX -->
-  <div class="jobBox" id="jobBox">
-    <label>UN-Job No:</label>
-    <input type="text" id="jobNo" placeholder="Enter UN-Job No">
-  </div>
+<label>Swap Time</label>
+<input id="swapTime" readonly>
+
+<label>Swap Location</label>
+<input id="swapGPS" readonly>
+
+<button onclick="swapChecker()">T-Swap Checker</button>
+
+<div id="checkAnim" class="animation"></div>
+
+</div>
 
 </div>
 
 <script>
 
-function startProcess() {
+function startProcess(){
 
-  let driver = document.getElementById("driver").value;
-  let code = document.getElementById("code").value.trim();
-  let cmr = document.getElementById("cmr").value;
+let code=document.getElementById("code").value;
 
-  if (driver === "" || code === "" || cmr === "") {
-    alert("Please fill all fields");
-    return;
-  }
+let anim=document.getElementById("anim");
+anim.style.display="block";
 
-  const anim = document.getElementById("animationBox");
-  const text = document.getElementById("loadingText");
+let frames=["👨‍✈️➡️📱➡️☁️➡️🏢","🏢➡️☁️➡️📱➡️👨‍✈️"];
+let i=0;
+let interval=setInterval(()=>{ anim.innerHTML=frames[i++%2]; },400);
 
-  document.getElementById("resultBox").style.display = "none";
-  document.getElementById("consentBox").style.display = "none";
-  document.getElementById("jobBox").style.display = "none";
+fetch("https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec?code="+code)
+.then(r=>r.json())
+.then(d=>{
+clearInterval(interval);
+anim.style.display="none";
 
-  anim.style.display = "block";
-  text.style.display = "block";
+if(d.status==="found"){
 
-  let frames = ["👨‍✈️➡️📱➡️☁️➡️🏢","🏢➡️☁️➡️📱➡️👨‍✈️"];
-  let i = 0;
-  let interval = setInterval(()=>{anim.innerHTML=frames[i++%2];},400);
+document.getElementById("resSwapper").innerText=d.swapper;
+document.getElementById("resPickup").innerText=d.pickup;
+document.getElementById("resDestination").innerText=d.destination;
 
-  fetch("https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec?code="+code)
-  .then(res=>res.json())
-  .then(data=>{
+let dt=new Date(d.startTime);
+document.getElementById("resStartTime").innerText=dt.toLocaleString();
 
-    clearInterval(interval);
+document.getElementById("resSwapLocation").innerText=d.swapLocation;
+document.getElementById("resSwapee").innerText=d.swapee;
+document.getElementById("resMobile").innerText=d.mobile;
 
-    if(data.status==="found"){
+document.getElementById("resultBox").style.display="block";
+document.getElementById("consentBox").style.display="block";
+document.getElementById("jobBox").style.display="block";
+document.getElementById("swapExtra").style.display="block";
 
-      document.getElementById("resSwapper").innerText=data.swapper;
-      document.getElementById("resPickup").innerText=data.pickup;
-      document.getElementById("resDestination").innerText=data.destination;
+}
+});
+}
 
-      let dt=new Date(data.startTime);
-      document.getElementById("resStartTime").innerText=dt.toLocaleString();
+function swapChecker(){
 
-      document.getElementById("resSwapLocation").innerText=data.swapLocation;
-      document.getElementById("resSwapee").innerText=data.swapee;
-      document.getElementById("resMobile").innerText=data.mobile;
+if(!document.getElementById("acceptCheck").checked){
+alert("Please accept the terms and conditions");
+return;
+}
 
-      document.getElementById("resultBox").style.display="block";
-      document.getElementById("consentBox").style.display="block";
-      document.getElementById("jobBox").style.display="block"; // 🔥 SHOW
+let anim=document.getElementById("checkAnim");
+anim.style.display="block";
 
-    } else {
-      alert("No matching T-Swapper Code found");
-    }
+let frames=["📡➡️☁️➡️🏢","🏢➡️☁️➡️📡"];
+let i=0;
+let interval=setInterval(()=>{anim.innerHTML=frames[i++%2];},400);
 
-  });
+/* AUTO TIME */
+document.getElementById("swapTime").value=new Date().toLocaleString();
+
+/* AUTO GPS */
+navigator.geolocation.getCurrentPosition(async pos=>{
+let res=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+let data=await res.json();
+document.getElementById("swapGPS").value=data.display_name;
+});
+
+setTimeout(()=>{
+clearInterval(interval);
+anim.style.display="none";
+},3000);
 
 }
 
