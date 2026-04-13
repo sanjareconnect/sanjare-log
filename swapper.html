@@ -110,7 +110,7 @@
 
 </div>
 
-<!-- ✅ SUBMIT BOX -->
+<!-- SUBMIT -->
 <div class="submitBox" id="submitBox">
 <button onclick="submitSwap()">Submit Trip Swap</button>
 <div id="submitAnim" class="animation"></div>
@@ -120,7 +120,8 @@
 
 <script>
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweshhR9UP7czvol6xMawpUPfzJgiJACFd_x5V2GVMm46DYiqB0MJI_P8l8sUijh9ymHw/exec";
+// 🔥 NEW DEPLOYMENT URL
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzk4CTI6FGhhCqNtHM-1BF_n2Tv31gQK6HptbAeNjo4VT-ww391vRALCzZIdPmwa0dUGQ/exec";
 
 function startProcess(){
 
@@ -197,7 +198,7 @@ let loc=await res.json();
 document.getElementById("swapGPS").value=loc.display_name;
 });
 
-document.getElementById("submitBox").style.display="block"; // 🔥 SHOW BUTTON
+document.getElementById("submitBox").style.display="block";
 
 } else {
 alert("Please enter the correct UN-Job No");
@@ -215,9 +216,22 @@ let frames=["🚖➡️☁️➡️🏢","🏢➡️☁️➡️🚖"];
 let i=0;
 let interval=setInterval(()=>{ anim.innerHTML=frames[i++%2]; },400);
 
+// 🔥 SEND DATA TO GOOGLE SHEET
+fetch(SCRIPT_URL,{
+method:"POST",
+body:JSON.stringify({
+type:"swap",
+driver:document.getElementById("driver").value,
+cmr:document.getElementById("cmr").value,
+jobNo:document.getElementById("jobNo").value,
+time:document.getElementById("swapTime").value,
+gps:document.getElementById("swapGPS").value
+})
+});
+
 setTimeout(()=>{
 clearInterval(interval);
-location.reload(); // 🔥 REFRESH
+location.reload();
 },5000);
 
 }
