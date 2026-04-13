@@ -79,6 +79,12 @@
       display: none;
       text-align: left;
     }
+
+    .result p {
+      margin: 6px 0;
+      font-size: 14px;
+    }
+
   </style>
 </head>
 
@@ -96,10 +102,10 @@
   </select>
 
   <label>T-Swapper Code:</label>
-  <input type="text" id="code">
+  <input type="text" id="code" placeholder="Enter Code">
 
   <label>CMR:</label>
-  <input type="number" id="cmr">
+  <input type="number" id="cmr" placeholder="Enter CMR Number">
 
   <button onclick="startProcess()">T-Swap Fetch Details</button>
 
@@ -140,6 +146,7 @@ function startProcess() {
 
   resultBox.style.display = "none";
 
+  // SHOW animation
   anim.style.display = "block";
   text.style.display = "block";
 
@@ -157,13 +164,13 @@ function startProcess() {
 
         if (data.status === "found") {
 
-          document.getElementById("resSwapper").innerText = data.swapper;
-          document.getElementById("resPickup").innerText = data.pickup;
-          document.getElementById("resDestination").innerText = data.destination;
-          document.getElementById("resStartTime").innerText = data.startTime;
-          document.getElementById("resSwapLocation").innerText = data.swapLocation;
-          document.getElementById("resSwapee").innerText = data.swapee;
-          document.getElementById("resMobile").innerText = data.mobile;
+          document.getElementById("resSwapper").innerText = data.swapper || "-";
+          document.getElementById("resPickup").innerText = data.pickup || "-";
+          document.getElementById("resDestination").innerText = data.destination || "-";
+          document.getElementById("resStartTime").innerText = data.startTime || "-";
+          document.getElementById("resSwapLocation").innerText = data.swapLocation || "-";
+          document.getElementById("resSwapee").innerText = data.swapee || "-";
+          document.getElementById("resMobile").innerText = data.mobile || "-";
 
           resultBox.style.display = "block";
 
@@ -171,8 +178,12 @@ function startProcess() {
           alert("No matching T-Swapper Code found");
         }
 
+      })
+      .catch(() => {
+        alert("Error connecting to control station");
       });
 
+    // HIDE animation
     anim.style.display = "none";
     text.style.display = "none";
 
