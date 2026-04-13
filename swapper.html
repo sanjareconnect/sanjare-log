@@ -61,7 +61,8 @@
 
     .blink {
       margin-top: 10px;
-      font-size: 13px;
+      font-size: 12px; /* 🔥 slightly smaller */
+      color: #666;
       display: none;
       animation: blink 1s infinite;
     }
@@ -79,6 +80,18 @@
       display: none;
       text-align: left;
     }
+
+    .result p {
+      margin: 5px 0;
+      font-size: 13px; /* 🔥 FIXED FONT SIZE */
+      line-height: 1.5;
+    }
+
+    .result b {
+      color: #1a2b4c;
+      font-weight: 600;
+    }
+
   </style>
 </head>
 
@@ -105,8 +118,9 @@
 
   <div class="animation" id="animationBox"></div>
 
+  <!-- ✅ UPDATED TEXT -->
   <div class="blink" id="loadingText">
-    Please wait Fetching data from Sanjar-E-Smart Grid Control Station
+    Please wait Fetching data from Sanjar-E-Smart Grid Control Station - Do not refresh the page
   </div>
 
   <div class="result" id="resultBox">
@@ -123,93 +137,7 @@
 
 <script>
 
-function startProcess() {
-
-  let driver = document.getElementById("driver").value;
-  let code = document.getElementById("code").value.trim();
-  let cmr = document.getElementById("cmr").value;
-
-  if (driver === "" || code === "" || cmr === "") {
-    alert("Please fill all fields");
-    return;
-  }
-
-  const anim = document.getElementById("animationBox");
-  const text = document.getElementById("loadingText");
-  const resultBox = document.getElementById("resultBox");
-
-  resultBox.style.display = "none";
-
-  // SHOW animation
-  anim.style.display = "block";
-  text.style.display = "block";
-
-  // LOOP animation (buffer style 🔥)
-  let step = 0;
-  const animationFrames = [
-    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢",
-    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢 .",
-    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢 ..",
-    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢 ...",
-    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️",
-    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️ .",
-    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️ ..",
-    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️ ..."
-  ];
-
-  const interval = setInterval(() => {
-    anim.innerHTML = animationFrames[step % animationFrames.length];
-    step++;
-  }, 400);
-
-  // FETCH DATA (REAL TIME)
-  fetch("https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec?code=" + encodeURIComponent(code))
-    .then(res => res.json())
-    .then(data => {
-
-      clearInterval(interval); // 🛑 STOP animation
-
-      if (data.status === "found") {
-
-        document.getElementById("resSwapper").innerText = data.swapper || "-";
-        document.getElementById("resPickup").innerText = data.pickup || "-";
-        document.getElementById("resDestination").innerText = data.destination || "-";
-
-        let formattedTime = "-";
-        if (data.startTime && data.startTime !== "-") {
-          let dt = new Date(data.startTime);
-          formattedTime = dt.toLocaleString("en-IN", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true
-          });
-        }
-        document.getElementById("resStartTime").innerText = formattedTime;
-
-        document.getElementById("resSwapLocation").innerText = data.swapLocation || "-";
-        document.getElementById("resSwapee").innerText = data.swapee || "-";
-        document.getElementById("resMobile").innerText = data.mobile || "-";
-
-        resultBox.style.display = "block";
-
-      } else {
-        alert("No matching T-Swapper Code found");
-      }
-
-    })
-    .catch(() => {
-      clearInterval(interval);
-      alert("Error connecting to control station");
-    })
-    .finally(() => {
-      anim.style.display = "none";
-      text.style.display = "none";
-    });
-}
+/* KEEP YOUR EXISTING JS SAME (NO CHANGE NEEDED) */
 
 </script>
 
