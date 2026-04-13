@@ -146,7 +146,6 @@ function startProcess() {
 
   resultBox.style.display = "none";
 
-  // SHOW animation
   anim.style.display = "block";
   text.style.display = "block";
 
@@ -158,7 +157,7 @@ function startProcess() {
 
   setTimeout(() => {
 
-    fetch("https://script.google.com/macros/s/AKfycbyWUv1jgBfTiOufwumn4e7ih_Gjm5AlCpYgarEkAVrC1V853F-i_MZyELOi9YxLdUw/exec?code=" + encodeURIComponent(code))
+    fetch("https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec?code=" + encodeURIComponent(code))
       .then(res => res.json())
       .then(data => {
 
@@ -183,7 +182,6 @@ function startProcess() {
         alert("Error connecting to control station");
       });
 
-    // HIDE animation
     anim.style.display = "none";
     text.style.display = "none";
 
