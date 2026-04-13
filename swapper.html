@@ -41,7 +41,7 @@
       font-weight: 600;
     }
 
-    .result, .consent, .jobBox, .swapExtra {
+    .result, .consent, .jobBox, .swapExtra, .submitBox {
       display: none;
       margin-top: 15px;
       background: white;
@@ -110,6 +110,12 @@
 
 </div>
 
+<!-- ✅ SUBMIT BOX -->
+<div class="submitBox" id="submitBox">
+<button onclick="submitSwap()">Submit Trip Swap</button>
+<div id="submitAnim" class="animation"></div>
+</div>
+
 </div>
 
 <script>
@@ -119,11 +125,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweshhR9UP7czvol6xMa
 function startProcess(){
 
 let code=document.getElementById("code").value.trim();
-
-if(code===""){
-alert("Enter Code");
-return;
-}
+if(code===""){ alert("Enter Code"); return; }
 
 let anim=document.getElementById("anim");
 anim.style.display="block";
@@ -135,12 +137,10 @@ let interval=setInterval(()=>{ anim.innerHTML=frames[i++%2]; },400);
 fetch(SCRIPT_URL+"?code="+encodeURIComponent(code))
 .then(r=>r.json())
 .then(d=>{
-
 clearInterval(interval);
 anim.style.display="none";
 
 if(d.status==="found"){
-
 document.getElementById("resSwapper").innerText=d.swapper;
 document.getElementById("resPickup").innerText=d.pickup;
 document.getElementById("resDestination").innerText=d.destination;
@@ -160,33 +160,23 @@ document.getElementById("swapExtra").style.display="block";
 } else {
 alert("No matching code");
 }
-
 });
-
 }
 
 function swapChecker(){
 
 if(!document.getElementById("acceptCheck").checked){
-alert("Please accept the terms and conditions");
+alert("Please accept the terms");
 return;
 }
 
 let job=document.getElementById("jobNo").value.trim();
-
-if(job===""){
-alert("Enter UN-Job No");
-return;
-}
+if(job===""){ alert("Enter UN-Job No"); return; }
 
 let anim=document.getElementById("checkAnim");
 anim.style.display="block";
 
-let frames=[
-"👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢",
-"🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️"
-];
-
+let frames=["📡➡️☁️➡️🏢","🏢➡️☁️➡️📡"];
 let i=0;
 let interval=setInterval(()=>{ anim.innerHTML=frames[i++%2]; },400);
 
@@ -207,16 +197,28 @@ let loc=await res.json();
 document.getElementById("swapGPS").value=loc.display_name;
 });
 
+document.getElementById("submitBox").style.display="block"; // 🔥 SHOW BUTTON
+
 } else {
 alert("Please enter the correct UN-Job No");
 }
 
-})
-.catch(()=>{
-clearInterval(interval);
-anim.style.display="none";
-alert("Connection error");
 });
+}
+
+function submitSwap(){
+
+let anim=document.getElementById("submitAnim");
+anim.style.display="block";
+
+let frames=["🚖➡️☁️➡️🏢","🏢➡️☁️➡️🚖"];
+let i=0;
+let interval=setInterval(()=>{ anim.innerHTML=frames[i++%2]; },400);
+
+setTimeout(()=>{
+clearInterval(interval);
+location.reload(); // 🔥 REFRESH
+},5000);
 
 }
 
