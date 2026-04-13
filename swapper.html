@@ -114,7 +114,7 @@
 
 <script>
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweshhR9UP7czvol6xMawpUPfzJgiJACFd_x5V2GVMm46DYiqB0MJI_P8l8sUijh9ymHw/exec";
 
 function startProcess(){
 
@@ -190,7 +190,6 @@ let frames=[
 let i=0;
 let interval=setInterval(()=>{ anim.innerHTML=frames[i++%2]; },400);
 
-// 🔥 VALIDATION CALL
 fetch(SCRIPT_URL+"?job="+encodeURIComponent(job))
 .then(res=>res.json())
 .then(data=>{
@@ -200,10 +199,8 @@ anim.style.display="none";
 
 if(data.status==="valid"){
 
-// AUTO TIME
 document.getElementById("swapTime").value=new Date().toLocaleString("en-IN");
 
-// AUTO GPS
 navigator.geolocation.getCurrentPosition(async pos=>{
 let res=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
 let loc=await res.json();
