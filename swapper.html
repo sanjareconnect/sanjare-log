@@ -87,29 +87,17 @@
       line-height: 1.5;
     }
 
-    .result b {
-      color: #1a2b4c;
-    }
-
     .consent {
       display: none;
       margin-top: 15px;
       text-align: left;
       font-size: 13px;
-      color: #333;
     }
 
-    .consent label {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      cursor: pointer;
-      font-weight: normal;
-    }
-
-    .consent input {
-      margin-top: 3px;
-      cursor: pointer;
+    /* NEW SECTION */
+    .jobBox {
+      display: none;
+      margin-top: 10px;
     }
 
   </style>
@@ -152,12 +140,18 @@
     <p><b>T-Swapee Mobile:</b> <span id="resMobile"></span></p>
   </div>
 
-  <!-- ✅ CONSENT CHECKBOX -->
+  <!-- ✅ CONSENT -->
   <div class="consent" id="consentBox">
     <label>
       <input type="checkbox" id="acceptCheck">
-      <span>I accept the above swapping and agree to all terms and conditions</span>
+      I accept the above swapping and agree to all terms and conditions
     </label>
+  </div>
+
+  <!-- ✅ NEW UN-JOB NO BOX -->
+  <div class="jobBox" id="jobBox">
+    <label>UN-Job No:</label>
+    <input type="text" id="jobNo" placeholder="Enter UN-Job No">
   </div>
 
 </div>
@@ -177,79 +171,46 @@ function startProcess() {
 
   const anim = document.getElementById("animationBox");
   const text = document.getElementById("loadingText");
-  const resultBox = document.getElementById("resultBox");
-  const consentBox = document.getElementById("consentBox");
 
-  // RESET
-  resultBox.style.display = "none";
-  consentBox.style.display = "none";
-  document.getElementById("acceptCheck").checked = false;
+  document.getElementById("resultBox").style.display = "none";
+  document.getElementById("consentBox").style.display = "none";
+  document.getElementById("jobBox").style.display = "none";
 
-  // SHOW loading
   anim.style.display = "block";
   text.style.display = "block";
 
-  let step = 0;
-  const frames = [
-    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢",
-    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢 .",
-    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢 ..",
-    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️",
-    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️ ."
-  ];
+  let frames = ["👨‍✈️➡️📱➡️☁️➡️🏢","🏢➡️☁️➡️📱➡️👨‍✈️"];
+  let i = 0;
+  let interval = setInterval(()=>{anim.innerHTML=frames[i++%2];},400);
 
-  const interval = setInterval(() => {
-    anim.innerHTML = frames[step % frames.length];
-    step++;
-  }, 400);
+  fetch("https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec?code="+code)
+  .then(res=>res.json())
+  .then(data=>{
 
-  fetch("https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec?code=" + encodeURIComponent(code))
-    .then(res => res.json())
-    .then(data => {
+    clearInterval(interval);
 
-      clearInterval(interval);
+    if(data.status==="found"){
 
-      if (data.status === "found") {
+      document.getElementById("resSwapper").innerText=data.swapper;
+      document.getElementById("resPickup").innerText=data.pickup;
+      document.getElementById("resDestination").innerText=data.destination;
 
-        document.getElementById("resSwapper").innerText = data.swapper || "-";
-        document.getElementById("resPickup").innerText = data.pickup || "-";
-        document.getElementById("resDestination").innerText = data.destination || "-";
+      let dt=new Date(data.startTime);
+      document.getElementById("resStartTime").innerText=dt.toLocaleString();
 
-        let formattedTime = "-";
-        if (data.startTime && data.startTime !== "-") {
-          let dt = new Date(data.startTime);
-          formattedTime = dt.toLocaleString("en-IN", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true
-          });
-        }
+      document.getElementById("resSwapLocation").innerText=data.swapLocation;
+      document.getElementById("resSwapee").innerText=data.swapee;
+      document.getElementById("resMobile").innerText=data.mobile;
 
-        document.getElementById("resStartTime").innerText = formattedTime;
-        document.getElementById("resSwapLocation").innerText = data.swapLocation || "-";
-        document.getElementById("resSwapee").innerText = data.swapee || "-";
-        document.getElementById("resMobile").innerText = data.mobile || "-";
+      document.getElementById("resultBox").style.display="block";
+      document.getElementById("consentBox").style.display="block";
+      document.getElementById("jobBox").style.display="block"; // 🔥 SHOW
 
-        resultBox.style.display = "block";
-        consentBox.style.display = "block"; // ✅ SHOW CHECKBOX
+    } else {
+      alert("No matching T-Swapper Code found");
+    }
 
-      } else {
-        alert("No matching T-Swapper Code found");
-      }
-
-    })
-    .catch(() => {
-      clearInterval(interval);
-      alert("Error connecting to control station");
-    })
-    .finally(() => {
-      anim.style.display = "none";
-      text.style.display = "none";
-    });
+  });
 
 }
 
