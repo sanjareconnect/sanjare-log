@@ -110,7 +110,6 @@
 
 </div>
 
-<!-- SUBMIT -->
 <div class="submitBox" id="submitBox">
 <button onclick="submitSwap()">Submit Trip Swap</button>
 <div id="submitAnim" class="animation"></div>
@@ -120,8 +119,8 @@
 
 <script>
 
-// 🔥 NEW DEPLOYMENT URL
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzk4CTI6FGhhCqNtHM-1BF_n2Tv31gQK6HptbAeNjo4VT-ww391vRALCzZIdPmwa0dUGQ/exec";
+// ✅ UPDATED NEW URL
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw12Vco-6uJD-p3cmwYpAKdzzAphQVXXVrrEX3buGKCTkK0H5CMLCixzD2J7tlvvQRzWA/exec";
 
 function startProcess(){
 
@@ -200,7 +199,12 @@ document.getElementById("swapGPS").value=loc.display_name;
 
 document.getElementById("submitBox").style.display="block";
 
-} else {
+}
+else if(data.status==="faulty"){
+alert("❌ This Job is marked as FAULTY. Swap not allowed.");
+document.getElementById("submitBox").style.display="none";
+}
+else{
 alert("Please enter the correct UN-Job No");
 }
 
@@ -216,7 +220,6 @@ let frames=["🚖➡️☁️➡️🏢","🏢➡️☁️➡️🚖"];
 let i=0;
 let interval=setInterval(()=>{ anim.innerHTML=frames[i++%2]; },400);
 
-// 🔥 SEND DATA TO GOOGLE SHEET
 fetch(SCRIPT_URL,{
 method:"POST",
 body:JSON.stringify({
