@@ -91,13 +91,11 @@
 <input type="checkbox" id="acceptCheck"> I accept the swap
 </div>
 
-<!-- UN JOB -->
 <div class="jobBox" id="jobBox">
 <label>UN-Job No</label>
 <input id="jobNo">
 </div>
 
-<!-- NEW SECTION -->
 <div class="swapExtra" id="swapExtra">
 
 <label>Swap Time</label>
@@ -116,9 +114,16 @@
 
 <script>
 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec";
+
 function startProcess(){
 
-let code=document.getElementById("code").value;
+let code=document.getElementById("code").value.trim();
+
+if(code===""){
+alert("Enter Code");
+return;
+}
 
 let anim=document.getElementById("anim");
 anim.style.display="block";
@@ -127,9 +132,10 @@ let frames=["👨‍✈️➡️📱➡️☁️➡️🏢","🏢➡️☁️➡
 let i=0;
 let interval=setInterval(()=>{ anim.innerHTML=frames[i++%2]; },400);
 
-fetch("https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec?code="+code)
+fetch(SCRIPT_URL+"?code="+encodeURIComponent(code))
 .then(r=>r.json())
 .then(d=>{
+
 clearInterval(interval);
 anim.style.display="none";
 
@@ -140,7 +146,7 @@ document.getElementById("resPickup").innerText=d.pickup;
 document.getElementById("resDestination").innerText=d.destination;
 
 let dt=new Date(d.startTime);
-document.getElementById("resStartTime").innerText=dt.toLocaleString();
+document.getElementById("resStartTime").innerText=dt.toLocaleString("en-IN");
 
 document.getElementById("resSwapLocation").innerText=d.swapLocation;
 document.getElementById("resSwapee").innerText=d.swapee;
@@ -151,8 +157,12 @@ document.getElementById("consentBox").style.display="block";
 document.getElementById("jobBox").style.display="block";
 document.getElementById("swapExtra").style.display="block";
 
+} else {
+alert("No matching code");
 }
+
 });
+
 }
 
 function swapChecker(){
@@ -162,27 +172,54 @@ alert("Please accept the terms and conditions");
 return;
 }
 
+let job=document.getElementById("jobNo").value.trim();
+
+if(job===""){
+alert("Enter UN-Job No");
+return;
+}
+
 let anim=document.getElementById("checkAnim");
 anim.style.display="block";
 
-let frames=["📡➡️☁️➡️🏢","🏢➡️☁️➡️📡"];
+let frames=[
+"👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢",
+"🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️"
+];
+
 let i=0;
-let interval=setInterval(()=>{anim.innerHTML=frames[i++%2];},400);
+let interval=setInterval(()=>{ anim.innerHTML=frames[i++%2]; },400);
 
-/* AUTO TIME */
-document.getElementById("swapTime").value=new Date().toLocaleString();
+// 🔥 VALIDATION CALL
+fetch(SCRIPT_URL+"?job="+encodeURIComponent(job))
+.then(res=>res.json())
+.then(data=>{
 
-/* AUTO GPS */
-navigator.geolocation.getCurrentPosition(async pos=>{
-let res=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
-let data=await res.json();
-document.getElementById("swapGPS").value=data.display_name;
-});
-
-setTimeout(()=>{
 clearInterval(interval);
 anim.style.display="none";
-},3000);
+
+if(data.status==="valid"){
+
+// AUTO TIME
+document.getElementById("swapTime").value=new Date().toLocaleString("en-IN");
+
+// AUTO GPS
+navigator.geolocation.getCurrentPosition(async pos=>{
+let res=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+let loc=await res.json();
+document.getElementById("swapGPS").value=loc.display_name;
+});
+
+} else {
+alert("Please enter the correct UN-Job No");
+}
+
+})
+.catch(()=>{
+clearInterval(interval);
+anim.style.display="none";
+alert("Connection error");
+});
 
 }
 
