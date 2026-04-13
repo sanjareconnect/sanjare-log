@@ -146,6 +146,7 @@ function startProcess() {
 
   resultBox.style.display = "none";
 
+  // SHOW animation
   anim.style.display = "block";
   text.style.display = "block";
 
@@ -166,7 +167,23 @@ function startProcess() {
           document.getElementById("resSwapper").innerText = data.swapper || "-";
           document.getElementById("resPickup").innerText = data.pickup || "-";
           document.getElementById("resDestination").innerText = data.destination || "-";
-          document.getElementById("resStartTime").innerText = data.startTime || "-";
+
+          // ✅ DATE FORMAT FIX (FINAL)
+          let formattedTime = "-";
+          if (data.startTime && data.startTime !== "-") {
+            let dt = new Date(data.startTime);
+            formattedTime = dt.toLocaleString("en-IN", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true
+            });
+          }
+          document.getElementById("resStartTime").innerText = formattedTime;
+
           document.getElementById("resSwapLocation").innerText = data.swapLocation || "-";
           document.getElementById("resSwapee").innerText = data.swapee || "-";
           document.getElementById("resMobile").innerText = data.mobile || "-";
@@ -182,6 +199,7 @@ function startProcess() {
         alert("Error connecting to control station");
       });
 
+    // HIDE animation
     anim.style.display = "none";
     text.style.display = "none";
 
