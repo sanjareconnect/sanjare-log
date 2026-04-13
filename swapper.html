@@ -31,7 +31,6 @@
       text-align: left;
       margin-bottom: 5px;
       font-size: 13px;
-      color: #333;
       font-weight: 600;
     }
 
@@ -41,14 +40,13 @@
       margin-bottom: 15px;
       border-radius: 10px;
       border: 1px solid #ccc;
-      font-size: 14px;
     }
 
     button {
       width: 100%;
       padding: 14px;
-      border: none;
       border-radius: 12px;
+      border: none;
       background: linear-gradient(135deg, #0ca678, #087f5b);
       color: white;
       font-weight: 600;
@@ -64,28 +62,22 @@
     .blink {
       margin-top: 10px;
       font-size: 13px;
-      color: #555;
       display: none;
       animation: blink 1s infinite;
     }
 
     @keyframes blink {
-      50% {opacity: 0.3;}
+      50% { opacity: 0.3; }
     }
 
     .result {
       margin-top: 20px;
       padding: 15px;
       border-radius: 12px;
-      background: #ffffff;
+      background: white;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      text-align: left;
       display: none;
-    }
-
-    .result p {
-      margin: 6px 0;
-      font-size: 14px;
+      text-align: left;
     }
   </style>
 </head>
@@ -98,16 +90,16 @@
 
   <label>Trip Swapper UN Name:</label>
   <select id="driver">
-    <option value="">Select UN Name</option>
+    <option value="">Select</option>
     <option>Mithin Mohan / SJTW-7770</option>
     <option>Nagaraj Mani / SJTW-8047</option>
   </select>
 
   <label>T-Swapper Code:</label>
-  <input type="text" id="code" placeholder="Enter Code">
+  <input type="text" id="code">
 
   <label>CMR:</label>
-  <input type="number" id="cmr" placeholder="Enter CMR Number">
+  <input type="number" id="cmr">
 
   <button onclick="startProcess()">T-Swap Fetch Details</button>
 
@@ -119,13 +111,12 @@
 
   <div class="result" id="resultBox">
     <p><b>T-Swapper UN:</b> <span id="resSwapper"></span></p>
-    <p><b>T-Swapee:</b> <span id="resSwapee"></span></p>
     <p><b>Trip Pickup:</b> <span id="resPickup"></span></p>
     <p><b>Trip Destination:</b> <span id="resDestination"></span></p>
+    <p><b>Trip Start Time:</b> <span id="resStartTime"></span></p>
     <p><b>Swap Location:</b> <span id="resSwapLocation"></span></p>
-    <p><b>Generator:</b> <span id="resGenerator"></span></p>
-    <p><b>Code:</b> <span id="resCode"></span></p>
-    <p><b>CMR:</b> <span id="resCMR"></span></p>
+    <p><b>T-Swapee Name:</b> <span id="resSwapee"></span></p>
+    <p><b>T-Swapee Mobile:</b> <span id="resMobile"></span></p>
   </div>
 
 </div>
@@ -135,7 +126,7 @@
 function startProcess() {
 
   let driver = document.getElementById("driver").value;
-  let code = document.getElementById("code").value.trim(); // ✅ FIX
+  let code = document.getElementById("code").value.trim();
   let cmr = document.getElementById("cmr").value;
 
   if (driver === "" || code === "" || cmr === "") {
@@ -167,13 +158,12 @@ function startProcess() {
         if (data.status === "found") {
 
           document.getElementById("resSwapper").innerText = data.swapper;
-          document.getElementById("resSwapee").innerText = data.swapee;
           document.getElementById("resPickup").innerText = data.pickup;
           document.getElementById("resDestination").innerText = data.destination;
+          document.getElementById("resStartTime").innerText = data.startTime;
           document.getElementById("resSwapLocation").innerText = data.swapLocation;
-          document.getElementById("resGenerator").innerText = data.generator;
-          document.getElementById("resCode").innerText = data.code;
-          document.getElementById("resCMR").innerText = data.cmr;
+          document.getElementById("resSwapee").innerText = data.swapee;
+          document.getElementById("resMobile").innerText = data.mobile;
 
           resultBox.style.display = "block";
 
@@ -181,9 +171,6 @@ function startProcess() {
           alert("No matching T-Swapper Code found");
         }
 
-      })
-      .catch(err => {
-        alert("Error connecting to control station");
       });
 
     anim.style.display = "none";
