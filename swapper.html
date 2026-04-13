@@ -1,259 +1,166 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Trip Swapper</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trip Swapper</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      background: linear-gradient(135deg, #e6f0ff, #f8fbff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
+body {
+  font-family: 'Segoe UI';
+  background: linear-gradient(135deg,#e6f0ff,#f8fbff);
+  display:flex; justify-content:center; align-items:center;
+  height:100vh; margin:0;
+}
+.container { max-width:380px; width:95%; }
 
-    .container {
-      width: 95%;
-      max-width: 380px;
-      text-align: center;
-    }
+input, select, button {
+  width:100%; padding:12px; margin-top:10px;
+  border-radius:10px; border:1px solid #ccc;
+}
 
-    h2 {
-      color: #1a2b4c;
-      margin-bottom: 20px;
-    }
+button {
+  background:#0ca678; color:#fff; font-weight:bold;
+}
 
-    label {
-      display: block;
-      text-align: left;
-      margin-bottom: 5px;
-      font-size: 13px;
-      font-weight: 600;
-    }
+.result, .consent, .extra, .submitBox {
+  display:none; margin-top:15px;
+  background:#fff; padding:12px;
+  border-radius:10px;
+}
 
-    select, input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: none;
-      background: linear-gradient(135deg, #0ca678, #087f5b);
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .animation {
-      margin-top: 20px;
-      font-size: 22px;
-      display: none;
-    }
-
-    .blink {
-      margin-top: 10px;
-      font-size: 12px;
-      color: #666;
-      display: none;
-      animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-      50% { opacity: 0.3; }
-    }
-
-    .result {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 12px;
-      background: white;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      display: none;
-      text-align: left;
-    }
-
-    .result p {
-      margin: 5px 0;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .result b {
-      color: #1a2b4c;
-    }
-
-    .consent {
-      display: none;
-      margin-top: 15px;
-      text-align: left;
-      font-size: 13px;
-      color: #333;
-    }
-
-    .consent label {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      cursor: pointer;
-      font-weight: normal;
-    }
-
-    .consent input {
-      margin-top: 3px;
-      cursor: pointer;
-    }
-
-  </style>
+.animation { text-align:center; font-size:22px; margin-top:10px; display:none; }
+</style>
 </head>
 
 <body>
-
 <div class="container">
 
-  <h2>🔄 Trip Swapper</h2>
+<h3>🔄 Trip Swapper</h3>
 
-  <label>Trip Swapper UN Name:</label>
-  <select id="driver">
-    <option value="">Select</option>
-    <option>Mithin Mohan / SJTW-7770</option>
-    <option>Nagaraj Mani / SJTW-8047</option>
-  </select>
+<select id="driver">
+<option value="">Select</option>
+<option>Mithin Mohan / SJTW-7770</option>
+<option>Nagaraj Mani / SJTW-8047</option>
+</select>
 
-  <label>T-Swapper Code:</label>
-  <input type="text" id="code">
+<input id="code" placeholder="T-Swapper Code">
+<input id="cmr" placeholder="CMR">
 
-  <label>CMR:</label>
-  <input type="number" id="cmr">
+<button onclick="startProcess()">T-Swap Fetch Details</button>
 
-  <button onclick="startProcess()">T-Swap Fetch Details</button>
+<div id="anim" class="animation"></div>
 
-  <div class="animation" id="animationBox"></div>
+<div class="result" id="resultBox">
+<p><b>Swapper:</b> <span id="resSwapper"></span></p>
+<p><b>Pickup:</b> <span id="resPickup"></span></p>
+<p><b>Destination:</b> <span id="resDestination"></span></p>
+<p><b>Start:</b> <span id="resStartTime"></span></p>
+<p><b>Swap:</b> <span id="resSwapLocation"></span></p>
+<p><b>Swapee:</b> <span id="resSwapee"></span></p>
+<p><b>Mobile:</b> <span id="resMobile"></span></p>
+</div>
 
-  <div class="blink" id="loadingText">
-    Please wait Fetching data from Sanjar-E-Smart Grid Control Station - Do not refresh the page
-  </div>
+<div class="consent" id="consentBox">
+<input type="checkbox" id="acceptCheck"> I accept the swap
+</div>
 
-  <div class="result" id="resultBox">
-    <p><b>T-Swapper UN:</b> <span id="resSwapper"></span></p>
-    <p><b>Trip Pickup:</b> <span id="resPickup"></span></p>
-    <p><b>Trip Destination:</b> <span id="resDestination"></span></p>
-    <p><b>Trip Start Time:</b> <span id="resStartTime"></span></p>
-    <p><b>Swap Location:</b> <span id="resSwapLocation"></span></p>
-    <p><b>T-Swapee Name:</b> <span id="resSwapee"></span></p>
-    <p><b>T-Swapee Mobile:</b> <span id="resMobile"></span></p>
-  </div>
+<!-- NEW SECTION -->
+<div class="extra" id="extraBox">
 
-  <!-- ✅ CONSENT CHECKBOX -->
-  <div class="consent" id="consentBox">
-    <label>
-      <input type="checkbox" id="acceptCheck">
-      <span>I accept the above swapping and agree to all terms and conditions</span>
-    </label>
-  </div>
+<input id="jobNo" placeholder="UN-Job No">
+
+<input id="autoTime" readonly placeholder="Auto Time">
+<input id="autoGPS" readonly placeholder="Auto GPS Location">
+
+<button onclick="checkSwap()">Swap Checker</button>
+
+<div id="checkAnim" class="animation"></div>
+
+</div>
+
+<div class="submitBox" id="submitBox">
+<button onclick="submitSwap()">Submit Swap</button>
+</div>
 
 </div>
 
 <script>
 
-function startProcess() {
+function startProcess(){
 
-  let driver = document.getElementById("driver").value;
-  let code = document.getElementById("code").value.trim();
-  let cmr = document.getElementById("cmr").value;
+let code=document.getElementById("code").value;
 
-  if (driver === "" || code === "" || cmr === "") {
-    alert("Please fill all fields");
-    return;
-  }
+let anim=document.getElementById("anim");
+anim.style.display="block";
 
-  const anim = document.getElementById("animationBox");
-  const text = document.getElementById("loadingText");
-  const resultBox = document.getElementById("resultBox");
-  const consentBox = document.getElementById("consentBox");
+let frames=["👨‍✈️➡️📱➡️☁️➡️🏢","🏢➡️☁️➡️📱➡️👨‍✈️"];
+let i=0;
+let interval=setInterval(()=>{ anim.innerHTML=frames[i++%2]; },400);
 
-  // RESET
-  resultBox.style.display = "none";
-  consentBox.style.display = "none";
-  document.getElementById("acceptCheck").checked = false;
+fetch("YOUR_GET_URL?code="+code)
+.then(r=>r.json())
+.then(d=>{
+clearInterval(interval);
+anim.style.display="none";
 
-  // SHOW loading
-  anim.style.display = "block";
-  text.style.display = "block";
+if(d.status==="found"){
 
-  let step = 0;
-  const frames = [
-    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢",
-    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢 .",
-    "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢 ..",
-    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️",
-    "🏢 ➡️ ☁️ ➡️ 📱 ➡️ 👨‍✈️ ."
-  ];
+document.getElementById("resSwapper").innerText=d.swapper;
+document.getElementById("resPickup").innerText=d.pickup;
+document.getElementById("resDestination").innerText=d.destination;
 
-  const interval = setInterval(() => {
-    anim.innerHTML = frames[step % frames.length];
-    step++;
-  }, 400);
+let dt=new Date(d.startTime);
+document.getElementById("resStartTime").innerText=dt.toLocaleString();
 
-  fetch("https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec?code=" + encodeURIComponent(code))
-    .then(res => res.json())
-    .then(data => {
+document.getElementById("resSwapLocation").innerText=d.swapLocation;
+document.getElementById("resSwapee").innerText=d.swapee;
+document.getElementById("resMobile").innerText=d.mobile;
 
-      clearInterval(interval);
+document.getElementById("resultBox").style.display="block";
+document.getElementById("consentBox").style.display="block";
+document.getElementById("extraBox").style.display="block";
 
-      if (data.status === "found") {
+}
+});
+}
 
-        document.getElementById("resSwapper").innerText = data.swapper || "-";
-        document.getElementById("resPickup").innerText = data.pickup || "-";
-        document.getElementById("resDestination").innerText = data.destination || "-";
+function checkSwap(){
 
-        let formattedTime = "-";
-        if (data.startTime && data.startTime !== "-") {
-          let dt = new Date(data.startTime);
-          formattedTime = dt.toLocaleString("en-IN", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true
-          });
-        }
+if(!document.getElementById("acceptCheck").checked){
+alert("Please accept the terms and conditions");
+return;
+}
 
-        document.getElementById("resStartTime").innerText = formattedTime;
-        document.getElementById("resSwapLocation").innerText = data.swapLocation || "-";
-        document.getElementById("resSwapee").innerText = data.swapee || "-";
-        document.getElementById("resMobile").innerText = data.mobile || "-";
+let job=document.getElementById("jobNo").value;
 
-        resultBox.style.display = "block";
-        consentBox.style.display = "block"; // ✅ SHOW CHECKBOX
+document.getElementById("autoTime").value=new Date().toLocaleString();
 
-      } else {
-        alert("No matching T-Swapper Code found");
-      }
+navigator.geolocation.getCurrentPosition(async pos=>{
+let res=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+let data=await res.json();
+document.getElementById("autoGPS").value=data.display_name;
+});
 
-    })
-    .catch(() => {
-      clearInterval(interval);
-      alert("Error connecting to control station");
-    })
-    .finally(() => {
-      anim.style.display = "none";
-      text.style.display = "none";
-    });
+let anim=document.getElementById("checkAnim");
+anim.style.display="block";
+
+setTimeout(()=>{
+anim.style.display="none";
+document.getElementById("submitBox").style.display="block";
+},3000);
+
+}
+
+function submitSwap(){
+
+document.getElementById("submitBox").innerHTML="Processing...";
+
+setTimeout(()=>{
+location.reload();
+},5000);
 
 }
 
 </script>
-
 </body>
 </html>
