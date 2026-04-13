@@ -91,6 +91,27 @@
       color: #1a2b4c;
     }
 
+    .consent {
+      display: none;
+      margin-top: 15px;
+      text-align: left;
+      font-size: 13px;
+      color: #333;
+    }
+
+    .consent label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      cursor: pointer;
+      font-weight: normal;
+    }
+
+    .consent input {
+      margin-top: 3px;
+      cursor: pointer;
+    }
+
   </style>
 </head>
 
@@ -131,6 +152,14 @@
     <p><b>T-Swapee Mobile:</b> <span id="resMobile"></span></p>
   </div>
 
+  <!-- ✅ CONSENT CHECKBOX -->
+  <div class="consent" id="consentBox">
+    <label>
+      <input type="checkbox" id="acceptCheck">
+      <span>I accept the above swapping and agree to all terms and conditions</span>
+    </label>
+  </div>
+
 </div>
 
 <script>
@@ -149,14 +178,17 @@ function startProcess() {
   const anim = document.getElementById("animationBox");
   const text = document.getElementById("loadingText");
   const resultBox = document.getElementById("resultBox");
+  const consentBox = document.getElementById("consentBox");
 
+  // RESET
   resultBox.style.display = "none";
+  consentBox.style.display = "none";
+  document.getElementById("acceptCheck").checked = false;
 
   // SHOW loading
   anim.style.display = "block";
   text.style.display = "block";
 
-  // LOOP animation
   let step = 0;
   const frames = [
     "👨‍✈️ ➡️ 📱 ➡️ ☁️ ➡️ 🏢",
@@ -171,7 +203,6 @@ function startProcess() {
     step++;
   }, 400);
 
-  // FETCH DATA
   fetch("https://script.google.com/macros/s/AKfycbynohJZXhLwaqh33kxpcPAQleQMK1LidZSgouT7DQjxTqkTsZ6kkknskS0Y4LUpUZvEdA/exec?code=" + encodeURIComponent(code))
     .then(res => res.json())
     .then(data => {
@@ -204,6 +235,7 @@ function startProcess() {
         document.getElementById("resMobile").innerText = data.mobile || "-";
 
         resultBox.style.display = "block";
+        consentBox.style.display = "block"; // ✅ SHOW CHECKBOX
 
       } else {
         alert("No matching T-Swapper Code found");
