@@ -124,7 +124,6 @@
     Please wait Fetching data from Sanjar-E-Smart Grid Control Station
   </div>
 
-  <!-- UPDATED RESULT BOX -->
   <div class="result" id="resultBox">
     <p><b>T-Swapper UN:</b> <span id="resSwapper"></span></p>
     <p><b>T-Swapee:</b> <span id="resSwapee"></span></p>
@@ -189,9 +188,6 @@ function startProcess() {
           alert("No matching T-Swapper Code found");
         }
 
-      })
-      .catch(err => {
-        alert("Error connecting to control station");
       });
 
     anim.style.display = "none";
