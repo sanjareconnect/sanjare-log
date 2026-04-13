@@ -55,10 +55,6 @@
       cursor: pointer;
     }
 
-    button:hover {
-      opacity: 0.95;
-    }
-
     .animation {
       margin-top: 20px;
       font-size: 22px;
@@ -74,9 +70,7 @@
     }
 
     @keyframes blink {
-      0% {opacity: 1;}
       50% {opacity: 0.3;}
-      100% {opacity: 1;}
     }
 
     .result {
@@ -93,7 +87,6 @@
       margin: 6px 0;
       font-size: 14px;
     }
-
   </style>
 </head>
 
@@ -142,7 +135,7 @@
 function startProcess() {
 
   let driver = document.getElementById("driver").value;
-  let code = document.getElementById("code").value;
+  let code = document.getElementById("code").value.trim(); // ✅ FIX
   let cmr = document.getElementById("cmr").value;
 
   if (driver === "" || code === "" || cmr === "") {
@@ -167,7 +160,7 @@ function startProcess() {
 
   setTimeout(() => {
 
-    fetch("https://script.google.com/macros/s/AKfycby8anaeBo0RF6RNpT0yIn_KGP9DudFH4K9L9NxoqGBxS3Ze87QGEanscx0TQiTYvl_VVQ/exec?code=" + code)
+    fetch("https://script.google.com/macros/s/AKfycbyWUv1jgBfTiOufwumn4e7ih_Gjm5AlCpYgarEkAVrC1V853F-i_MZyELOi9YxLdUw/exec?code=" + encodeURIComponent(code))
       .then(res => res.json())
       .then(data => {
 
@@ -188,13 +181,15 @@ function startProcess() {
           alert("No matching T-Swapper Code found");
         }
 
+      })
+      .catch(err => {
+        alert("Error connecting to control station");
       });
 
     anim.style.display = "none";
     text.style.display = "none";
 
   }, 6000);
-
 }
 
 </script>
